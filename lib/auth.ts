@@ -2,9 +2,15 @@ import {
     betterAuth
 } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+
 
 
 export const auth = betterAuth({
+    appName: "Worship",
+    database: prismaAdapter(prisma, {
+        provider: "mongodb",
+    }),
     emailAndPassword: {
         enabled: true,
         async sendResetPassword(data, request) {
