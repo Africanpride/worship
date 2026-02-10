@@ -28,8 +28,31 @@ model User {
 
   sessions Session[]
   accounts Account[]
+  profile  Profile[]
 
   @@map("user")
+}
+
+model Profile {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String  @unique @db.ObjectId
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username    String? @unique
+  displayName String?
+  bio         String? @db.String
+  avatarUrl   String?
+  bannerUrl   String?
+  location    String?
+  website     String?
+  socialLinks Json? // { twitter: "...", github: "...", linkedin: "..." }
+
+  isPublic Boolean @default(true)
+  theme    String  @default("system") // light/dark/system
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("profiles")
 }
 
 model Session {
@@ -44,8 +67,8 @@ model Session {
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   impersonatedBy String?
 
-  @@map("session")
   @@index([userId])
+  @@map("session")
 }
 
 model Account {
@@ -64,8 +87,8 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@map("account")
   @@index([userId])
+  @@map("account")
 }
 
 model Verification {
@@ -76,6 +99,6 @@ model Verification {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@map("verification")
   @@index([identifier])
+  @@map("verification")
 }
