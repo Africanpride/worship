@@ -50,11 +50,6 @@ path.join(process.cwd(), "prisma/generated/prisma/libquery_engine-debian-openssl
  */
 export type User = Prisma.UserModel
 /**
- * Model Profile
- * 
- */
-export type Profile = Prisma.ProfileModel
-/**
  * Model Session
  * 
  */
@@ -69,73 +64,3 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
-/**
- * Model Organization
- * 
- */
-export type Organization = Prisma.OrganizationModel
-/**
- * Model Member
- * 
- */
-export type Member = Prisma.MemberModel
-/**
- * Model Invitation
- * 
- */
-export type Invitation = Prisma.InvitationModel
-/**
- * Model TwoFactor
- * 
- */
-export type TwoFactor = Prisma.TwoFactorModel
-/**
- * Model OauthApplication
- * 
- */
-export type OauthApplication = Prisma.OauthApplicationModel
-/**
- * Model OauthAccessToken
- * 
- */
-export type OauthAccessToken = Prisma.OauthAccessTokenModel
-/**
- * Model OauthConsent
- * 
- */
-export type OauthConsent = Prisma.OauthConsentModel
-/**
- * Model Institute
- * 
- */
-export type Institute = Prisma.InstituteModel
-/**
- * Model Edition
- * 
- */
-export type Edition = Prisma.EditionModel
-/**
- * Model Testimonial
- * 
- */
-export type Testimonial = Prisma.TestimonialModel
-/**
- * Model Announcement
- * 
- */
-export type Announcement = Prisma.AnnouncementModel
-/**
- * Model StudentIdCounter
- * 
- */
-export type StudentIdCounter = Prisma.StudentIdCounterModel
-/**
- * Model Registration
- * 
- */
-export type Registration = Prisma.RegistrationModel
-/**
- * Model NewsletterSubscriber
- * 
- */
-export type NewsletterSubscriber = Prisma.NewsletterSubscriberModel

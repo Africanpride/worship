@@ -50,24 +50,9 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Profile: 'Profile',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification',
-  Organization: 'Organization',
-  Member: 'Member',
-  Invitation: 'Invitation',
-  TwoFactor: 'TwoFactor',
-  OauthApplication: 'OauthApplication',
-  OauthAccessToken: 'OauthAccessToken',
-  OauthConsent: 'OauthConsent',
-  Institute: 'Institute',
-  Edition: 'Edition',
-  Testimonial: 'Testimonial',
-  Announcement: 'Announcement',
-  StudentIdCounter: 'StudentIdCounter',
-  Registration: 'Registration',
-  NewsletterSubscriber: 'NewsletterSubscriber'
+  Verification: 'Verification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -84,61 +69,13 @@ export const UserScalarFieldEnum = {
   image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  twoFactorEnabled: 'twoFactorEnabled',
   role: 'role',
   banned: 'banned',
   banReason: 'banReason',
-  banExpires: 'banExpires',
-  studentId: 'studentId'
+  banExpires: 'banExpires'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const ProfileScalarFieldEnum = {
-  id: 'id',
-  gender: 'gender',
-  dateOfBirth: 'dateOfBirth',
-  maritalStatus: 'maritalStatus',
-  religion: 'religion',
-  nationality: 'nationality',
-  telephone: 'telephone',
-  mobile: 'mobile',
-  address: 'address',
-  addressLine2: 'addressLine2',
-  disabilityAssistance: 'disabilityAssistance',
-  disabilityDescription: 'disabilityDescription',
-  city: 'city',
-  state: 'state',
-  country: 'country',
-  zipcode: 'zipcode',
-  emergencyContactName: 'emergencyContactName',
-  emergencyContactTelephone: 'emergencyContactTelephone',
-  biography: 'biography',
-  avatar: 'avatar',
-  profession: 'profession',
-  highestQualification: 'highestQualification',
-  languagePreference: 'languagePreference',
-  linkedIn: 'linkedIn',
-  website: 'website',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  instagram: 'instagram',
-  linkedin: 'linkedin',
-  youtube: 'youtube',
-  github: 'github',
-  tiktok: 'tiktok',
-  personalWebsite: 'personalWebsite',
-  additionalLinks: 'additionalLinks',
-  tags: 'tags',
-  interests: 'interests',
-  skills: 'skills',
-  userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -150,7 +87,6 @@ export const SessionScalarFieldEnum = {
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   userId: 'userId',
-  activeOrganizationId: 'activeOrganizationId',
   impersonatedBy: 'impersonatedBy'
 } as const
 
@@ -186,213 +122,6 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
-
-
-export const OrganizationScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  logo: 'logo',
-  createdAt: 'createdAt',
-  metadata: 'metadata'
-} as const
-
-export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
-export const MemberScalarFieldEnum = {
-  id: 'id',
-  organizationId: 'organizationId',
-  userId: 'userId',
-  role: 'role',
-  createdAt: 'createdAt'
-} as const
-
-export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
-
-
-export const InvitationScalarFieldEnum = {
-  id: 'id',
-  organizationId: 'organizationId',
-  email: 'email',
-  role: 'role',
-  status: 'status',
-  expiresAt: 'expiresAt',
-  inviterId: 'inviterId'
-} as const
-
-export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
-
-
-export const TwoFactorScalarFieldEnum = {
-  id: 'id',
-  secret: 'secret',
-  backupCodes: 'backupCodes',
-  userId: 'userId'
-} as const
-
-export type TwoFactorScalarFieldEnum = (typeof TwoFactorScalarFieldEnum)[keyof typeof TwoFactorScalarFieldEnum]
-
-
-export const OauthApplicationScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  icon: 'icon',
-  metadata: 'metadata',
-  clientId: 'clientId',
-  clientSecret: 'clientSecret',
-  redirectURLs: 'redirectURLs',
-  type: 'type',
-  disabled: 'disabled',
-  userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OauthApplicationScalarFieldEnum = (typeof OauthApplicationScalarFieldEnum)[keyof typeof OauthApplicationScalarFieldEnum]
-
-
-export const OauthAccessTokenScalarFieldEnum = {
-  id: 'id',
-  accessToken: 'accessToken',
-  refreshToken: 'refreshToken',
-  accessTokenExpiresAt: 'accessTokenExpiresAt',
-  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
-  clientId: 'clientId',
-  userId: 'userId',
-  scopes: 'scopes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OauthAccessTokenScalarFieldEnum = (typeof OauthAccessTokenScalarFieldEnum)[keyof typeof OauthAccessTokenScalarFieldEnum]
-
-
-export const OauthConsentScalarFieldEnum = {
-  id: 'id',
-  clientId: 'clientId',
-  userId: 'userId',
-  scopes: 'scopes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  consentGiven: 'consentGiven'
-} as const
-
-export type OauthConsentScalarFieldEnum = (typeof OauthConsentScalarFieldEnum)[keyof typeof OauthConsentScalarFieldEnum]
-
-
-export const InstituteScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  acronym: 'acronym',
-  overview: 'overview',
-  about: 'about',
-  introduction: 'introduction',
-  icon: 'icon',
-  logo: 'logo',
-  banner: 'banner',
-  seo: 'seo',
-  active: 'active',
-  slug: 'slug',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type InstituteScalarFieldEnum = (typeof InstituteScalarFieldEnum)[keyof typeof InstituteScalarFieldEnum]
-
-
-export const EditionScalarFieldEnum = {
-  id: 'id',
-  instituteId: 'instituteId',
-  title: 'title',
-  slug: 'slug',
-  theme: 'theme',
-  acronym: 'acronym',
-  overview: 'overview',
-  about: 'about',
-  introduction: 'introduction',
-  banner: 'banner',
-  verticalBanner: 'verticalBanner',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  seo: 'seo',
-  active: 'active',
-  inPersonDelivery: 'inPersonDelivery',
-  onlineDelivery: 'onlineDelivery',
-  price: 'price',
-  priceViaZoom: 'priceViaZoom',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type EditionScalarFieldEnum = (typeof EditionScalarFieldEnum)[keyof typeof EditionScalarFieldEnum]
-
-
-export const TestimonialScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  content: 'content',
-  featured: 'featured',
-  userFeaturePermission: 'userFeaturePermission',
-  approved: 'approved',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type TestimonialScalarFieldEnum = (typeof TestimonialScalarFieldEnum)[keyof typeof TestimonialScalarFieldEnum]
-
-
-export const AnnouncementScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  content: 'content',
-  featured: 'featured',
-  approved: 'approved',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
-
-
-export const StudentIdCounterScalarFieldEnum = {
-  id: 'id',
-  nextNumber: 'nextNumber'
-} as const
-
-export type StudentIdCounterScalarFieldEnum = (typeof StudentIdCounterScalarFieldEnum)[keyof typeof StudentIdCounterScalarFieldEnum]
-
-
-export const RegistrationScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  approved: 'approved',
-  editionId: 'editionId',
-  createdAt: 'createdAt'
-} as const
-
-export type RegistrationScalarFieldEnum = (typeof RegistrationScalarFieldEnum)[keyof typeof RegistrationScalarFieldEnum]
-
-
-export const NewsletterSubscriberScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  name: 'name',
-  userId: 'userId',
-  notifyPermission: 'notifyPermission',
-  verified: 'verified',
-  unsubscribeToken: 'unsubscribeToken',
-  confirmationToken: 'confirmationToken',
-  topics: 'topics',
-  subscribedAt: 'subscribedAt',
-  unsubscribedAt: 'unsubscribedAt',
-  updatedAt: 'updatedAt',
-  source: 'source',
-  ipAddress: 'ipAddress',
-  locale: 'locale'
-} as const
-
-export type NewsletterSubscriberScalarFieldEnum = (typeof NewsletterSubscriberScalarFieldEnum)[keyof typeof NewsletterSubscriberScalarFieldEnum]
 
 
 export const SortOrder = {

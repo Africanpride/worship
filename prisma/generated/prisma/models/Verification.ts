@@ -158,8 +158,8 @@ export type VerificationGroupByOutputType = {
   identifier: string
   value: string
   expiresAt: Date
-  createdAt: Date | null
-  updatedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
   _count: VerificationCountAggregateOutputType | null
   _min: VerificationMinAggregateOutputType | null
   _max: VerificationMaxAggregateOutputType | null
@@ -188,8 +188,8 @@ export type VerificationWhereInput = {
   identifier?: Prisma.StringFilter<"Verification"> | string
   value?: Prisma.StringFilter<"Verification"> | string
   expiresAt?: Prisma.DateTimeFilter<"Verification"> | Date | string
-  createdAt?: Prisma.DateTimeNullableFilter<"Verification"> | Date | string | null
-  updatedAt?: Prisma.DateTimeNullableFilter<"Verification"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Verification"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Verification"> | Date | string
 }
 
 export type VerificationOrderByWithRelationInput = {
@@ -209,8 +209,8 @@ export type VerificationWhereUniqueInput = Prisma.AtLeast<{
   identifier?: Prisma.StringFilter<"Verification"> | string
   value?: Prisma.StringFilter<"Verification"> | string
   expiresAt?: Prisma.DateTimeFilter<"Verification"> | Date | string
-  createdAt?: Prisma.DateTimeNullableFilter<"Verification"> | Date | string | null
-  updatedAt?: Prisma.DateTimeNullableFilter<"Verification"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Verification"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Verification"> | Date | string
 }, "id">
 
 export type VerificationOrderByWithAggregationInput = {
@@ -233,67 +233,67 @@ export type VerificationScalarWhereWithAggregatesInput = {
   identifier?: Prisma.StringWithAggregatesFilter<"Verification"> | string
   value?: Prisma.StringWithAggregatesFilter<"Verification"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"Verification"> | Date | string
-  createdAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Verification"> | Date | string | null
-  updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Verification"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Verification"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Verification"> | Date | string
 }
 
 export type VerificationCreateInput = {
-  id: string
+  id?: string
   identifier: string
   value: string
   expiresAt: Date | string
-  createdAt?: Date | string | null
-  updatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type VerificationUncheckedCreateInput = {
-  id: string
+  id?: string
   identifier: string
   value: string
   expiresAt: Date | string
-  createdAt?: Date | string | null
-  updatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type VerificationUpdateInput = {
   identifier?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationUncheckedUpdateInput = {
   identifier?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationCreateManyInput = {
-  id: string
+  id?: string
   identifier: string
   value: string
   expiresAt: Date | string
-  createdAt?: Date | string | null
-  updatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type VerificationUpdateManyMutationInput = {
   identifier?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationUncheckedUpdateManyInput = {
   identifier?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerificationCountOrderByAggregateInput = {
@@ -355,8 +355,8 @@ export type $VerificationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     identifier: string
     value: string
     expiresAt: Date
-    createdAt: Date | null
-    updatedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["verification"]>
   composites: {}
 }

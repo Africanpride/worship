@@ -325,7 +325,7 @@ export type AccountScalarWhereWithAggregatesInput = {
 }
 
 export type AccountCreateInput = {
-  id: string
+  id?: string
   accountId: string
   providerId: string
   accessToken?: string | null
@@ -335,13 +335,13 @@ export type AccountCreateInput = {
   refreshTokenExpiresAt?: Date | string | null
   scope?: string | null
   password?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
 }
 
 export type AccountUncheckedCreateInput = {
-  id: string
+  id?: string
   accountId: string
   providerId: string
   userId: string
@@ -352,8 +352,8 @@ export type AccountUncheckedCreateInput = {
   refreshTokenExpiresAt?: Date | string | null
   scope?: string | null
   password?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AccountUpdateInput = {
@@ -387,7 +387,7 @@ export type AccountUncheckedUpdateInput = {
 }
 
 export type AccountCreateManyInput = {
-  id: string
+  id?: string
   accountId: string
   providerId: string
   userId: string
@@ -398,8 +398,8 @@ export type AccountCreateManyInput = {
   refreshTokenExpiresAt?: Date | string | null
   scope?: string | null
   password?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AccountUpdateManyMutationInput = {
@@ -532,7 +532,7 @@ export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
 }
 
 export type AccountCreateWithoutUserInput = {
-  id: string
+  id?: string
   accountId: string
   providerId: string
   accessToken?: string | null
@@ -542,12 +542,12 @@ export type AccountCreateWithoutUserInput = {
   refreshTokenExpiresAt?: Date | string | null
   scope?: string | null
   password?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AccountUncheckedCreateWithoutUserInput = {
-  id: string
+  id?: string
   accountId: string
   providerId: string
   accessToken?: string | null
@@ -557,8 +557,8 @@ export type AccountUncheckedCreateWithoutUserInput = {
   refreshTokenExpiresAt?: Date | string | null
   scope?: string | null
   password?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AccountCreateOrConnectWithoutUserInput = {
@@ -606,7 +606,7 @@ export type AccountScalarWhereInput = {
 }
 
 export type AccountCreateManyUserInput = {
-  id: string
+  id?: string
   accountId: string
   providerId: string
   accessToken?: string | null
@@ -616,8 +616,8 @@ export type AccountCreateManyUserInput = {
   refreshTokenExpiresAt?: Date | string | null
   scope?: string | null
   password?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AccountUpdateWithoutUserInput = {

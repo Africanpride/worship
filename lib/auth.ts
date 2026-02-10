@@ -4,6 +4,8 @@ import {
 import { nextCookies } from "better-auth/next-js";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
+import { admin } from "better-auth/plugins"
+
 
 
 export const auth = betterAuth({
@@ -36,6 +38,7 @@ export const auth = betterAuth({
         }
     },
     plugins: [
+        admin(),
         nextCookies(),
     ],
     /** if no database is provided, the user data will be stored in memory.

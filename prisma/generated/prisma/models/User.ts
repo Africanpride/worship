@@ -32,12 +32,10 @@ export type UserMinAggregateOutputType = {
   image: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  twoFactorEnabled: boolean | null
-  role: $Enums.Role | null
+  role: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
-  studentId: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -48,12 +46,10 @@ export type UserMaxAggregateOutputType = {
   image: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  twoFactorEnabled: boolean | null
-  role: $Enums.Role | null
+  role: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
-  studentId: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -64,12 +60,10 @@ export type UserCountAggregateOutputType = {
   image: number
   createdAt: number
   updatedAt: number
-  twoFactorEnabled: number
   role: number
   banned: number
   banReason: number
   banExpires: number
-  studentId: number
   _all: number
 }
 
@@ -82,12 +76,10 @@ export type UserMinAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
-  twoFactorEnabled?: true
   role?: true
   banned?: true
   banReason?: true
   banExpires?: true
-  studentId?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -98,12 +90,10 @@ export type UserMaxAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
-  twoFactorEnabled?: true
   role?: true
   banned?: true
   banReason?: true
   banExpires?: true
-  studentId?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -114,12 +104,10 @@ export type UserCountAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
-  twoFactorEnabled?: true
   role?: true
   banned?: true
   banReason?: true
   banExpires?: true
-  studentId?: true
   _all?: true
 }
 
@@ -203,12 +191,10 @@ export type UserGroupByOutputType = {
   image: string | null
   createdAt: Date
   updatedAt: Date
-  twoFactorEnabled: boolean | null
-  role: $Enums.Role
+  role: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
-  studentId: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -240,22 +226,12 @@ export type UserWhereInput = {
   image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  twoFactorEnabled?: Prisma.BoolNullableFilter<"User"> | boolean | null
-  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  role?: Prisma.StringNullableFilter<"User"> | string | null
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  studentId?: Prisma.StringNullableFilter<"User"> | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
-  members?: Prisma.MemberListRelationFilter
-  invitations?: Prisma.InvitationListRelationFilter
-  twofactors?: Prisma.TwoFactorListRelationFilter
-  testimonials?: Prisma.TestimonialListRelationFilter
-  announcements?: Prisma.AnnouncementListRelationFilter
-  profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
-  newsletterSubscribers?: Prisma.NewsletterSubscriberListRelationFilter
-  registration?: Prisma.RegistrationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -266,28 +242,17 @@ export type UserOrderByWithRelationInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
-  members?: Prisma.MemberOrderByRelationAggregateInput
-  invitations?: Prisma.InvitationOrderByRelationAggregateInput
-  twofactors?: Prisma.TwoFactorOrderByRelationAggregateInput
-  testimonials?: Prisma.TestimonialOrderByRelationAggregateInput
-  announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
-  profile?: Prisma.ProfileOrderByWithRelationInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberOrderByRelationAggregateInput
-  registration?: Prisma.RegistrationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
-  studentId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -296,22 +261,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  twoFactorEnabled?: Prisma.BoolNullableFilter<"User"> | boolean | null
-  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  role?: Prisma.StringNullableFilter<"User"> | string | null
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
-  members?: Prisma.MemberListRelationFilter
-  invitations?: Prisma.InvitationListRelationFilter
-  twofactors?: Prisma.TwoFactorListRelationFilter
-  testimonials?: Prisma.TestimonialListRelationFilter
-  announcements?: Prisma.AnnouncementListRelationFilter
-  profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
-  newsletterSubscribers?: Prisma.NewsletterSubscriberListRelationFilter
-  registration?: Prisma.RegistrationListRelationFilter
-}, "id" | "email" | "studentId">
+}, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -321,12 +277,10 @@ export type UserOrderByWithAggregationInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -343,64 +297,42 @@ export type UserScalarWhereWithAggregatesInput = {
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
-  twoFactorEnabled?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
-  role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  role?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   banned?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-  studentId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -410,22 +342,12 @@ export type UserUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -435,38 +357,26 @@ export type UserUncheckedUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -476,12 +386,10 @@ export type UserUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -491,12 +399,10 @@ export type UserUncheckedUpdateManyInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -507,12 +413,10 @@ export type UserCountOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -523,12 +427,10 @@ export type UserMaxOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -539,22 +441,15 @@ export type UserMinOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
-}
-
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -579,27 +474,9 @@ export type NullableBoolFieldUpdateOperationsInput = {
   unset?: boolean
 }
 
-export type EnumRoleFieldUpdateOperationsInput = {
-  set?: $Enums.Role
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
   unset?: boolean
-}
-
-export type UserCreateNestedOneWithoutProfileInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutProfileNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
-  upsert?: Prisma.UserUpsertWithoutProfileInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfileInput, Prisma.UserUpdateWithoutProfileInput>, Prisma.UserUncheckedUpdateWithoutProfileInput>
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -630,268 +507,34 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
-export type UserCreateNestedOneWithoutMembersInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutMembersInput, Prisma.UserUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembersInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutMembersNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutMembersInput, Prisma.UserUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembersInput
-  upsert?: Prisma.UserUpsertWithoutMembersInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMembersInput, Prisma.UserUpdateWithoutMembersInput>, Prisma.UserUncheckedUpdateWithoutMembersInput>
-}
-
-export type UserCreateNestedOneWithoutInvitationsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutInvitationsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsInput
-  upsert?: Prisma.UserUpsertWithoutInvitationsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitationsInput, Prisma.UserUpdateWithoutInvitationsInput>, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
-}
-
-export type UserCreateNestedOneWithoutTwofactorsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutTwofactorsInput, Prisma.UserUncheckedCreateWithoutTwofactorsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTwofactorsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutTwofactorsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutTwofactorsInput, Prisma.UserUncheckedCreateWithoutTwofactorsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTwofactorsInput
-  upsert?: Prisma.UserUpsertWithoutTwofactorsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTwofactorsInput, Prisma.UserUpdateWithoutTwofactorsInput>, Prisma.UserUncheckedUpdateWithoutTwofactorsInput>
-}
-
-export type UserCreateNestedOneWithoutTestimonialsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutTestimonialsInput, Prisma.UserUncheckedCreateWithoutTestimonialsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTestimonialsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutTestimonialsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutTestimonialsInput, Prisma.UserUncheckedCreateWithoutTestimonialsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTestimonialsInput
-  upsert?: Prisma.UserUpsertWithoutTestimonialsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTestimonialsInput, Prisma.UserUpdateWithoutTestimonialsInput>, Prisma.UserUncheckedUpdateWithoutTestimonialsInput>
-}
-
-export type UserCreateNestedOneWithoutAnnouncementsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsInput, Prisma.UserUncheckedCreateWithoutAnnouncementsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAnnouncementsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutAnnouncementsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsInput, Prisma.UserUncheckedCreateWithoutAnnouncementsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAnnouncementsInput
-  upsert?: Prisma.UserUpsertWithoutAnnouncementsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.UserUpdateWithoutAnnouncementsInput>, Prisma.UserUncheckedUpdateWithoutAnnouncementsInput>
-}
-
-export type UserCreateNestedOneWithoutRegistrationInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRegistrationInput, Prisma.UserUncheckedCreateWithoutRegistrationInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRegistrationInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutRegistrationNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRegistrationInput, Prisma.UserUncheckedCreateWithoutRegistrationInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRegistrationInput
-  upsert?: Prisma.UserUpsertWithoutRegistrationInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRegistrationInput, Prisma.UserUpdateWithoutRegistrationInput>, Prisma.UserUncheckedUpdateWithoutRegistrationInput>
-}
-
-export type UserCreateNestedOneWithoutNewsletterSubscribersInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsletterSubscribersInput, Prisma.UserUncheckedCreateWithoutNewsletterSubscribersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsletterSubscribersInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutNewsletterSubscribersNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsletterSubscribersInput, Prisma.UserUncheckedCreateWithoutNewsletterSubscribersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsletterSubscribersInput
-  upsert?: Prisma.UserUpsertWithoutNewsletterSubscribersInput
-  disconnect?: boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNewsletterSubscribersInput, Prisma.UserUpdateWithoutNewsletterSubscribersInput>, Prisma.UserUncheckedUpdateWithoutNewsletterSubscribersInput>
-}
-
-export type UserCreateWithoutProfileInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutProfileInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutProfileInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
-}
-
-export type UserUpsertWithoutProfileInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutProfileInput, Prisma.UserUncheckedUpdateWithoutProfileInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutProfileInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutProfileInput, Prisma.UserUncheckedUpdateWithoutProfileInput>
-}
-
-export type UserUpdateWithoutProfileInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutProfileInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
 export type UserCreateWithoutSessionsInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -917,21 +560,11 @@ export type UserUpdateWithoutSessionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -941,71 +574,41 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
-  id: string
+  id?: string
   name: string
   email: string
-  emailVerified: boolean
+  emailVerified?: boolean
   image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
-  studentId?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1031,21 +634,11 @@ export type UserUpdateWithoutAccountsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1055,819 +648,11 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutMembersInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutMembersInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutMembersInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutMembersInput, Prisma.UserUncheckedCreateWithoutMembersInput>
-}
-
-export type UserUpsertWithoutMembersInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutMembersInput, Prisma.UserUncheckedUpdateWithoutMembersInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutMembersInput, Prisma.UserUncheckedCreateWithoutMembersInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutMembersInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutMembersInput, Prisma.UserUncheckedUpdateWithoutMembersInput>
-}
-
-export type UserUpdateWithoutMembersInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutMembersInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutInvitationsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutInvitationsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutInvitationsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
-}
-
-export type UserUpsertWithoutInvitationsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsInput, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutInvitationsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsInput, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
-}
-
-export type UserUpdateWithoutInvitationsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutInvitationsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutTwofactorsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutTwofactorsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutTwofactorsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutTwofactorsInput, Prisma.UserUncheckedCreateWithoutTwofactorsInput>
-}
-
-export type UserUpsertWithoutTwofactorsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutTwofactorsInput, Prisma.UserUncheckedUpdateWithoutTwofactorsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutTwofactorsInput, Prisma.UserUncheckedCreateWithoutTwofactorsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutTwofactorsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutTwofactorsInput, Prisma.UserUncheckedUpdateWithoutTwofactorsInput>
-}
-
-export type UserUpdateWithoutTwofactorsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutTwofactorsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutTestimonialsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutTestimonialsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutTestimonialsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutTestimonialsInput, Prisma.UserUncheckedCreateWithoutTestimonialsInput>
-}
-
-export type UserUpsertWithoutTestimonialsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutTestimonialsInput, Prisma.UserUncheckedUpdateWithoutTestimonialsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutTestimonialsInput, Prisma.UserUncheckedCreateWithoutTestimonialsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutTestimonialsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutTestimonialsInput, Prisma.UserUncheckedUpdateWithoutTestimonialsInput>
-}
-
-export type UserUpdateWithoutTestimonialsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutTestimonialsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutAnnouncementsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutAnnouncementsInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutAnnouncementsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsInput, Prisma.UserUncheckedCreateWithoutAnnouncementsInput>
-}
-
-export type UserUpsertWithoutAnnouncementsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutAnnouncementsInput, Prisma.UserUncheckedUpdateWithoutAnnouncementsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsInput, Prisma.UserUncheckedCreateWithoutAnnouncementsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutAnnouncementsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutAnnouncementsInput, Prisma.UserUncheckedUpdateWithoutAnnouncementsInput>
-}
-
-export type UserUpdateWithoutAnnouncementsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutAnnouncementsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutRegistrationInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutRegistrationInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutRegistrationInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutRegistrationInput, Prisma.UserUncheckedCreateWithoutRegistrationInput>
-}
-
-export type UserUpsertWithoutRegistrationInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutRegistrationInput, Prisma.UserUncheckedUpdateWithoutRegistrationInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutRegistrationInput, Prisma.UserUncheckedCreateWithoutRegistrationInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutRegistrationInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutRegistrationInput, Prisma.UserUncheckedUpdateWithoutRegistrationInput>
-}
-
-export type UserUpdateWithoutRegistrationInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutRegistrationInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutNewsletterSubscribersInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
-  registration?: Prisma.RegistrationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutNewsletterSubscribersInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt: Date | string
-  updatedAt: Date | string
-  twoFactorEnabled?: boolean | null
-  role?: $Enums.Role
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  studentId?: string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
-  twofactors?: Prisma.TwoFactorUncheckedCreateNestedManyWithoutUserInput
-  testimonials?: Prisma.TestimonialUncheckedCreateNestedManyWithoutUserInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
-  registration?: Prisma.RegistrationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutNewsletterSubscribersInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutNewsletterSubscribersInput, Prisma.UserUncheckedCreateWithoutNewsletterSubscribersInput>
-}
-
-export type UserUpsertWithoutNewsletterSubscribersInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutNewsletterSubscribersInput, Prisma.UserUncheckedUpdateWithoutNewsletterSubscribersInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutNewsletterSubscribersInput, Prisma.UserUncheckedCreateWithoutNewsletterSubscribersInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutNewsletterSubscribersInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutNewsletterSubscribersInput, Prisma.UserUncheckedUpdateWithoutNewsletterSubscribersInput>
-}
-
-export type UserUpdateWithoutNewsletterSubscribersInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-  registration?: Prisma.RegistrationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutNewsletterSubscribersInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  twoFactorEnabled?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  studentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
-  twofactors?: Prisma.TwoFactorUncheckedUpdateManyWithoutUserNestedInput
-  testimonials?: Prisma.TestimonialUncheckedUpdateManyWithoutUserNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
-  registration?: Prisma.RegistrationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1878,25 +663,11 @@ export type UserUncheckedUpdateWithoutNewsletterSubscribersInput = {
 export type UserCountOutputType = {
   sessions: number
   accounts: number
-  members: number
-  invitations: number
-  twofactors: number
-  testimonials: number
-  announcements: number
-  newsletterSubscribers: number
-  registration: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-  members?: boolean | UserCountOutputTypeCountMembersArgs
-  invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
-  twofactors?: boolean | UserCountOutputTypeCountTwofactorsArgs
-  testimonials?: boolean | UserCountOutputTypeCountTestimonialsArgs
-  announcements?: boolean | UserCountOutputTypeCountAnnouncementsArgs
-  newsletterSubscribers?: boolean | UserCountOutputTypeCountNewsletterSubscribersArgs
-  registration?: boolean | UserCountOutputTypeCountRegistrationArgs
 }
 
 /**
@@ -1923,55 +694,6 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.AccountWhereInput
 }
 
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MemberWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.InvitationWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountTwofactorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TwoFactorWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountTestimonialsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TestimonialWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AnnouncementWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountNewsletterSubscribersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.NewsletterSubscriberWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountRegistrationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.RegistrationWhereInput
-}
-
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1981,22 +703,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  twoFactorEnabled?: boolean
   role?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
-  studentId?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  members?: boolean | Prisma.User$membersArgs<ExtArgs>
-  invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
-  twofactors?: boolean | Prisma.User$twofactorsArgs<ExtArgs>
-  testimonials?: boolean | Prisma.User$testimonialsArgs<ExtArgs>
-  announcements?: boolean | Prisma.User$announcementsArgs<ExtArgs>
-  profile?: boolean | Prisma.User$profileArgs<ExtArgs>
-  newsletterSubscribers?: boolean | Prisma.User$newsletterSubscribersArgs<ExtArgs>
-  registration?: boolean | Prisma.User$registrationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2010,26 +722,16 @@ export type UserSelectScalar = {
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  twoFactorEnabled?: boolean
   role?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
-  studentId?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "twoFactorEnabled" | "role" | "banned" | "banReason" | "banExpires" | "studentId", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  members?: boolean | Prisma.User$membersArgs<ExtArgs>
-  invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
-  twofactors?: boolean | Prisma.User$twofactorsArgs<ExtArgs>
-  testimonials?: boolean | Prisma.User$testimonialsArgs<ExtArgs>
-  announcements?: boolean | Prisma.User$announcementsArgs<ExtArgs>
-  profile?: boolean | Prisma.User$profileArgs<ExtArgs>
-  newsletterSubscribers?: boolean | Prisma.User$newsletterSubscribersArgs<ExtArgs>
-  registration?: boolean | Prisma.User$registrationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2038,14 +740,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
-    members: Prisma.$MemberPayload<ExtArgs>[]
-    invitations: Prisma.$InvitationPayload<ExtArgs>[]
-    twofactors: Prisma.$TwoFactorPayload<ExtArgs>[]
-    testimonials: Prisma.$TestimonialPayload<ExtArgs>[]
-    announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
-    profile: Prisma.$ProfilePayload<ExtArgs> | null
-    newsletterSubscribers: Prisma.$NewsletterSubscriberPayload<ExtArgs>[]
-    registration: Prisma.$RegistrationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2055,12 +749,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     image: string | null
     createdAt: Date
     updatedAt: Date
-    twoFactorEnabled: boolean | null
-    role: $Enums.Role
+    role: string | null
     banned: boolean | null
     banReason: string | null
     banExpires: Date | null
-    studentId: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2426,14 +1118,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  members<T extends Prisma.User$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  invitations<T extends Prisma.User$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  twofactors<T extends Prisma.User$twofactorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$twofactorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TwoFactorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  testimonials<T extends Prisma.User$testimonialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$testimonialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TestimonialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  announcements<T extends Prisma.User$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  newsletterSubscribers<T extends Prisma.User$newsletterSubscribersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$newsletterSubscribersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsletterSubscriberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  registration<T extends Prisma.User$registrationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$registrationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2470,12 +1154,10 @@ export interface UserFieldRefs {
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
-  readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
-  readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly role: Prisma.FieldRef<"User", 'String'>
   readonly banned: Prisma.FieldRef<"User", 'Boolean'>
   readonly banReason: Prisma.FieldRef<"User", 'String'>
   readonly banExpires: Prisma.FieldRef<"User", 'DateTime'>
-  readonly studentId: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -2891,193 +1573,6 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
-}
-
-/**
- * User.members
- */
-export type User$membersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Member
-   */
-  select?: Prisma.MemberSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Member
-   */
-  omit?: Prisma.MemberOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MemberInclude<ExtArgs> | null
-  where?: Prisma.MemberWhereInput
-  orderBy?: Prisma.MemberOrderByWithRelationInput | Prisma.MemberOrderByWithRelationInput[]
-  cursor?: Prisma.MemberWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.MemberScalarFieldEnum | Prisma.MemberScalarFieldEnum[]
-}
-
-/**
- * User.invitations
- */
-export type User$invitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Invitation
-   */
-  select?: Prisma.InvitationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Invitation
-   */
-  omit?: Prisma.InvitationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InvitationInclude<ExtArgs> | null
-  where?: Prisma.InvitationWhereInput
-  orderBy?: Prisma.InvitationOrderByWithRelationInput | Prisma.InvitationOrderByWithRelationInput[]
-  cursor?: Prisma.InvitationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
-}
-
-/**
- * User.twofactors
- */
-export type User$twofactorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the TwoFactor
-   */
-  select?: Prisma.TwoFactorSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the TwoFactor
-   */
-  omit?: Prisma.TwoFactorOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TwoFactorInclude<ExtArgs> | null
-  where?: Prisma.TwoFactorWhereInput
-  orderBy?: Prisma.TwoFactorOrderByWithRelationInput | Prisma.TwoFactorOrderByWithRelationInput[]
-  cursor?: Prisma.TwoFactorWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.TwoFactorScalarFieldEnum | Prisma.TwoFactorScalarFieldEnum[]
-}
-
-/**
- * User.testimonials
- */
-export type User$testimonialsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Testimonial
-   */
-  select?: Prisma.TestimonialSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Testimonial
-   */
-  omit?: Prisma.TestimonialOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TestimonialInclude<ExtArgs> | null
-  where?: Prisma.TestimonialWhereInput
-  orderBy?: Prisma.TestimonialOrderByWithRelationInput | Prisma.TestimonialOrderByWithRelationInput[]
-  cursor?: Prisma.TestimonialWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.TestimonialScalarFieldEnum | Prisma.TestimonialScalarFieldEnum[]
-}
-
-/**
- * User.announcements
- */
-export type User$announcementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Announcement
-   */
-  select?: Prisma.AnnouncementSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Announcement
-   */
-  omit?: Prisma.AnnouncementOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AnnouncementInclude<ExtArgs> | null
-  where?: Prisma.AnnouncementWhereInput
-  orderBy?: Prisma.AnnouncementOrderByWithRelationInput | Prisma.AnnouncementOrderByWithRelationInput[]
-  cursor?: Prisma.AnnouncementWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
-}
-
-/**
- * User.profile
- */
-export type User$profileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Profile
-   */
-  select?: Prisma.ProfileSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Profile
-   */
-  omit?: Prisma.ProfileOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfileInclude<ExtArgs> | null
-  where?: Prisma.ProfileWhereInput
-}
-
-/**
- * User.newsletterSubscribers
- */
-export type User$newsletterSubscribersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the NewsletterSubscriber
-   */
-  select?: Prisma.NewsletterSubscriberSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the NewsletterSubscriber
-   */
-  omit?: Prisma.NewsletterSubscriberOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.NewsletterSubscriberInclude<ExtArgs> | null
-  where?: Prisma.NewsletterSubscriberWhereInput
-  orderBy?: Prisma.NewsletterSubscriberOrderByWithRelationInput | Prisma.NewsletterSubscriberOrderByWithRelationInput[]
-  cursor?: Prisma.NewsletterSubscriberWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.NewsletterSubscriberScalarFieldEnum | Prisma.NewsletterSubscriberScalarFieldEnum[]
-}
-
-/**
- * User.registration
- */
-export type User$registrationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Registration
-   */
-  select?: Prisma.RegistrationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Registration
-   */
-  omit?: Prisma.RegistrationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RegistrationInclude<ExtArgs> | null
-  where?: Prisma.RegistrationWhereInput
-  orderBy?: Prisma.RegistrationOrderByWithRelationInput | Prisma.RegistrationOrderByWithRelationInput[]
-  cursor?: Prisma.RegistrationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.RegistrationScalarFieldEnum | Prisma.RegistrationScalarFieldEnum[]
 }
 
 /**
