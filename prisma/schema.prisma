@@ -1,0 +1,407 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../prisma/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+  OTHER
+}
+
+enum Religion {
+  CHRISTIANITY
+  ISLAM
+  HINDUISM
+  BUDDHISM
+  JUDAISM
+  OTHER
+  NONE
+}
+
+enum ProfileStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  WITHDRAWN
+}
+
+enum HighestQualification {
+  HIGH_SCHOOL
+  BACHELORS
+  MASTERS
+  DOCTORATE
+  OTHER
+}
+
+enum LanguagePreference {
+  ENGLISH
+  FRENCH
+  SPANISH
+  GERMAN
+  CHINESE
+  ARABIC
+  OTHER
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+model User {
+  id               String         @id @map("_id")
+  name             String
+  email            String         @unique
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime
+  updatedAt        DateTime
+  twoFactorEnabled Boolean?
+  role             Role           @default(USER)
+  banned           Boolean?
+  banReason        String?
+  banExpires       DateTime?
+  sessions         Session[]
+  accounts         Account[]
+  members          Member[]
+  invitations      Invitation[]
+  twofactors       TwoFactor[]
+  testimonials     Testimonial[] // 👈 one-to-many relation
+  announcements    Announcement[] // 👈 one-to-many relation
+  profile          Profile?
+
+  newsletterSubscribers NewsletterSubscriber[] // 👈 relation to NewsletterSubscriber
+
+  studentId    String?
+  registration Registration[]
+
+  @@unique([studentId])
+  @@map("user")
+}
+
+model Profile {
+  id                        String                @id @default(auto()) @map("_id") @db.ObjectId
+  gender                    Gender
+  dateOfBirth               DateTime
+  maritalStatus             MaritalStatus?
+  religion                  Religion?
+  nationality               String
+  telephone                 String
+  mobile                    String?
+  address                   String?
+  addressLine2              String?
+  disabilityAssistance      Boolean               @default(false)
+  disabilityDescription     String?
+  city                      String?
+  state                     String?
+  country                   String
+  zipcode                   String?
+  emergencyContactName      String
+  emergencyContactTelephone String
+  biography                 String?
+  avatar                    String?
+  profession                String?
+  highestQualification      HighestQualification?
+  languagePreference        LanguagePreference? // e.g., en, fr, sw
+  linkedIn                  String? // URL
+  website                   String? // Personal or professional website
+  twitter                   String?
+  facebook                  String?
+  instagram                 String?
+  linkedin                  String?
+  youtube                   String?
+  github                    String?
+  tiktok                    String?
+  personalWebsite           String?
+  additionalLinks           String? // JSON or comma-separated links
+  tags                      String[] // ["tech", "education", "AI"]
+  interests                 String[] // Custom structure for user interests
+  skills                    String[] // ["JavaScript", "Python", "Data Analysis"]
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("profile")
+}
+
+model Session {
+  id                   String   @id @map("_id")
+  expiresAt            DateTime
+  token                String
+  createdAt            DateTime
+  updatedAt            DateTime
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+  impersonatedBy       String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @map("_id")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Organization {
+  id          String       @id @map("_id")
+  name        String
+  slug        String?
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Member {
+  id             String       @id @map("_id")
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String
+  createdAt      DateTime
+
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id @map("_id")
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String
+  expiresAt      DateTime
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@map("invitation")
+}
+
+model TwoFactor {
+  id          String @id @map("_id")
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("twoFactor")
+}
+
+model OauthApplication {
+  id           String    @id @map("_id")
+  name         String?
+  icon         String?
+  metadata     String?
+  clientId     String?
+  clientSecret String?
+  redirectURLs String?
+  type         String?
+  disabled     Boolean?
+  userId       String?
+  createdAt    DateTime?
+  updatedAt    DateTime?
+
+  @@unique([clientId])
+  @@map("oauthApplication")
+}
+
+model OauthAccessToken {
+  id                    String    @id @map("_id")
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  clientId              String?
+  userId                String?
+  scopes                String?
+  createdAt             DateTime?
+  updatedAt             DateTime?
+
+  @@unique([accessToken])
+  @@unique([refreshToken])
+  @@map("oauthAccessToken")
+}
+
+model OauthConsent {
+  id           String    @id @map("_id")
+  clientId     String?
+  userId       String?
+  scopes       String?
+  createdAt    DateTime?
+  updatedAt    DateTime?
+  consentGiven Boolean?
+
+  @@map("oauthConsent")
+}
+
+model Institute {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  acronym      String    @unique
+  overview     String
+  about        String
+  introduction String
+  icon         String?
+  logo         String?
+  banner       String?
+  seo          String?
+  active       Boolean
+  slug         String    @unique
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+  editions     Edition[]
+
+  @@map("institute")
+}
+
+model Edition {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  instituteId      String         @db.ObjectId
+  institute        Institute      @relation(fields: [instituteId], references: [id], onDelete: Cascade)
+  title            String
+  slug             String         @unique
+  theme            String?
+  acronym          String?
+  overview         String?
+  about            String?
+  introduction     String?
+  banner           String?
+  verticalBanner   String?
+  startDate        DateTime?
+  endDate          DateTime?
+  seo              String?
+  active           Boolean        @default(true)
+  inPersonDelivery Boolean?       @default(false)
+  onlineDelivery   Boolean?       @default(true)
+  price            Float?
+  priceViaZoom     Float?
+  createdAt        DateTime?      @default(now())
+  updatedAt        DateTime?      @updatedAt
+  Registration     Registration[]
+
+  @@map("edition")
+}
+
+model Testimonial {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content               String
+  featured              Boolean  @default(false)
+  userFeaturePermission Boolean  @default(false)
+  approved              Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("testimonial")
+}
+
+model Announcement {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+  featured  Boolean  @default(false)
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("announcement")
+}
+
+model StudentIdCounter {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  nextNumber Int    @default(1)
+}
+
+model Registration {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  approved  Boolean  @default(false)
+  editionId String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  edition Edition @relation(fields: [editionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, editionId]) // A user can register for an edition only once
+  @@map("registration")
+}
+
+model NewsletterSubscriber {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  email             String    @unique
+  name              String?
+  userId            String?
+  user              User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  notifyPermission  Boolean   @default(false)
+  verified          Boolean   @default(false)
+  unsubscribeToken  String?
+  confirmationToken String?
+  topics            String[] // was `tags`
+  subscribedAt      DateTime  @default(now())
+  unsubscribedAt    DateTime?
+  updatedAt         DateTime  @updatedAt
+  source            String?   @default("unknown")
+  ipAddress         String?
+  locale            String?
+
+  @@map("newsletter_subscriber")
+}
