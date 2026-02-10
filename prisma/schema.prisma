@@ -15,57 +15,56 @@ datasource db {
 }
 
 enum Gender {
-  MALE
-  FEMALE
+  male
+  female
 }
 
 enum MaritalStatus {
-  SINGLE
-  MARRIED
-  DIVORCED
-  WIDOWED
-  OTHER
+  Single
+  Married
+  Divorced
+  Widowed
+  Other
 }
 
 enum Religion {
-  CHRISTIANITY
-  ISLAM
-  HINDUISM
-  BUDDHISM
-  JUDAISM
-  OTHER
-  NONE
+  christianity
+  islam
+  hinduism
+  buddhism
+  judaism
+  other
+  none
 }
 
 enum ProfileStatus {
-  ACTIVE
-  INACTIVE
-  SUSPENDED
-  WITHDRAWN
+  active
+  inactive
+  suspended
+  withdrawn
 }
 
 enum HighestQualification {
-  HIGH_SCHOOL
-  BACHELORS
-  MASTERS
-  DOCTORATE
-  OTHER
+  highSchool
+  bachelors
+  masters
+  doctorate
+  other
 }
 
 enum LanguagePreference {
-  ENGLISH
-  FRENCH
-  SPANISH
-  GERMAN
-  CHINESE
-  ARABIC
-  OTHER
+  en
+  fr
+  es
+  zh
+  ar
+  other
 }
 
 enum Role {
-  USER
-  ADMIN
-  SUPERADMIN
+  user
+  admin
+  superadmin
 }
 
 model User {
@@ -77,7 +76,7 @@ model User {
   createdAt        DateTime
   updatedAt        DateTime
   twoFactorEnabled Boolean?
-  role             Role           @default(USER)
+  role             Role           @default(user)
   banned           Boolean?
   banReason        String?
   banExpires       DateTime?
