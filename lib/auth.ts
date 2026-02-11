@@ -5,6 +5,8 @@ import { nextCookies } from "better-auth/next-js";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { admin, multiSession } from "better-auth/plugins"
+import { resend } from "./email/resend";
+import { reactResetPasswordEmail } from "./email/rest-password";
 
 
 
@@ -45,9 +47,9 @@ export const auth = betterAuth({
         minPasswordLength: 8,
         async sendResetPassword({ user, url }) {
         await resend.emails.send({
-            from: "no-reply@costrad.org",
+            from: "no-reply@thenonstop.org",
             to: user.email,
-            subject: "Reset your COSTrAD password",
+            subject: "Reset your TheNonStop password",
             react: reactResetPasswordEmail({
             username: user.email,
             resetLink: url,
