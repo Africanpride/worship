@@ -15,6 +15,7 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "mongodb",
     }),
+    experimental: { joins: true },
     databaseHooks: {
         user: {
         create: {

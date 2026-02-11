@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -9,13 +10,48 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-export function LoginForm({
+type SignUpProps = React.ComponentProps<"div"> & {
+  costradCallbackUrl?: string | null;
+  displayFooterText?: boolean | null;
+};
+
+export function SignupForm({
   className,
+  costradCallbackUrl,
+  displayFooterText = true,
   ...props
-}: React.ComponentProps<"div">) {
+}: SignUpProps) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileStatus, setTurnstileStatus] = useState("required");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+  <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8">
@@ -26,6 +62,26 @@ export function LoginForm({
                   Login to Your Non-Stop Worship Experience
                 </p>
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Field>
+                  <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                  <Input
+                    id="firstName"
+                    type="text"
+                    placeholder="John"
+                    required
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                  <Input
+                    id="lastName"
+                    type="text"
+                    placeholder="Doe"
+                    required
+                  />
+                </Field>
+              </div>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -35,20 +91,19 @@ export function LoginForm({
                   required
                 />
               </Field>
-              <Field>
-                <div className="flex items-center">
+              <div className="grid grid-cols-2 gap-4">
+                <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" required />
-              </Field>
+                  <Input id="password" type="password" required />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="passwordConfirmation">Confirm Password</FieldLabel>
+                  <Input id="passwordConfirmation" type="password" required />
+                </Field>
+              </div>
+
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Sign Up</Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -101,5 +156,14 @@ export function LoginForm({
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>
-  )
+  );
+}
+
+async function convertImageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
