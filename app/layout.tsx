@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import { Toaster } from "sonner";
 import LocomotiveScrollWrapper from "@/components/LocomotiveScrollWrapper";
+import NavbarWrapper from "@/components/NavbarWrapper";
 import "./globals.css";
 
 const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NavbarWrapper />
         <LocomotiveScrollWrapper>
           {children}
         </LocomotiveScrollWrapper>
