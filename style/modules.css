@@ -1,0 +1,23 @@
+.title {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  color: #000;
+  font-size: 30px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  min-height: 200vh;
+  background-color: #eaeaea;
+}
+
+.box {
+  width: 30vw;
+  height: 30vw;
+  background-color: blue;
+}

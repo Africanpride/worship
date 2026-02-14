@@ -37,7 +37,7 @@ export const auth = betterAuth({
      account: {
     accountLinking: {
       enabled: true,
-      trustedProviders: ["google", "facebook", "microsoft", "linkedin"],
+      trustedProviders: ["google", "facebook", "microsoft", "linkedin", "apple"],
       updateAccountOnSignIn: true,
     },
   },
