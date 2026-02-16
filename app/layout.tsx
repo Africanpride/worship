@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import { Toaster } from "sonner";
 import LocomotiveScrollWrapper from "@/components/LocomotiveScrollWrapper";
 import NavbarWrapper from "@/components/NavbarWrapper";
+import { ThemeProvider } from "@/app/providers";
 import "./globals.css";
 
 const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
@@ -32,11 +33,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavbarWrapper />
-        <LocomotiveScrollWrapper>
-          {children}
-        </LocomotiveScrollWrapper>
-        <Toaster richColors position="top-center" />
+        <ThemeProvider>
+          <NavbarWrapper />
+          <LocomotiveScrollWrapper>
+            {children}
+          </LocomotiveScrollWrapper>
+          <Toaster richColors position="top-center" />
+        </ThemeProvider>
       </body>
     </html>
   );
