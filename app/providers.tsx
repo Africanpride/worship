@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 type Theme = "light" | "dark";
 
@@ -11,11 +11,10 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme | null>(null);
 
-  // Initialize theme from localStorage and system preference
+  // Initialize theme from localStorage and system preference only on client
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null;
     const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -23,7 +22,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     setTheme(initialTheme);
     applyTheme(initialTheme);
-    setMounted(true);
   }, []);
 
   const applyTheme = (newTheme: Theme) => {
@@ -37,13 +35,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleTheme = () => {
+    if (theme === null) return;
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     applyTheme(newTheme);
   };
 
-  // Prevent flash of unstyled content
-  if (!mounted) {
+  // Return provider only when theme is loaded to avoid hydration mismatch
+  if (theme === null) {
     return <>{children}</>;
   }
 
