@@ -77,7 +77,7 @@ export function SignupForm({
         return
       }
 
-      toast.success("Account created successfully! Redirecting...")
+      toast.success("Account created! Please check your email to verify your account.")
       router.push("/")
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred")
