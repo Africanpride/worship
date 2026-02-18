@@ -15,23 +15,28 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "mongodb",
     }),
-    experimental: { joins: true },
-    databaseHooks: {
-        user: {
-        create: {
-            before: async (user) => {
-            return {
-                data: {
-                ...user,
-                role: "user", 
-                },
-            };
-            },
-            after: async (user) => {
-            //  
-            },
-        },
-        },
+    advanced: {
+    database: {
+      generateId: false,  
+      experimental: { joins: true },
+      databaseHooks: {
+          user: {
+          create: {
+              before: async (user: any) => {
+              return {
+                  data: {
+                  ...user,
+                  role: "user", 
+                  },
+              };
+              },
+              after: async (user: any) => {
+              //  
+              },
+          },
+          },
+      },
+    },
     },
     trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL!, "http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
      account: {

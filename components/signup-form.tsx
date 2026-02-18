@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { signUp } from "@/lib/auth-client"
+import { toast } from "sonner"
 
 type SignUpProps = React.ComponentProps<"div"> & {
   costradCallbackUrl?: string | null;
@@ -34,10 +36,6 @@ export function SignupForm({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [turnstileStatus, setTurnstileStatus] = useState("required");
-  const [error, setError] = useState<string | null>(null);
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -50,16 +48,53 @@ export function SignupForm({
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    // Validation
+    if (password !== passwordConfirmation) {
+      toast.error("Passwords do not match")
+      return
+    }
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters")
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const result = await signUp.email({
+        email,
+        password,
+        name: `${firstName} ${lastName}`,
+      })
+
+      if (result.error) {
+        toast.error(result.error.message || "Sign up failed")
+        setLoading(false)
+        return
+      }
+
+      toast.success("Account created successfully! Redirecting...")
+      router.push("/")
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "An error occurred")
+      setLoading(false)
+    }
+  }
+
   return (
   <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-balance">
-                  Login to Your Non-Stop Worship Experience
+                 Sign up for Your Non-Stop Worship Experience
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -69,7 +104,10 @@ export function SignupForm({
                     id="firstName"
                     type="text"
                     placeholder="John"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     required
+                    disabled={loading}
                   />
                 </Field>
                 <Field>
@@ -78,7 +116,10 @@ export function SignupForm({
                     id="lastName"
                     type="text"
                     placeholder="Doe"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     required
+                    disabled={loading}
                   />
                 </Field>
               </div>
@@ -88,22 +129,41 @@ export function SignupForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </Field>
               <div className="grid grid-cols-2 gap-4">
                 <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
                 </Field>
                 <Field>
                   <FieldLabel htmlFor="passwordConfirmation">Confirm Password</FieldLabel>
-                  <Input id="passwordConfirmation" type="password" required />
+                  <Input
+                    id="passwordConfirmation"
+                    type="password"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
                 </Field>
               </div>
 
               <Field>
-                <Button type="submit">Sign Up</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Creating account..." : "Sign Up"}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -146,7 +206,7 @@ export function SignupForm({
             <img
               src="/non-stop-logo.webp"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover "
             />
           </div>
         </CardContent>
