@@ -5,14 +5,31 @@ export const dynamic = "force-dynamic"; // Ensure fresh data on load
 
 export default async function LivePage() {
   // Fetch all videos, ordering newest first
-  const data = await prisma.video.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const [data, eventsData] = await Promise.all([
+    prisma.video.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+    prisma.event.findMany({
+      where: {
+        status: "published",
+        endDate: {
+          gt: new Date(),
+        },
+      },
+      include: {
+        ministers: true,
+        sponsors: true,
+      },
+      orderBy: {
+        startDate: "asc",
+      },
+    }),
+  ]);
 
   // Prisma objects to POJOs for passing to Client Component
-  const videos = data.map((video: { id: any; title: any; url: any; thumbnail: any; type: any; createdAt: any; }) => ({
+  const videos = data.map((video) => ({
     id: video.id,
     title: video.title,
     url: video.url,
@@ -21,5 +38,18 @@ export default async function LivePage() {
     createdAt: video.createdAt,
   }));
 
-  return <LiveDashboard videos={videos} />;
+  const events = eventsData.map((event) => ({
+    id: event.id,
+    title: event.title,
+    slug: event.slug,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    poster: event.poster,
+    description: event.description,
+    status: event.status,
+    ministers: event.ministers,
+    sponsors: event.sponsors,
+  }));
+
+  return <LiveDashboard videos={videos} events={events} />;
 }
