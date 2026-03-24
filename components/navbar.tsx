@@ -19,9 +19,18 @@ import {
 import { LogOut, Settings } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const { user, isAuthenticated } = useCurrentSession();
+  const [scrolledPast, setScrolledPast] = useState(false);
+
+  useEffect(() => {
+    const threshold = window.innerHeight; // 100dvh equivalent
+    const onScroll = () => setScrolledPast(window.scrollY > threshold);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleLogout = async () => {
     await signOut({
@@ -44,7 +53,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className='fixed z-50 inset-x-0 top-0 md:inset-x-2 md:top-6 mx-auto h-14 max-w-(--breakpoint-xl) md:rounded-full bg-black text-white backdrop-blur-xl border-b md:border border-white/10 shadow-lg'>
+    <nav
+      id="navbar"
+      className='fixed z-50 inset-x-0 top-0 md:inset-x-2 md:top-6 mx-auto h-14 md:rounded-full bg-black text-white backdrop-blur-xl border-b md:border border-white/10 shadow-lg'
+      style={{
+        maxWidth: scrolledPast ? '72vw' : '96vw',
+        transition: 'max-width 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+      }}
+    >
       <div className='mx-auto flex h-full items-center justify-between px-2'>
         <Logo />
 

@@ -2,12 +2,11 @@
 
 import { motion } from "framer-motion";
 import HeroIntro from "@/components/HeroIntro";
-import LocomotiveScrollWrapper from "@/components/LocomotiveScrollWrapper";
 import { Separator } from "@/components/ui/separator";
 
 export default function Home() {
   return (
-    <LocomotiveScrollWrapper>
+    <main className='flex flex-col min-h-screen w-full relative'>
       <section className='bg-background py-8 sm:py-16 lg:py-24 '>
         <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <motion.div
@@ -225,6 +224,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </LocomotiveScrollWrapper>
+    </main>
   );
 }

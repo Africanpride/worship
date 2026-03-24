@@ -20,7 +20,7 @@ export default function HeroHeadline({
   imageSrc = "/images/cs.jpg",
 }: HeroHeadlineProps) {
   return (
-    <div className={cn("w-full  py-20 flex flex-col md:flex-row justify-center items-center gap-10 overflow-hidden", className)}>
+    <div className={cn("  py-20 flex flex-col md:flex-row justify-center items-center gap-10 overflow-hidden", className)}>
       <div className="flex-1">
         <h1 className="text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[7.5vw] font-bebas leading-[0.85] tracking-[-0.03em] uppercase ">
           <motion.div

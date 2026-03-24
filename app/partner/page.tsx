@@ -1,9 +1,8 @@
-import LocomotiveScrollWrapper from "@/components/LocomotiveScrollWrapper";
 import HeroIntro from "@/components/HeroIntro";
 
 export default function Home() {
   return (
-    <LocomotiveScrollWrapper>
+    <main className='flex flex-col min-h-screen w-full relative'>
       <HeroIntro
         heading="Partner With Us for The Non-Stop"
         description="The 144-hour sacrifice of praise cannot happen without the support of kingdom-minded partners and sponsors. Join us in sustaining the fire on the altar, facilitating global reach, and impacting lives through the power of unbroken worship."
@@ -78,6 +77,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </LocomotiveScrollWrapper>
+    </main>
   );
 }

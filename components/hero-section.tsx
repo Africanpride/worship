@@ -171,7 +171,7 @@ export default function HeroSection() {
           variant='outline'
           size='icon'
           onClick={toggleMute}
-          className='rounded-full bg-black/20 backdrop-blur-md border-white/20 hover:bg-black/40 text-white transition-all duration-300'
+          className='rounded-full bg-black/20 backdrop-blur-md border-white/20 hover:bg-black text-white transition-all duration-300'
           aria-label={isMuted ? "Unmute video" : "Mute video"}
         >
           {isMuted ? (

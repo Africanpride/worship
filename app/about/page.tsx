@@ -1,10 +1,9 @@
 import { AboutCompliment } from "@/components/about-compliment";
-import LocomotiveScrollWrapper from "@/components/LocomotiveScrollWrapper";
 import { MissionVision } from "@/components/mission-vision";
 
 export default function Home() {
   return (
-    <LocomotiveScrollWrapper>
+    <main className='flex flex-col min-h-screen w-full relative'>
       {/* Additional content sections can be added here */}
       <section className='py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-background hidden'>
         <div className='max-w-4xl mx-auto'>
@@ -435,6 +434,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </LocomotiveScrollWrapper>
+    </main>
   );
 }
