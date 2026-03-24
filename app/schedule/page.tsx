@@ -106,7 +106,7 @@ export default async function SchedulePage() {
 							)}
 						</div>
 
-						<div className='pt-6 border-t border-border/50 flex flex-col sm:flex-row sm:items-center gap-6 text-sm text-muted-foreground'>
+						<div className='pt-6 border-t border-border/50 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-muted-foreground'>
 							<div className='flex items-center gap-3'>
 								<div className='bg-muted p-2 rounded-lg'>
 									<svg
@@ -134,30 +134,33 @@ export default async function SchedulePage() {
 										<line x1='3' x2='21' y1='10' y2='10' />
 									</svg>
 								</div>
-								<div>
-									<p className='font-bold text-foreground'>
-										When
-									</p>
-									<div className='flex flex-col gap-0.5'>
-										<p className='font-medium text-foreground'>
-											{format(startDate, "MMMM d, yyyy")}{" "}
-											@ {format(startDate, "h:mm aa")}
+								<div className='grid grid-cols-2 gap-4 flex-1'>
+									<div>
+										<p className='font-bold text-foreground'>
+											Starts
 										</p>
-										<div className='flex items-center gap-2 text-xs text-muted-foreground/60'>
-											<div className='h-px w-4 bg-border' />
-											<span>until</span>
-											<div className='h-px w-4 bg-border' />
-										</div>
-										<p className='font-medium text-foreground'>
+										<p className='font-medium text-foreground leading-tight'>
+											{format(startDate, "MMMM d, yyyy")}
+											<span className='block text-xs text-muted-foreground mt-0.5 tracking-wider'>
+												@ {format(startDate, "h:mm aa")}
+											</span>
+										</p>
+									</div>
+									<div>
+										<p className='font-bold text-foreground'>
+											Ends
+										</p>
+										<p className='font-medium text-foreground leading-tight'>
 											{format(
 												new Date(nextEvent.endDate),
 												"MMMM d, yyyy",
-											)}{" "}
-											@{" "}
-											{format(
-												new Date(nextEvent.endDate),
-												"h:mm aa",
 											)}
+											<span className='block text-xs text-muted-foreground mt-0.5 tracking-wider'>
+												@ {format(
+													new Date(nextEvent.endDate),
+													"h:mm aa",
+												)}
+											</span>
 										</p>
 									</div>
 								</div>
