@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { DonationDialog } from "@/components/DonationDialog";
-
 export default function PartnerPage() {
   return (
     <main className='flex flex-col min-h-screen w-full relative'>

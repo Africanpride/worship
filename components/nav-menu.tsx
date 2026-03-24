@@ -14,14 +14,14 @@ export const NavMenu = ({
   onItemClick?: () => void;
 }) => {
   const items = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Schedule", href: "/schedule" },
-    { label: "Live", href: "/live" },
-    { label: "Gallery", href: "/gallery" },
-    // { label: "Partner", href: "/partner" },
-    { label: "Get Involved", href: "/get-involved" },
-    { label: "Contact", href: "/contact" },
+		{ label: "Home", href: "/" },
+		{ label: "About", href: "/about" },
+		{ label: "Schedule", href: "/schedule" },
+		{ label: "Live", href: "/live" },
+		{ label: "Gallery", href: "/gallery" },
+		{ label: "Partner", href: "/partner" },
+		{ label: "Get Involved", href: "/get-involved" },
+		{ label: "Contact", href: "/contact" },
   ];
 
   const isVertical = orientation === "vertical";
