@@ -2,12 +2,12 @@
 
 import React from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogDescription,
+	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -30,12 +30,12 @@ import {
 import { toast } from "sonner";
 
 export function DonationDialog({ children }: { children: React.ReactNode }) {
-  const copyToClipboard = (text: string) => {
+	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
 		toast.success("Number copied to clipboard");
-  };
+	};
 
-  return (
+	return (
 		<Dialog>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent className='sm:max-w-[550px] border-amber-500/20 bg-background text-foreground p-0 overflow-hidden'>
@@ -387,5 +387,5 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 				</div>
 			</DialogContent>
 		</Dialog>
-  );
+	);
 }
