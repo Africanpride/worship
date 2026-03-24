@@ -170,7 +170,7 @@
   h5,
   h6 {
     font-family: var(--font-bebas), sans-serif;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 

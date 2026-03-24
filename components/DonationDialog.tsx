@@ -38,11 +38,11 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
   return (
 		<Dialog>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className='sm:max-w-[550px] border-amber-500/20 bg-background text-foreground p-0 overflow-hidden overflow-y-auto'>
-				<div className='bg-gradient-to-r from-amber-600 to-amber-400 h-2 w-full' />
+			<DialogContent className='sm:max-w-[550px] border-amber-500/20 bg-background text-foreground p-0 overflow-hidden'>
+				<div className='bg-gradient-to-r from-amber-600 to-amber-400 h-2 w-full shrink-0' />
 
-				<div className='p-6 pt-8 max-h-[85vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent'>
-					<DialogHeader className='mb-6'>
+				<div className='px-6 pt-8 pb-4 border-b border-border/50 shrink-0'>
+					<DialogHeader>
 						<DialogTitle className='text-4xl font-bebas tracking-wider flex items-center gap-2'>
 							{/* <Heart className='text-amber-500 size-7 fill-amber-500' /> */}
 							Partner with the Fire
@@ -52,7 +52,9 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 							worship. Choose your preferred way to give.
 						</DialogDescription>
 					</DialogHeader>
+				</div>
 
+				<div className='px-6 py-6 max-h-[70vh] overflow-y-auto no-scrollbar'>
 					<Tabs defaultValue='cash' className='w-full'>
 						<TabsList className='grid w-full grid-cols-2 bg-muted border border-border mb-8 h-14 min-h-[54px]'>
 							<TabsTrigger
@@ -90,13 +92,16 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xl text-foreground tracking-tight'>
 														Mobile Money
 													</p>
-													<p className='text-sm font-sans text-muted-foreground'>
+													<p className='text-sm font-opensans text-muted-foreground'>
 														MTN, Vodafone,
 														AirtelTigo
 													</p>
 												</div>
 											</div>
-											<div className='text-xs font-bold tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-md uppercase'>
+											<div
+												className='text-xs font-bold font-opensans tracking-wider text-amber-600 dark:text-amber-400 
+											bg-amber-500/10 px-3 py-1.5 rounded-md uppercase'
+											>
 												GHANA
 											</div>
 										</div>
@@ -108,7 +113,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-1'>
 														MTN / Telecel Cash
 													</p>
-													<p className='font-mono text-2xl text-amber-600 dark:text-amber-400 font-bold tracking-wider'>
+													<p className='font-mono text-xl text-amber-600 dark:text-amber-400 font-bold tracking-wider'>
 														024 123 4567
 													</p>
 												</div>
@@ -131,7 +136,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-1'>
 														AT Money
 													</p>
-													<p className='font-mono text-2xl text-amber-600 dark:text-amber-400 font-bold tracking-wider'>
+													<p className='font-mono text-xl text-amber-600 dark:text-amber-400 font-bold tracking-wider'>
 														026 987 6543
 													</p>
 												</div>
@@ -149,7 +154,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<Copy className='size-6' />
 												</Button>
 											</div>
-											<p className='text-center text-[15px] font-sans text-muted-foreground mt-4 font-medium'>
+											<p className='text-center text-[15px]  font-opensans  text-muted-foreground mt-4 font-medium'>
 												Account Name:{" "}
 												<span className='text-foreground font-semibold'>
 													The Non-Stop Worship
@@ -180,19 +185,19 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xl text-foreground tracking-tight'>
 														PayPal
 													</p>
-													<p className='text-sm font-sans text-muted-foreground'>
+													<p className='text-sm  font-opensans  text-muted-foreground'>
 														Global Payments
 													</p>
 												</div>
 											</div>
-											<div className='text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-md uppercase'>
+											<div className='text-xs font-bold  font-opensans  tracking-wider text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-md uppercase'>
 												GLOBAL
 											</div>
 										</div>
 									</AccordionTrigger>
 									<AccordionContent className='pt-0 pb-5'>
 										<div className='pt-5 border-t border-border text-center'>
-											<p className='text-[15px] font-sans text-muted-foreground leading-relaxed mb-6'>
+											<p className='text-[15px]  font-opensans  text-muted-foreground leading-relaxed mb-6'>
 												Send your contribution securely
 												via PayPal. You will be
 												redirected to our official
@@ -225,19 +230,19 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xl text-foreground tracking-tight'>
 														Credit / Debit Card
 													</p>
-													<p className='text-sm font-sans text-muted-foreground'>
+													<p className='text-sm  font-opensans  text-muted-foreground'>
 														Visa, Mastercard, Amex
 													</p>
 												</div>
 											</div>
-											<div className='text-xs font-bold tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-md uppercase'>
+											<div className='text-xs font-bold  font-opensans  tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-md uppercase'>
 												SECURE
 											</div>
 										</div>
 									</AccordionTrigger>
 									<AccordionContent className='pt-0 pb-5'>
 										<div className='pt-5 border-t border-border text-center'>
-											<p className='text-[15px] font-sans text-muted-foreground leading-relaxed mb-6'>
+											<p className='text-[15px]  font-opensans  text-muted-foreground leading-relaxed mb-6'>
 												Support us globally using any
 												major credit or debit card
 												through our secure Stripe
@@ -261,7 +266,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 							<div className='p-5 rounded-xl border border-amber-500/30 bg-amber-500/10 mb-2'>
 								<div className='flex gap-4 items-start'>
 									<Info className='size-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5' />
-									<p className='text-[15px] font-sans text-foreground/80 leading-relaxed font-medium'>
+									<p className='text-[15px]  font-opensans  text-foreground/80 leading-relaxed font-medium'>
 										We gratefully accept sacrifices in kind
 										to support the hospitality and logistics
 										of the Non-Stop.
@@ -288,7 +293,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xl text-foreground tracking-tight'>
 														Livestock
 													</p>
-													<p className='text-[13px] font-sans font-medium text-muted-foreground uppercase tracking-wider'>
+													<p className='text-[13px]  font-opensans  font-medium text-muted-foreground uppercase tracking-wider'>
 														Cows, Sheep, Goats
 													</p>
 												</div>
@@ -297,7 +302,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 									</AccordionTrigger>
 									<AccordionContent className='pt-0 pb-5'>
 										<div className='pt-5 border-t border-border'>
-											<p className='text-[15px] font-sans text-muted-foreground mb-5 text-center leading-relaxed'>
+											<p className='text-[15px]  font-opensans  text-muted-foreground mb-5 text-center leading-relaxed'>
 												To deliver{" "}
 												<strong className='text-foreground font-semibold'>
 													Live Animals (Cow, Sheep,
@@ -338,7 +343,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													<p className='text-xl text-foreground tracking-tight'>
 														Food Supplies
 													</p>
-													<p className='text-[13px] font-sans font-medium text-muted-foreground uppercase tracking-wider'>
+													<p className='text-[13px]  font-opensans  font-medium text-muted-foreground uppercase tracking-wider'>
 														Rice, Oil, Water
 													</p>
 												</div>
@@ -347,7 +352,7 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 									</AccordionTrigger>
 									<AccordionContent className='pt-0 pb-5'>
 										<div className='pt-5 border-t border-border'>
-											<p className='text-[15px] font-sans text-muted-foreground mb-5 text-center leading-relaxed'>
+											<p className='text-[15px]  font-opensans  text-muted-foreground mb-5 text-center leading-relaxed'>
 												To deliver{" "}
 												<strong className='text-foreground font-semibold'>
 													Food & Water Supplies
