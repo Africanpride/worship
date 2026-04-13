@@ -4,6 +4,9 @@
 import { AboutCompliment } from "@/components/about-compliment";
 import { MissionVision } from "@/components/mission-vision";
 import { motion, Variants } from "framer-motion";
+import Image from "next/image";
+
+const MotionImage = motion.create(Image);
 
 // ─── Shared animation variants ────────────────────────────────────────────────
 
@@ -109,28 +112,37 @@ export default function Home() {
                   className='flex flex-col items-center justify-center gap-6 md:flex-row'
                   variants={containerFast}
                 >
-                  <motion.img
-                    alt='about 1'
-                    className='aspect-[0.7] w-full rounded-lg object-cover object-top md:w-1/2'
-                    src='/nonstop/nonstop-048.jpg'
-                    variants={imageReveal}
-                  />
+                  <div className='relative aspect-[0.7] w-full rounded-lg overflow-hidden md:w-1/2'>
+                    <MotionImage
+                      alt='about 1'
+                      fill
+                      className='object-cover object-top'
+                      src='/nonstop/nonstop-048.jpg'
+                      variants={imageReveal}
+                    />
+                  </div>
                   <motion.div
                     className='flex w-full flex-col items-center justify-center gap-6 md:w-1/2'
                     variants={containerFast}
                   >
-                    <motion.img
-                      alt='about 2'
-                      className='aspect-[1.1] rounded-lg object-cover object-top'
-                      src='/nonstop/nonstop-022.jpg'
-                      variants={imageReveal}
-                    />
-                    <motion.img
-                      alt='about 3'
-                      className='aspect-[0.7] rounded-lg object-cover object-top'
-                      src='/nonstop/nonstop-004.jpg'
-                      variants={imageReveal}
-                    />
+                    <div className='relative aspect-[1.1] w-full rounded-lg overflow-hidden'>
+                      <MotionImage
+                        alt='about 2'
+                        fill
+                        className='object-cover object-top'
+                        src='/nonstop/nonstop-022.jpg'
+                        variants={imageReveal}
+                      />
+                    </div>
+                    <div className='relative aspect-[0.7] w-full rounded-lg overflow-hidden'>
+                      <MotionImage
+                        alt='about 3'
+                        fill
+                        className='object-cover object-top'
+                        src='/nonstop/nonstop-004.jpg'
+                        variants={imageReveal}
+                      />
+                    </div>
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -144,28 +156,37 @@ export default function Home() {
                   className='flex flex-col items-center justify-center gap-6 md:flex-row'
                   variants={containerFast}
                 >
-                  <motion.img
-                    alt='about 4'
-                    className='aspect-[0.9] w-full rounded-lg object-cover object-top md:w-1/2'
-                    src='/nonstop/nonstop-012.jpg'
-                    variants={imageReveal}
-                  />
+                  <div className='relative aspect-[0.9] w-full rounded-lg overflow-hidden md:w-1/2'>
+                    <MotionImage
+                      alt='about 4'
+                      fill
+                      className='object-cover object-top'
+                      src='/nonstop/nonstop-012.jpg'
+                      variants={imageReveal}
+                    />
+                  </div>
                   <motion.div
                     className='flex w-full flex-col items-center justify-center gap-6 md:w-1/2'
                     variants={containerFast}
                   >
-                    <motion.img
-                      alt='about 5'
-                      className='aspect-[0.8] rounded-lg object-cover object-top'
-                      src='/nonstop/nonstop-026.jpg'
-                      variants={imageReveal}
-                    />
-                    <motion.img
-                      alt='about 6'
-                      className='aspect-[0.9] rounded-lg object-cover object-top'
-                      src='/nonstop/nonstop-010.jpg'
-                      variants={imageReveal}
-                    />
+                    <div className='relative aspect-[0.8] w-full rounded-lg overflow-hidden'>
+                      <MotionImage
+                        alt='about 5'
+                        fill
+                        className='object-cover object-top'
+                        src='/nonstop/nonstop-026.jpg'
+                        variants={imageReveal}
+                      />
+                    </div>
+                    <div className='relative aspect-[0.9] w-full rounded-lg overflow-hidden'>
+                      <MotionImage
+                        alt='about 6'
+                        fill
+                        className='object-cover object-top'
+                        src='/nonstop/nonstop-010.jpg'
+                        variants={imageReveal}
+                      />
+                    </div>
                   </motion.div>
                 </motion.div>
 

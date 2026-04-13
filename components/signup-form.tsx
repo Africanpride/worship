@@ -16,6 +16,7 @@ import { signUp, signIn } from "@/lib/auth-client"
 import { toast } from "sonner"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Turnstile } from "nextjs-turnstile"
 
@@ -228,9 +229,10 @@ export function SignupForm({
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/non-stop-logo.webp"
               alt="Image"
+              fill
               className="absolute inset-0 h-full w-full object-cover "
             />
           </div>

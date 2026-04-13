@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import HeroIntro from "@/components/HeroIntro";
 import { Separator } from "@/components/ui/separator";
 
@@ -47,11 +48,14 @@ export default function Home() {
                 </motion.div>
               </div>
               <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
-                <img
-                  src='/nonstop/nonstop-043.jpg'
-                  alt='worship ministration'
-                  className='max-h-91 w-full rounded-lg object-cover object-top'
-                />
+                <div className="relative max-h-91 h-[400px] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src='/nonstop/nonstop-043.jpg'
+                    alt='worship ministration'
+                    fill
+                    className='object-cover object-top'
+                  />
+                </div>
               </motion.div>
             </div>
             <div
@@ -61,20 +65,22 @@ export default function Home() {
             >
               <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
                 <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
-                  <div className='relative overflow-hidden rounded-md'>
-                    <img
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
                       src='/nonstop/nonstop-029.jpg'
                       alt='ministry service'
-                      className='h-52 w-full rounded-md object-cover object-top'
+                      fill
+                      className='object-cover object-top'
                     />
                   </div>
                 </motion.div>
                 <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
-                  <div className='relative overflow-hidden rounded-md'>
-                    <img
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
                       src='/nonstop/nonstop-032.jpg'
                       alt='worship atmosphere'
-                      className='h-52 w-full rounded-md object-cover object-top'
+                      fill
+                      className='object-cover object-top'
                     />
                   </div>
                 </motion.div>
@@ -121,11 +127,12 @@ export default function Home() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
-                          className='aspect-square size-full'
+                          className='aspect-square size-full object-cover'
                           alt='worshipper'
                           src='/nonstop/nonstop-001.jpg'
+                          fill
                         />
                       </span>
                       <span
@@ -133,11 +140,12 @@ export default function Home() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
-                          className='aspect-square size-full'
+                          className='aspect-square size-full object-cover'
                           alt='lead singer'
                           src='/nonstop/nonstop-048.jpg'
+                          fill
                         />
                       </span>
                       <span
@@ -145,11 +153,12 @@ export default function Home() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
-                          className='aspect-square size-full'
+                          className='aspect-square size-full object-cover'
                           alt='musician'
                           src='/nonstop/nonstop-022.jpg'
+                          fill
                         />
                       </span>
                       <span
@@ -157,11 +166,12 @@ export default function Home() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
-                          className='aspect-square size-full'
+                          className='aspect-square size-full object-cover'
                           alt='volunteer'
                           src='/nonstop/nonstop-047.jpg'
+                          fill
                         />
                       </span>
                     </div>
@@ -206,10 +216,11 @@ export default function Home() {
 
       <section className='bg-background py-8 sm:py-16 lg:py-24 mx-auto  sm:px-6 lg:px-8'>
         <div className='container space-y-10 lg:space-y-20'>
-          <div data-usal='fade-u duration-500'>
-            <img
+          <div data-usal='fade-u duration-500' className="relative mt-4 h-140 w-full rounded-2xl overflow-hidden">
+            <Image
               alt='144 hours non-stop worship'
-              className='mt-4 h-140 w-full object-cover object-center rounded-2xl'
+              fill
+              className='object-cover object-center'
               src='/nonstop/nonstop-051.jpg'
             />
           </div>

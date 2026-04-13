@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import type { CarouselApi } from "@/components/ui/carousel";
@@ -139,10 +140,11 @@ const Ministration = ({ className }: ministrationsHomeProps) => {
                   className='basis-auto pl-4'
                 >
                   <div className='w-[350px] md:w-[600px] lg:w-[700px] space-y-4'>
-                    <div className='aspect-video overflow-hidden rounded-xl bg-muted'>
-                      <img
+                    <div className='aspect-video overflow-hidden rounded-xl bg-muted relative'>
+                      <Image
                         src={project.image || "/placeholder.svg"}
                         alt={project.title}
+                        fill
                         className='h-full w-full object-top object-cover transition-transform duration-500 hover:scale-105'
                       />
                     </div>

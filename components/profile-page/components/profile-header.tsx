@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -25,9 +26,14 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
   return (
     <Card className="overflow-hidden border-none shadow-lg bg-gradient-to-r from-primary/5 via-background to-background p-2 md:p-4 w-full">
       <CardContent className="p-0">
-        <div className="relative h-32 w-full bg-gradient-to-r from-primary/20 to-primary/5 md:h-40">
+        <div className="relative h-32 w-full bg-gradient-to-r from-primary/20 to-primary/5 md:h-40 overflow-hidden">
            {profile.bannerUrl && (
-             <img src={profile.bannerUrl} alt="Banner" className="h-full w-full object-cover opacity-50" />
+             <Image
+               src={profile.bannerUrl}
+               alt="Banner"
+               fill
+               className="object-cover opacity-50"
+             />
            )}
         </div>
         <div className="flex flex-col gap-4 px-4 pb-6 sm:px-6 md:flex-row md:items-end md:gap-8 -mt-12 md:-mt-16">

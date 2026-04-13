@@ -15,6 +15,9 @@ import {
   ReactPortal,
 } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+const MotionImage = motion.create(Image);
 
 interface AboutComplimentProps {
   className?: string;
@@ -152,16 +155,19 @@ const AboutCompliment = ({
             },
           }}
         >
-          <motion.img
-            src={mainImage.src}
-            alt={mainImage.alt}
-            className='size-full rounded-xl object-cover object-top lg:col-span-2'
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-            }}
-          />
-          <div className='flex flex-col gap-4 md:flex-row lg:flex-col'>
+          <div className='relative aspect-square md:aspect-video lg:aspect-auto lg:col-span-2 overflow-hidden rounded-xl lg:h-full'>
+            <MotionImage
+              src={mainImage.src}
+              alt={mainImage.alt}
+              fill
+              className='size-full object-cover object-top'
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+              }}
+            />
+          </div>
+          <div className='flex flex-col gap-4 md:flex-row lg:flex-col lg:h-full'>
             <motion.div
               className='flex flex-col justify-between gap-6 rounded-xl bg-muted p-7 md:w-1/2 lg:w-auto'
               variants={{
@@ -169,11 +175,14 @@ const AboutCompliment = ({
                 show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
               }}
             >
-              <img
-                src={breakout.src}
-                alt={breakout.alt}
-                className='mr-auto h-12 dark:invert'
-              />
+              <div className="relative h-12 w-32 dark:invert">
+                <Image
+                  src={breakout.src || ""}
+                  alt={breakout.alt || ""}
+                  fill
+                  className='object-contain object-left'
+                />
+              </div>
               <div>
                 <p className='mb-2 text-xl font-semibold'>{breakout.title}</p>
                 <p className='text-muted-foreground'>{breakout.description}</p>
@@ -191,39 +200,37 @@ const AboutCompliment = ({
                 </a>
               </Button>
             </motion.div>
-            <motion.img
-              src={secondaryImage.src}
-              alt={secondaryImage.alt}
-              className='grow  rounded-xl object-cover object-top
-              min-h-64 md:w-1/2 lg:min-h-0 lg:w-auto'
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-              }}
-            />
+            <div className='relative grow rounded-xl overflow-hidden min-h-72 md:w-1/2 lg:w-auto lg:min-h-0'>
+              <MotionImage
+                src={secondaryImage.src}
+                alt={secondaryImage.alt}
+                fill
+                className='size-full object-cover object-top'
+                variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                }}
+              />
+            </div>
           </div>
         </motion.div>
         {companies && (
           <div className='py-16 '>
             <Marquee>
               <MarqueeContent speed={40}>
-                {companies.map(
-                  (
-                    company: {
-                      src: string | Blob | undefined;
-                      alt: string | undefined;
-                    },
-                    idx: any,
-                  ) => (
+                {companies.map((company, idx) => (
                     <MarqueeItem
                       key={company.src + idx}
                       className='mx-8 flex items-center'
                     >
-                      <img
-                        src={company.src}
-                        alt={company.alt}
-                        className='h-7 w-auto md:h-8 dark:invert'
-                      />
+                      <div className="relative h-7 w-24 md:h-8 dark:invert">
+                        <Image
+                          src={company.src || ""}
+                          alt={company.alt || ""}
+                          fill
+                          className='object-contain'
+                        />
+                      </div>
                     </MarqueeItem>
                   ),
                 )}

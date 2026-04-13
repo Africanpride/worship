@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Trash2, Upload, Loader2, CheckCircle2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 
 interface FileUploadProps {
   value?: string;
@@ -126,9 +127,11 @@ export function FileUpload({
         </div>
       ) : (
         <div className="relative group rounded-xl overflow-hidden border border-border shadow-md aspect-video max-w-sm mx-auto">
-          <img
-            src={value}
+          <Image
+            src={value || ""}
             alt="Preview"
+            fill
+            unoptimized
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">

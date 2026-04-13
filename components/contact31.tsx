@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -96,10 +97,11 @@ const Contact31 = ({
     <section className={cn("py-4 pt-32", className)}>
       <div className="container">
         <div className="mx-auto grid max-w-6xl overflow-hidden rounded-2xl bg-muted/50 lg:grid-cols-2">
-          <div className="relative hidden lg:block">
-            <img
+          <div className="relative hidden lg:block overflow-hidden">
+            <Image
               src={image}
               alt="Contact"
+              fill
               className="absolute inset-0 size-full object-cover"
             />
           </div>

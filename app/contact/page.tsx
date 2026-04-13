@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Contact31 } from "@/components/contact31";
 import React from "react";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -22,49 +23,13 @@ const page = () => {
       <Contact31 />
 
         <div className='rounded-2xl dark:bg-slate-800 bg-slate-200 text-slate-900 dark:text-slate-300 shadow md:px-10 py-5 md:py-16 px-5 mb-5 md:mb-16 rounded-neat relative overflow-hidden'>
-          <div className='w-72 h-72 absolute -right-20 -top-16 z-20 opacity-10 -rotate-45'>
-            <span
-              style={{
-                boxSizing: "border-box",
-                display: "block",
-                overflow: "hidden",
-                width: "initial",
-                height: "initial",
-                background: "none",
-                opacity: 1,
-                border: "0px",  
-                margin: "0px",
-                padding: "0px",
-                position: "absolute",
-                inset: "0px",
-              }}
-            >
-              <img
-                alt='Non-Stop Series Feedback'
-                src='/images/feedback.svg'
-                decoding='async'
-                data-nimg='fill'
-                className='object-fit'
-                sizes='100vw'
-                srcSet='/images/feedback.svg 640w, /images/feedback.svg 750w, /images/feedback.svg 828w, /images/feedback.svg 1080w, /images/feedback.svg 1200w, /images/feedback.svg 1920w, /images/feedback.svg 2048w, /images/feedback.svg 3840w'
-                style={{
-                  position: "absolute",
-                  inset: "0px",
-                  boxSizing: "border-box",
-                  padding: "0px",
-                  border: "none",
-                  margin: "auto",
-                  display: "block",
-                  width: "0px",
-                  height: "0px",
-                  minWidth: "100%",
-                  maxWidth: "100%",
-                  minHeight: "100%",
-                  maxHeight: "100%",
-                }}
-              />
-              <noscript />
-            </span>
+          <div className='w-72 h-72 absolute -right-20 -top-16 z-20 opacity-10 -rotate-45 overflow-hidden'>
+            <Image
+              alt='Non-Stop Series Feedback'
+              src='/images/feedback.svg'
+              fill
+              className='object-contain'
+            />
           </div>
           <h2 className=' text-4xl '>Feedback</h2>
           <div className='my-2 text-base dark:text-white line-clamp-2'>

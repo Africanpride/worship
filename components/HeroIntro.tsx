@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export type HeroImage = {
   src: string;
@@ -139,11 +140,12 @@ export default function HeroIntro({
               <div key={ri} className={rowClasses[ri] ?? rowClasses[0]}>
                 {row.map((img) => (
                   <div key={img.src} style={{ filter: "blur(0px)", opacity: 1, transform: "none" }}>
-                    <div className={`group h-27 w-38.25 overflow-hidden rounded-lg ${img.bgClass ?? ""}`}>
-                      <img
+                    <div className={`group relative h-27 w-38.25 overflow-hidden rounded-lg ${img.bgClass ?? ""}`}>
+                      <Image
                         src={img.src}
                         alt={img.alt}
-                        className="w-full origin-bottom transition-transform duration-300 group-hover:scale-105"
+                        fill
+                        className="w-full origin-bottom transition-transform duration-300 group-hover:scale-105 object-cover"
                       />
                     </div>
                   </div>

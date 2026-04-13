@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
 
@@ -84,11 +85,14 @@ export const UpNextCard: React.FC<UpNextCardProps> = ({ event }) => {
               {event.ministers.map((minister, idx) => (
                 <div key={idx} className="inline-block relative group" title={`${minister.name}${minister.role ? ` - ${minister.role}` : ''}`}>
                   {minister.image ? (
-                    <img 
-                      src={minister.image} 
-                      alt={minister.name} 
-                      className="h-10 w-10 rounded-full border-2 border-background object-cover ring-1 ring-border"
-                    />
+                    <div className="h-10 w-10 relative">
+                      <Image
+                        src={minister.image}
+                        alt={minister.name}
+                        fill
+                        className="rounded-full border-2 border-background object-cover ring-1 ring-border"
+                      />
+                    </div>
                   ) : (
                     <div className="h-10 w-10 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[10px] font-bold ring-1 ring-border">
                       {minister.name.charAt(0)}

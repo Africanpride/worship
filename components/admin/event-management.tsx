@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import Image from "next/image";
 
 import {
   Field,
@@ -571,11 +572,14 @@ export function EventManagement() {
                   <TableCell className='font-medium'>
                     <div className='flex items-center gap-3'>
                       {event.poster ? (
-                        <img
-                          src={event.poster}
-                          alt={event.title}
-                          className='h-10 w-10 rounded object-cover'
-                        />
+                        <div className="relative h-10 w-10 rounded overflow-hidden">
+                          <Image
+                            src={event.poster}
+                            alt={event.title}
+                            fill
+                            className='object-cover'
+                          />
+                        </div>
                       ) : (
                         <div className='h-10 w-10 rounded bg-muted flex items-center justify-center'>
                           <Calendar className='h-5 w-5 text-muted-foreground' />
@@ -606,11 +610,14 @@ export function EventManagement() {
                           title={m.name}
                         >
                           {m.image ? (
-                            <img
-                              src={m.image}
-                              alt={m.name}
-                              className='h-full w-full object-cover'
-                            />
+                            <div className="relative h-full w-full">
+                              <Image
+                                src={m.image}
+                                alt={m.name}
+                                fill
+                                className='object-cover'
+                              />
+                            </div>
                           ) : (
                             <User className='h-4 w-4 m-1.5 text-muted-foreground' />
                           )}

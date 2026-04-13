@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "motion/react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -111,10 +112,11 @@ export default function Home() {
             }
           }}
         >
-          <img
+          <Image
             src='/images/community_worship.jpg'
             alt='Video banner'
-            className='object-cover transition-opacity duration-500 ease-in-out w-full h-full opacity-100'
+            fill
+            className='object-cover transition-opacity duration-500 ease-in-out opacity-100'
           />
           <video
             src='/123.mp4'

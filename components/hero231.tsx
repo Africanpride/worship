@@ -3,6 +3,7 @@
 import AutoScroll from "embla-carousel-auto-scroll";
 import { ArrowRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/effect-coverflow";
@@ -273,11 +274,14 @@ const Hero231 = ({ className }: Hero231Props) => {
                     className="relative mr-6 flex h-15 basis-1/6 justify-center pl-0 opacity-30 xl:mr-12"
                   >
                     <div className="flex flex-col items-center justify-center">
-                      <img
-                        src={logo.image}
-                        alt={logo.description}
-                        className={logo.className}
-                      />
+                      <div className="relative h-7 w-32">
+                        <Image
+                          src={logo.image}
+                          alt={logo.description}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     </div>
                   </CarouselItem>
                 ))}
@@ -311,11 +315,14 @@ const Hero231 = ({ className }: Hero231Props) => {
               >
                 {images.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <img
-                      className="h-full w-full overflow-hidden rounded-3xl object-cover shadow-lg"
-                      src={image.src}
-                      alt={image.alt}
-                    />
+                    <div className="relative h-full w-full overflow-hidden rounded-3xl shadow-lg">
+                      <Image
+                        className="object-cover"
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                      />
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>

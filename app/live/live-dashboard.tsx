@@ -207,11 +207,14 @@ export function LiveDashboard({ initialVideos, initialEvents }: LiveDashboardPro
                       activeEvent ? "bg-red-600 border-red-600 animate-pulse" : "bg-amber-500 border-amber-500"
                     }`}>
                       {(activeEvent ?? nextEvent)!.ministers?.[0]?.image ? (
-                        <img
-                          src={(activeEvent ?? nextEvent)!.ministers[0].image!}
-                          alt={(activeEvent ?? nextEvent)!.ministers[0].name}
-                          className="w-full h-full object-cover"
-                        />
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={(activeEvent ?? nextEvent)!.ministers[0].image!}
+                            alt={(activeEvent ?? nextEvent)!.ministers[0].name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="flex items-center justify-center h-full">
                           {activeEvent ? <Mic2 className="size-6 text-white" /> : <Calendar className="size-6 text-white" />}
@@ -393,15 +396,17 @@ export function LiveDashboard({ initialVideos, initialEvents }: LiveDashboardPro
                 onClick={() => setSelectedVideo(video)}
                 className={`group relative aspect-video bg-neutral-900 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-white/50 hover:shadow-2xl ${selectedVideo?.id === video.id ? "ring-2 ring-red-600" : "ring-1 ring-white/10"}`}
               >
-                {/* Thumbnail */}
-                <img
-                  src={
-                    video.thumbnail ||
-                    "/images/placeholders/original/1600x1200-video.png"
-                  }
-                  alt={video.title}
-                  className='w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-60'
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src={
+                      video.thumbnail ||
+                      "/images/placeholders/original/1600x1200-video.png"
+                    }
+                    alt={video.title}
+                    fill
+                    className='object-cover transition-opacity duration-300 group-hover:opacity-60'
+                  />
+                </div>
 
                 {/* Overlay Play Icon */}
                 <div className='absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
@@ -477,11 +482,12 @@ export function LiveDashboard({ initialVideos, initialEvents }: LiveDashboardPro
                     variants={fadeUpCard(0.6)}
                     className='bg-none dark:bg-white/5 rounded-3xl border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all duration-300 overflow-hidden group flex flex-col'
                   >
-                    <div className='relative overflow-hidden'>
-                      <img
+                    <div className='relative overflow-hidden h-64 sm:h-72 w-full'>
+                      <Image
                         src={displayPoster}
                         alt={event.title}
-                        className='w-full h-64 sm:h-72 object-cover group-hover:scale-105 transition-transform duration-700 ease-out'
+                        fill
+                        className='object-cover group-hover:scale-105 transition-transform duration-700 ease-out'
                       />
                       <div className='absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-3.5 py-2 text-center shadow-xl'>
                         <div className='text-2xl font-black text-black leading-none'>

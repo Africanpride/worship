@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { DonationOptions } from "@/components/DonationOptions";
 import { Button } from "@/components/ui/button";
 
@@ -70,11 +71,14 @@ export default function PartnerPage() {
                   },
                 }}
               >
-                <img
-                  src='/images/live-worship.jpg'
-                  alt='worship ministration'
-                  className='max-h-91 lg:h-[400px] w-full rounded-lg object-cover object-top'
-                />
+                <div className="relative max-h-91 lg:h-[400px] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src='/images/live-worship.jpg'
+                    alt='worship ministration'
+                    fill
+                    className='object-cover object-top'
+                  />
+                </div>
               </motion.div>
             </div>
             <div
@@ -93,11 +97,12 @@ export default function PartnerPage() {
                     },
                   }}
                 >
-                  <div className='relative overflow-hidden rounded-md'>
-                    <img
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
                       src='/images/uche.jpg'
                       alt='ministry service'
-                      className='h-52 w-full rounded-md object-cover object-top'
+                      fill
+                      className='object-cover object-top'
                     />
                   </div>
                 </motion.div>
@@ -111,11 +116,12 @@ export default function PartnerPage() {
                     },
                   }}
                 >
-                  <div className='relative overflow-hidden rounded-md'>
-                    <img
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
                       src='/images/mass-choir7.jpg'
                       alt='worship atmosphere'
-                      className='h-52 w-full rounded-md object-cover object-top'
+                      fill
+                      className='object-cover object-top'
                     />
                   </div>
                 </motion.div>
@@ -194,11 +200,12 @@ export default function PartnerPage() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
                           className='aspect-square size-full object-cover'
                           alt='worshipper'
                           src='/images/david.jpg'
+                          fill
                         />
                       </span>
                       <span
@@ -206,11 +213,12 @@ export default function PartnerPage() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
                           className='aspect-square size-full object-cover'
                           alt='lead singer'
                           src='/images/samuel.jpg'
+                          fill
                         />
                       </span>
                       <span
@@ -218,11 +226,12 @@ export default function PartnerPage() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
                           className='aspect-square size-full object-cover'
                           alt='musician'
                           src='/images/marion.jpg'
+                          fill
                         />
                       </span>
                       <span
@@ -230,11 +239,12 @@ export default function PartnerPage() {
                         data-size='default'
                         className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none data-[size=lg]:size-10 data-[size=sm]:size-6 ring-background size-12 ring-2'
                       >
-                        <img
+                        <Image
                           data-slot='avatar-image'
                           className='aspect-square size-full object-cover'
                           alt='volunteer'
                           src='/images/mama-t.jpg'
+                          fill
                         />
                       </span>
                     </div>
@@ -274,10 +284,11 @@ export default function PartnerPage() {
 
       <section className='bg-background sm:py-16 lg:py-24 mx-auto  sm:px-6 lg:px-8 max-w-7xl'>
         <div className='container space-y-10 lg:space-y-20'>
-          <div data-usal='fade-u duration-500'>
-            <img
+          <div data-usal='fade-u duration-500' className="relative mt-4 h-64 md:h-140 w-full rounded-2xl overflow-hidden shadow-lg transition-all duration-700">
+            <Image
               alt='Community worship'
-              className='mt-4 h-64 md:h-140 w-full object-cover object-center rounded-2xl  transition-all duration-700'
+              fill
+              className='object-cover object-center'
               src='/nonstop/nonstop-063.jpg'
             />
           </div>

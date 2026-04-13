@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -124,18 +125,24 @@ const About3 = ({
           </p>
         </div>
         <div className="grid gap-7 lg:grid-cols-3">
-          <img
-            src={mainImage.src}
-            alt={mainImage.alt}
-            className="size-full max-h-[620px] rounded-xl object-cover lg:col-span-2"
-          />
+          <div className="relative size-full max-h-[620px] rounded-xl overflow-hidden lg:col-span-2">
+            <Image
+              src={mainImage.src}
+              alt={mainImage.alt}
+              fill
+              className="object-cover"
+            />
+          </div>
           <div className="flex flex-col gap-7 md:flex-row lg:flex-col">
             <div className="flex flex-col justify-between gap-6 rounded-xl bg-muted p-7 md:w-1/2 lg:w-auto">
-              <img
-                src={breakout.src}
-                alt={breakout.alt}
-                className="mr-auto h-12 dark:invert"
-              />
+              <div className="relative h-12 w-32 dark:invert">
+                <Image
+                  src={breakout.src || ""}
+                  alt={breakout.alt || ""}
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
               <div>
                 <p className="mb-2 text-xl font-semibold">{breakout.title}</p>
                 <p className="text-muted-foreground">{breakout.description}</p>
@@ -146,11 +153,14 @@ const About3 = ({
                 </a>
               </Button>
             </div>
-            <img
-              src={secondaryImage.src}
-              alt={secondaryImage.alt}
-              className="grow basis-0 rounded-xl object-cover md:w-1/2 lg:min-h-0 lg:w-auto"
-            />
+            <div className="relative grow basis-0 rounded-xl overflow-hidden md:w-1/2 lg:min-h-0 lg:w-auto min-h-[300px]">
+              <Image
+                src={secondaryImage.src}
+                alt={secondaryImage.alt}
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
         {companies && (
@@ -162,11 +172,14 @@ const About3 = ({
                     key={company.src + idx}
                     className="mx-8 flex items-center"
                   >
-                    <img
-                      src={company.src}
-                      alt={company.alt}
-                      className="h-7 w-auto md:h-8 dark:invert"
-                    />
+                    <div className="relative h-7 w-24 md:h-8 dark:invert">
+                      <Image
+                        src={company.src}
+                        alt={company.alt}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
                   </MarqueeItem>
                 ))}
               </MarqueeContent>

@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { HelpCircle, Trash2, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -115,8 +116,8 @@ export default function FileUpload01() {
                   <SelectContent>
                     <SelectGroup>
                       <SelectItem value="1">
-                        <img
-                          className="size-5 rounded"
+                        <Image
+                          className="size-5 rounded inline-block mr-2"
                           src="https://blocks.so/avatar-01.png"
                           alt="Ephraim Duncan"
                           width={20}
@@ -125,8 +126,8 @@ export default function FileUpload01() {
                         <span className="truncate">Ephraim Duncan</span>
                       </SelectItem>
                       <SelectItem value="2">
-                        <img
-                          className="size-5 rounded"
+                        <Image
+                          className="size-5 rounded inline-block mr-2"
                           src="https://blocks.so/avatar-03.png"
                           alt="Lucas Smith"
                           width={20}
@@ -135,8 +136,8 @@ export default function FileUpload01() {
                         <span className="truncate">Lucas Smith</span>
                       </SelectItem>
                       <SelectItem value="3">
-                        <img
-                          className="size-5 rounded"
+                        <Image
+                          className="size-5 rounded inline-block mr-2"
                           src="https://blocks.so/avatar-02.jpg"
                           alt="Timur Ercan"
                           width={20}
@@ -204,10 +205,12 @@ export default function FileUpload01() {
                   }}
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-18 h-14 bg-muted rounded-sm flex items-center justify-center self-start row-span-2 overflow-hidden">
-                      <img
+                    <div className="w-18 h-14 bg-muted rounded-sm flex items-center justify-center self-start row-span-2 overflow-hidden relative">
+                      <Image
                         src={imageUrl}
                         alt={file.name}
+                        fill
+                        unoptimized
                         className="w-full h-full object-cover"
                       />
                     </div>
