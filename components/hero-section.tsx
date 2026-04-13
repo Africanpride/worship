@@ -40,16 +40,16 @@ export default function HeroSection() {
         } else {
           setHeroSettings({
             videoSource: "youtube",
-            videoId: "bDk_nNbccnc",
-            startTime: 108,
+            videoId: "w34sNb74sJs",
+            startTime: 10,
           });
         }
       } catch (error) {
         console.error("Failed to fetch hero settings:", error);
         setHeroSettings({
           videoSource: "youtube",
-          videoId: "bDk_nNbccnc",
-          startTime: 108,
+          videoId: "w34sNb74sJs",
+          startTime: 10,
         });
       }
     };

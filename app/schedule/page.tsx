@@ -59,7 +59,7 @@ export default async function SchedulePage() {
 			</div>
 
 			{/* CTA section preserved */}
-			<div className='max-w-5xl mx-auto py-10 px-2'>
+			<div className='max-w-5xl mx-auto py-10 px-2 md:px-0'>
 				<div className='rounded-3xl p-4 sm:p-14 bg-neutral-900  border-white/10 text-center relative overflow-hidden'>
 					<div className='absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none' />
 					<h2 className='text-3xl md:text-5xl font-bebas mb-4 text-white'>

@@ -52,3 +52,8 @@ next-env.d.ts
 mcp.json
 # next-agents-md
 .next-docs/
+
+# coding agents
+.agents/
+.claude/
+.continue/
