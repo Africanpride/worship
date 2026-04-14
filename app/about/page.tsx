@@ -77,7 +77,7 @@ export default function Home() {
         <div className='py-6 w-full'>
           <div className='container'>
             <motion.div
-              className='flex flex-col items-center justify-start gap-6 lg:flex-row'
+              className='flex flex-col items-center justify-start gap-4 lg:flex-row'
               variants={container}
               initial='hidden'
               animate='show'
@@ -109,39 +109,43 @@ export default function Home() {
                 </div>
 
                 <motion.div
-                  className='flex flex-col items-center justify-center gap-6 md:flex-row'
+                  className='flex flex-col items-center justify-center w-full gap-6 md:flex-row'
                   variants={containerFast}
                 >
-                  <div className='relative aspect-[0.7] w-full rounded-lg overflow-hidden md:w-1/2'>
-                    <MotionImage
-                      alt='about 1'
-                      fill
-                      className='object-cover object-top'
-                      src='/nonstop/nonstop-048.jpg'
-                      variants={imageReveal}
-                    />
+                  <div className='relative aspect-[0.7] w-full rounded-lg overflow-hidden md:w-1/2 min-h-[350px]'>
+                    <motion.div className="size-full min-h-[350px] w-full" variants={imageReveal}>
+                      <Image
+                        alt='about 1'
+                        fill
+                        priority
+                        className='object-cover object-top'
+                        src='/nonstop/nonstop-048.jpg'
+                      />
+                    </motion.div>
                   </div>
                   <motion.div
                     className='flex w-full flex-col items-center justify-center gap-6 md:w-1/2'
                     variants={containerFast}
                   >
-                    <div className='relative aspect-[1.1] w-full rounded-lg overflow-hidden'>
-                      <MotionImage
-                        alt='about 2'
-                        fill
-                        className='object-cover object-top'
-                        src='/nonstop/nonstop-022.jpg'
-                        variants={imageReveal}
-                      />
+                    <div className='relative aspect-[1.1] w-full rounded-lg overflow-hidden min-h-[350px]'>
+                      <motion.div className="size-full min-h-[350px] w-full" variants={imageReveal}>
+                        <Image
+                          alt='about 2'
+                          fill
+                          className='object-cover object-top'
+                          src='/nonstop/nonstop-022.jpg'
+                        />
+                      </motion.div>
                     </div>
-                    <div className='relative aspect-[0.7] w-full rounded-lg overflow-hidden'>
-                      <MotionImage
-                        alt='about 3'
-                        fill
-                        className='object-cover object-top'
-                        src='/nonstop/nonstop-004.jpg'
-                        variants={imageReveal}
-                      />
+                    <div className='relative aspect-[0.7] w-full rounded-lg overflow-hidden min-h-[350px]'>
+                      <motion.div className="size-full min-h-[350px] w-full" variants={imageReveal}>
+                        <Image
+                          alt='about 3'
+                          fill
+                          className='object-cover object-top'
+                          src='/nonstop/nonstop-004.jpg'
+                        />
+                      </motion.div>
                     </div>
                   </motion.div>
                 </motion.div>
@@ -153,44 +157,47 @@ export default function Home() {
                 variants={slideRight}
               >
                 <motion.div
-                  className='flex flex-col items-center justify-center gap-6 md:flex-row'
+                  className='flex w-full flex-col items-center justify-center gap-6 md:flex-row'
                   variants={containerFast}
                 >
-                  <div className='relative aspect-[0.9] w-full rounded-lg overflow-hidden md:w-1/2'>
-                    <MotionImage
-                      alt='about 4'
-                      fill
-                      className='object-cover object-top'
-                      src='/nonstop/nonstop-012.jpg'
-                      variants={imageReveal}
-                    />
+                  <div className='relative aspect-[0.9] w-full rounded-lg overflow-hidden md:w-1/2 min-h-[350px]'>
+                    <motion.div className="size-full min-h-[350px] w-full" variants={imageReveal}>
+                      <Image
+                        alt='about 4'
+                        fill
+                        className='object-cover object-top'
+                        src='/nonstop/nonstop-012.jpg'
+                      />
+                    </motion.div>
                   </div>
                   <motion.div
                     className='flex w-full flex-col items-center justify-center gap-6 md:w-1/2'
                     variants={containerFast}
                   >
-                    <div className='relative aspect-[0.8] w-full rounded-lg overflow-hidden'>
-                      <MotionImage
-                        alt='about 5'
-                        fill
-                        className='object-cover object-top'
-                        src='/nonstop/nonstop-026.jpg'
-                        variants={imageReveal}
-                      />
+                    <div className='relative aspect-[0.8] w-full rounded-lg overflow-hidden min-h-[250px]'>
+                      <motion.div className="size-full min-h-[350px] w-full" variants={imageReveal}>
+                        <Image
+                          alt='about 5'
+                          fill
+                          className='object-cover object-top'
+                          src='/nonstop/nonstop-026.jpg'
+                        />
+                      </motion.div>
                     </div>
-                    <div className='relative aspect-[0.9] w-full rounded-lg overflow-hidden'>
-                      <MotionImage
-                        alt='about 6'
-                        fill
-                        className='object-cover object-top'
-                        src='/nonstop/nonstop-010.jpg'
-                        variants={imageReveal}
-                      />
+                    <div className='relative aspect-[0.9] w-full rounded-lg overflow-hidden min-h-[350px]'>
+                      <motion.div className="size-full min-h-[350px] w-full" variants={imageReveal}>
+                        <Image
+                          alt='about 6'
+                          fill
+                          className='object-cover object-top'
+                          src='/nonstop/nonstop-010.jpg'
+                        />
+                      </motion.div>
                     </div>
                   </motion.div>
                 </motion.div>
 
-                <motion.div className='p-2 sm:px-8 ' variants={container}>
+                <motion.div className='p-2  ' variants={container}>
                   <motion.h1
                     className='mb-8 text-2xl font-semibold lg:mb-6'
                     variants={fadeUp}

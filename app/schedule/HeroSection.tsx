@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import Image from "next/image";
 import type { Event } from "@prisma/client";
 
 interface HeroSectionProps {
@@ -16,15 +17,18 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
 
 	return (
 		<div className='w-full min-h-dvh relative flex flex-col justify-end pt-32 pb-12 sm:pb-20 overflow-hidden'>
-			<div
-				className='absolute inset-0 bg-center bg-cover scale-110'
-				style={{
-					backgroundImage: "url('/images/community_worship2.jpg')",
-					filter: "blur(1.5px)",
-					backgroundSize: "cover",
-					backgroundRepeat: "no-repeat",
-				}}
-			/>
+			<div className='absolute inset-0 scale-110'>
+				<Image
+					src='/images/community_worship2.jpg'
+					alt='Background worship atmosphere'
+					fill
+					priority
+					className='object-cover'
+					style={{
+						filter: "blur(1.5px)",
+					}}
+				/>
+			</div>
 			<div className='absolute inset-0 bg-black/60' />
 
 			{/* Hero Content */}

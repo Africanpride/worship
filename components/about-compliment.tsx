@@ -155,17 +155,22 @@ const AboutCompliment = ({
             },
           }}
         >
-          <div className='relative aspect-square md:aspect-video lg:aspect-auto lg:col-span-2 overflow-hidden rounded-xl lg:h-full'>
-            <MotionImage
-              src={mainImage.src}
-              alt={mainImage.alt}
-              fill
-              className='size-full object-cover object-top'
+          <div className='relative aspect-square md:aspect-video lg:aspect-auto lg:col-span-2 overflow-hidden rounded-xl lg:min-h-[500px]'>
+            <motion.div
+              className="size-full"
               variants={{
                 hidden: { opacity: 0, y: 50 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
               }}
-            />
+            >
+              <Image
+                src={mainImage.src}
+                alt={mainImage.alt}
+                fill
+                priority
+                className='object-cover object-top'
+              />
+            </motion.div>
           </div>
           <div className='flex flex-col gap-4 md:flex-row lg:flex-col lg:h-full'>
             <motion.div
@@ -200,17 +205,21 @@ const AboutCompliment = ({
                 </a>
               </Button>
             </motion.div>
-            <div className='relative grow rounded-xl overflow-hidden min-h-72 md:w-1/2 lg:w-auto lg:min-h-0'>
-              <MotionImage
-                src={secondaryImage.src}
-                alt={secondaryImage.alt}
-                fill
-                className='size-full object-cover object-top'
+            <div className='relative grow rounded-xl overflow-hidden min-h-80 md:w-1/2 lg:w-auto lg:min-h-0 lg:h-full'>
+              <motion.div
+                className="size-full min-h-[300px]"
                 variants={{
                   hidden: { opacity: 0, y: 50 },
                   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
                 }}
-              />
+              >
+                <Image
+                  src={secondaryImage.src}
+                  alt={secondaryImage.alt}
+                  fill
+                  className='object-cover object-top'
+                />
+              </motion.div>
             </div>
           </div>
         </motion.div>
