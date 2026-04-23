@@ -30,29 +30,29 @@ export function DonationOptions() {
   return (
     <div className="w-full">
       <Tabs defaultValue='cash' className='w-full'>
-        <TabsList className='flex w-full bg-secondary/30 sm:p-1 border border-border/40 mb-8 h-auto rounded-xl items-stretch'>
+        <TabsList className='flex w-full bg-muted/30 p-1.5 border border-border/40 mb-10 h-auto min-h-[4.5rem] sm:min-h-[5rem] rounded-2xl items-stretch gap-2 backdrop-blur-sm !h-auto'>
           <TabsTrigger
             value='cash'
-            className='flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-500 data-[state=active]:shadow-sm flex flex-col xs:flex-row items-center justify-center gap-1.5 xs:gap-3 rounded-lg py-2.5 transition-all duration-300'
+            className='group flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-600 data-[state=active]:shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3 rounded-xl py-3 px-4 transition-all duration-300 border border-transparent data-[state=active]:border-border/50 hover:bg-background/50 data-[state=active]:hover:bg-background !h-auto !whitespace-normal'
           >
-            <div className='p-1.5 rounded-lg bg-amber-500/10 shrink-0 group-data-[state=active]:bg-amber-500 group-data-[state=active]:text-white transition-colors'>
-              <CreditCard className='size-4' />
+            <div className='p-2 rounded-xl bg-amber-500/10 group-data-[state=active]:bg-amber-500 group-data-[state=active]:text-white group-data-[state=active]:shadow-inner transition-all duration-300 shrink-0'>
+              <CreditCard className='size-4 sm:size-5' />
             </div>
-            <div className='flex flex-col items-center xs:items-start text-center xs:text-left'>
-              <span className='font-bebas text-base sm:text-xl tracking-wider uppercase leading-tight'>Cash</span>
-              <span className='text-[10px] hidden sm:inline-block font-medium opacity-60 uppercase tracking-widest'>Contribution</span>
+            <div className='flex flex-col items-center sm:items-start text-center sm:text-left overflow-hidden'>
+              <span className='font-bebas text-base sm:text-lg tracking-wider uppercase leading-none truncate w-full'>Cash</span>
+              <span className='text-[9px] sm:text-[10px] font-bold opacity-60 uppercase tracking-[0.15em] mt-1 whitespace-nowrap'>Contribution</span>
             </div>
           </TabsTrigger>
           <TabsTrigger
             value='kind'
-            className='flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-500 data-[state=active]:shadow-sm flex flex-col xs:flex-row items-center justify-center gap-1.5 xs:gap-3 rounded-lg py-2.5 transition-all duration-300'
+            className='group flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-600 data-[state=active]:shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3 rounded-xl py-3 px-4 transition-all duration-300 border border-transparent data-[state=active]:border-border/50 hover:bg-background/50 data-[state=active]:hover:bg-background !h-auto !whitespace-normal'
           >
-            <div className='p-1.5 rounded-lg bg-amber-500/10 shrink-0 group-data-[state=active]:bg-amber-500 group-data-[state=active]:text-white transition-colors'>
-              <Gift className='size-4' />
+            <div className='p-2 rounded-xl bg-amber-500/10 group-data-[state=active]:bg-amber-500 group-data-[state=active]:text-white group-data-[state=active]:shadow-inner transition-all duration-300 shrink-0'>
+              <Gift className='size-4 sm:size-5' />
             </div>
-            <div className='flex flex-col items-center xs:items-start text-center xs:text-left'>
-              <span className='font-bebas text-base sm:text-xl tracking-wider uppercase leading-tight'>In-Kind</span>
-              <span className='text-[10px] hidden sm:inline-block font-medium opacity-60 uppercase tracking-widest'>Sacrifice</span>
+            <div className='flex flex-col items-center sm:items-start text-center sm:text-left overflow-hidden'>
+              <span className='font-bebas text-base sm:text-lg tracking-wider uppercase leading-none truncate w-full'>In-Kind</span>
+              <span className='text-[9px] sm:text-[10px] font-bold opacity-60 uppercase tracking-[0.15em] mt-1 whitespace-nowrap'>Sacrifice</span>
             </div>
           </TabsTrigger>
         </TabsList>
