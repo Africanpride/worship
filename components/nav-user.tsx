@@ -29,6 +29,7 @@ import {
   LogOut,
   Moon,
   Sun,
+  Monitor,
   LayoutDashboard,
   User,
   Heart
@@ -48,7 +49,13 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const { theme, toggleTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
+
+  const themeOptions: { value: "light" | "dark" | "system"; icon: React.ReactNode; label: string }[] = [
+    { value: "light", icon: <Moon className="mr-2 h-4 w-4" />, label: "Light" },
+    { value: "dark", icon: <Sun className="mr-2 h-4 w-4" />, label: "Dark" },
+    { value: "system", icon: <Monitor className="mr-2 h-4 w-4" />, label: "System" },
+  ];
 
   const handleLogout = async () => {
     await signOut({
@@ -133,14 +140,16 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer">
-                {theme === "light" ? (
-                  <Moon className="mr-2 h-4 w-4" /> 
-                ) : (
-                  <Sun className="mr-2 h-4 w-4" />
-                )}
-                <span>{theme === "light" ? "Dark Mode" : "Light Mode"}</span>
-              </DropdownMenuItem>
+              {themeOptions.map((t) => (
+                <DropdownMenuItem 
+                  key={t.value} 
+                  onClick={() => setTheme(t.value)} 
+                  className={`cursor-pointer ${theme === t.value ? "bg-accent" : ""}`}
+                >
+                  {t.icon}
+                  <span>{t.label} Mode</span>
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem 
