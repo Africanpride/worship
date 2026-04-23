@@ -52,8 +52,8 @@ export function NavUser({
   const { theme, setTheme } = useTheme()
 
   const themeOptions: { value: "light" | "dark" | "system"; icon: React.ReactNode; label: string }[] = [
-    { value: "light", icon: <Moon className="mr-2 h-4 w-4" />, label: "Light" },
-    { value: "dark", icon: <Sun className="mr-2 h-4 w-4" />, label: "Dark" },
+    { value: "light", icon: <Sun className="mr-2 h-4 w-4" />, label: "Light" },
+    { value: "dark", icon: <Moon className="mr-2 h-4 w-4" />, label: "Dark" },
     { value: "system", icon: <Monitor className="mr-2 h-4 w-4" />, label: "System" },
   ];
 

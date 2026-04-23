@@ -1,10 +1,10 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { USALProvider } from '@usal/react';
 
 
-type Theme = "light" | "dark" | "system";
+export type Theme = "light" | "dark" | "system";
 
 interface ThemeContextType {
   theme: Theme;
@@ -19,11 +19,22 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem("theme") as Theme | null;
+      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      const initialTheme = stored || systemPreference;
+      
+      const resolvedTheme = initialTheme === "system" ? systemPreference : initialTheme;
+      document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+      return initialTheme;
+    }
+    return "system"; 
+  });
 
-  const getSystemTheme = () => window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  const getSystemTheme = useCallback(() => window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light", []);
 
-  const applyTheme = (newTheme: Theme) => {
+  const applyTheme = useCallback((newTheme: Theme) => {
     const resolved = newTheme === "system" ? getSystemTheme() : newTheme;
     const htmlElement = document.documentElement;
     if (resolved === "dark") {
@@ -32,37 +43,28 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       htmlElement.classList.remove("dark");
     }
     localStorage.setItem("theme", newTheme);
-  };
+  }, [getSystemTheme]);
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
     applyTheme(newTheme);
-  };
+  }, [applyTheme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     const newTheme = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
     setTheme(newTheme);
-  };
+  }, [theme, setTheme]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
       if (theme === "system") {
-        applyTheme("system");
+        applyTheme("system"); 
       }
     };
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [theme]);
-
-  // Initialize theme from localStorage and system preference only on client
-  useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    const initialTheme = stored || "system";
-    
-    setThemeState(initialTheme);
-    applyTheme(initialTheme);
-  }, []);
+  }, [theme, applyTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>

@@ -1,52 +1,53 @@
 "use client";
 
-import { useTheme } from "@/app/providers";
-import { Button } from "@/components/ui/button";
+import { useTheme, Theme } from "@/app/providers";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Moon, Sun, Monitor } from "lucide-react";
 
 export function ThemeToggle() {
 	const { theme, setTheme } = useTheme();
 
-	const themes: {
+	const themeOptions: {
 		value: "light" | "dark" | "system";
 		icon: React.ReactNode;
 		label: string;
 	}[] = [
 		{
 			value: "light",
-			icon: <Moon className='h-[1rem] w-[1rem]' />,
+			icon: <Sun className='h-4 w-4 bg-muted rounded-full' />,
 			label: "Light",
 		},
 		{
 			value: "dark",
-			icon: <Sun className='h-[1rem] w-[1rem]' />,
+			icon: <Moon className='h-4 w-4 bg-muted rounded-full' />,
 			label: "Dark",
 		},
 		{
 			value: "system",
-			icon: <Monitor className='h-[1rem] w-[1rem]' />,
+			icon: <Monitor className='h-4 w-4 bg-muted rounded-full' />,
 			label: "System",
 		},
 	];
 
 	return (
-		<div className='flex items-center gap-1 rounded-full bg-transparent p-1'>
-			{themes.map((t) => (
-				<Button
-					key={t.value}
-					variant={theme === t.value ? "default" : "ghost"}
-					size='icon'
-					onClick={() => setTheme(t.value)}
-					className={`h-8 w-8 rounded-full cursor-pointer transition-all ${
-						theme === t.value
-							? "bg-muted/10 shadow-sm"
-							: "hover:bg-muted/80"
-					}`}
-					aria-label={`Switch to ${t.label} theme`}
-				>
-					{t.icon}
-				</Button>
-			))}
-		</div>
+		<Tabs
+			value={theme}
+			onValueChange={(value) => setTheme(value as Theme)}
+			className='w-auto h-auto p-0.5 bg-black/5 backdrop-blur-sm rounded-full px-2'
+		>
+			<TabsList className='grid grid-cols-3 gap-1 w-full h-full rounded-full'>
+				{themeOptions.map((option) => (
+					<TabsTrigger
+						key={option.value}
+						value={option.value}
+						className='flex items-center justify-center px-1 
+						rounded-full hover:bg-muted/50
+						'
+					>
+						{option.icon}
+					</TabsTrigger>
+				))}
+			</TabsList>
+		</Tabs>
 	);
 }
