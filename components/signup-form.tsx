@@ -17,7 +17,7 @@ import { toast } from "sonner"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { ThemeToggle } from "@/components/theme-toggle-foofter";
 import { Turnstile } from "nextjs-turnstile"
 
 type SignUpProps = React.ComponentProps<"div"> & {

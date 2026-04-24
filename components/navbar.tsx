@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Logo } from "@/components/logo";
 import { NavMenu } from "@/components/nav-menu";
 import { NavigationSheet } from "@/components/navigation-sheet";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useCurrentSession } from "@/lib/use-current-session";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,6 +22,7 @@ import { signOut } from "@/lib/auth-client";
 import InsideScrollDialog from "./InsideScrollDialog";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
   const { user, isAuthenticated } = useCurrentSession();

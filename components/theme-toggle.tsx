@@ -1,53 +1,25 @@
 "use client";
 
-import { useTheme, Theme } from "@/app/providers";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Moon, Sun, Monitor } from "lucide-react";
+import { useTheme } from "@/app/providers";
+import { Button } from "@/components/ui/button";
+import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
-	const { theme, setTheme } = useTheme();
-
-	const themeOptions: {
-		value: "light" | "dark" | "system";
-		icon: React.ReactNode;
-		label: string;
-	}[] = [
-		{
-			value: "light",
-			icon: <Sun className='h-4 w-4 bg-muted rounded-full' />,
-			label: "Light",
-		},
-		{
-			value: "dark",
-			icon: <Moon className='h-4 w-4 bg-muted rounded-full' />,
-			label: "Dark",
-		},
-		{
-			value: "system",
-			icon: <Monitor className='h-4 w-4 bg-muted rounded-full' />,
-			label: "System",
-		},
-	];
+	const { theme, toggleTheme } = useTheme();
 
 	return (
-		<Tabs
-			value={theme}
-			onValueChange={(value) => setTheme(value as Theme)}
-			className='w-auto h-auto p-0.5 bg-black/5 backdrop-blur-sm rounded-full px-2'
+		<Button
+			variant='ghost'
+			size='icon'
+			onClick={toggleTheme}
+			className='rounded-full cursor-pointer'
+			aria-label='Toggle theme'
 		>
-			<TabsList className='grid grid-cols-3 gap-1 w-full h-full rounded-full'>
-				{themeOptions.map((option) => (
-					<TabsTrigger
-						key={option.value}
-						value={option.value}
-						className='flex items-center justify-center px-1 
-						rounded-full hover:bg-muted/50
-						'
-					>
-						{option.icon}
-					</TabsTrigger>
-				))}
-			</TabsList>
-		</Tabs>
+			{theme === "light" ? (
+				<Moon className='h-[1.2rem] w-[1.2rem]' />
+			) : (
+				<Sun className='h-[1.2rem] w-[1.2rem]' />
+			)}
+		</Button>
 	);
 }

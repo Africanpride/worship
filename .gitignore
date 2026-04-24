@@ -57,3 +57,5 @@ mcp.json
 .agents/
 .claude/
 .continue/
+skills/
+skills-lock.json

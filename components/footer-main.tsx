@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggleFooter } from "./theme-toggle-foofter";
 
 interface NavItem {
 	name: string;
@@ -130,7 +130,7 @@ const FooterComponent = ({
 					))}
 				</ul>
 
-				<div className='text-sm text-muted-foreground text-center md:text-left transition-opacity hover:opacity-75 pt-2 '>
+				<div className='text-xs md:text-sm text-muted-foreground text-center md:text-left transition-opacity hover:opacity-75 pt-2 '>
 					&copy; {new Date().getFullYear()}{" "}
 					<a href='/' className='font-semibold'>
 						{" The Nonstop Series"}
@@ -138,7 +138,7 @@ const FooterComponent = ({
 					. <span className='capitalize'>All rights reserved.</span>
 				</div>
 				<div className='py-2'>
-					<ThemeToggle />
+					<ThemeToggleFooter />
 				</div>
 			</nav>
 
