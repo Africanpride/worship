@@ -33,14 +33,14 @@ export function ThemeToggleFooter() {
 		<Tabs
 			value={theme}
 			onValueChange={(value) => setTheme(value as Theme)}
-			className='w-auto h-auto p-0.5  backdrop-blur-sm rounded-full px-2'
+			className='w-auto h-auto p-0.5  backdrop-blur-sm rounded-full px-2 '
 		>
-			<TabsList className='grid grid-cols-3 gap-1 w-full h-full rounded-full'>
+			<TabsList className='grid grid-cols-3 gap-1 w-full h-auto  rounded-full'>
 				{themeOptions.map((option) => (
 					<TabsTrigger
 						key={option.value}
 						value={option.value}
-						className='flex items-center justify-center px-1 cursor-pointer
+						className='flex items-center justify-center p-1 cursor-pointer
 						rounded-full hover:bg-muted/50
 						'
 					>
