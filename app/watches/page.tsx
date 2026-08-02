@@ -1,127 +1,160 @@
-import type { Metadata } from "next";
-import React from "react";
+"use client";
+
+import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { Clock, Shield, Sparkles, BookOpen, Music, Heart, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "The Watches — 144 Hours of Continuous Worship",
-  description:
-    "Explore the prophetic worship watches of The Non-Stop Series™. Step into your assigned watch for unbroken praise, prayer, and Bible reading.",
-  alternates: { canonical: "https://thenonstop.org/watches" },
-};
-
 export default function WatchesPage() {
-  const watchTypes = [
-    {
-      title: "Praise & Worship Watches",
-      desc: "Psalmists, choirs, and instrumentalists leading continuous adoration before God's throne.",
-      icon: <Music className="h-6 w-6 text-amber-500" />,
-    },
-    {
-      title: "Prayer & Intercession Watches",
-      desc: "Watchmen standing on the walls, lifting prayers for revival, healing, families, and nations.",
-      icon: <Shield className="h-6 w-6 text-amber-500" />,
-    },
-    {
-      title: "Scripture Reading Watches",
-      desc: "Public proclamation of the holy Word of God without interruption day and night.",
-      icon: <BookOpen className="h-6 w-6 text-amber-500" />,
-    },
-    {
-      title: "The Night & Midnight Watches",
-      desc: "Consecrated midnight encounters, deep intercession, and standing in the gap while the world sleeps.",
-      icon: <Flame className="h-6 w-6 text-amber-500" />,
-    },
-  ];
-
   return (
-    <main className="min-h-screen w-full relative pt-24 pb-16 bg-background">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
-        
-        {/* Hero Banner */}
-        <div className="text-center space-y-6 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-mono font-bold uppercase tracking-widest">
-            <Clock className="h-3.5 w-3.5" /> 144 Continuous Hours
-          </div>
-          <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight">
-            The Prophetic Watches
-          </h1>
-          <p className="text-xl text-amber-500 font-serif italic">
-            "The Fire Must Not Go Out"
-          </p>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            For 144 continuous hours, the altar remains active before the Lord through unbroken praise, worship, prayer, and Bible reading. Structured around rotating prophetic worship watches, every period represents a sacred assignment to keep the sound of worship rising day and night.
-          </p>
-          <blockquote className="p-4 rounded-xl bg-muted/40 border-l-4 border-amber-500 text-sm italic text-muted-foreground text-left">
-            "So he left Asaph and his brothers there before the ark of the covenant of the Lord to minister before the ark regularly, as every day's work required." — 1 Chronicles 16:37
-          </blockquote>
-        </div>
-
-        {/* What Is A Watch */}
-        <div className="grid md:grid-cols-2 gap-10 items-center bg-muted/20 p-8 sm:p-12 rounded-3xl border border-border/50">
-          <div className="space-y-4">
-            <span className="text-xs font-mono text-amber-500 font-bold uppercase tracking-widest">Sacred Assignment</span>
-            <h2 className="text-3xl font-semibold">What Is a Watch?</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              A watch is a dedicated period of continuous ministry unto the Lord. Just as King David appointed singers and ministers to serve before the Ark continually, each watch in the Non-Stop Series is carried collectively by worshippers, watchmen, and intercessors.
-            </p>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-amber-500" /> A moment of deep personal &amp; corporate worship
-              </li>
-              <li className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-amber-500" /> A time of intense intercession for nations
-              </li>
-              <li className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-amber-500" /> Continuous public reading of Scripture
-              </li>
-            </ul>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {watchTypes.map((type) => (
-              <div key={type.title} className="p-5 rounded-2xl bg-background border border-border/60 shadow-xs space-y-2">
-                <div>{type.icon}</div>
-                <h3 className="font-semibold text-base">{type.title}</h3>
-                <p className="text-xs text-muted-foreground leading-normal">{type.desc}</p>
+    <main className='flex flex-col min-h-screen w-full relative pt-12 md:pt-16'>
+      {/* ── Section 1: Hero Grid (Matches app/get-involved design) ──────────── */}
+      <section className='bg-background py-8 sm:py-16 lg:py-24 '>
+        <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
+          <motion.div
+            className='grid grid-cols-1 gap-9 lg:grid-cols-2'
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
+            {/* Left Column */}
+            <div className='flex flex-col gap-9 '>
+              <div className='flex items-center gap-6 overflow-hidden'>
+                <div className='to-amber-500 h-52 w-4 bg-gradient-to-t from-transparent' />
+                <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='space-y-4'>
+                    <h1 className='text-2xl font-semibold md:text-3xl lg:text-4xl flex items-center gap-3'>
+                      The Watches
+                      <span className='bg-amber-500/10 text-amber-500 text-[10px] py-1 px-3 rounded-full border border-amber-500/20 font-bold tracking-widest uppercase'>
+                        Silver Jubilee
+                      </span>
+                    </h1>
+                    <p className='text-muted-foreground text-xl font-semibold md:text-3xl'>
+                      The Fire Must Not Go Out.{' '}
+                      <span className='text-amber-500 inline-block'>
+                        Stand Your Watch Before the Lord.
+                      </span>
+                    </p>
+                  </div>
+                </motion.div>
               </div>
-            ))}
+              <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                <div className="relative max-h-91 h-[400px] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src='/nonstop/nonstop-018.jpg'
+                    alt='Worship Watch'
+                    fill
+                    sizes='100vw'
+                    className='object-cover object-top'
+                    priority
+                  />
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Column */}
+            <div className='flex flex-col gap-6'>
+              <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+                <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
+                      src='/nonstop/nonstop-014.jpg'
+                      alt='Intercession watch'
+                      fill
+                      sizes='(max-width: 640px) 100vw, 50vw'
+                      className='object-cover object-top'
+                    />
+                  </div>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
+                      src='/nonstop/nonstop-020.jpg'
+                      alt='Midnight watch'
+                      fill
+                      className='object-cover object-top'
+                    />
+                  </div>
+                </motion.div>
+              </div>
+              <div className='flex flex-1 flex-col justify-center gap-9'>
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <p className='text-muted-foreground text-xl leading-relaxed'>
+                    For 144 continuous hours, the altar remains active before the Lord through unbroken praise, worship, prayer, and Bible reading. Just as King David appointed ministers to serve before the Ark continually (1 Chron 16:37), every watch carries a sacred assignment.
+                  </p>
+                </motion.div>
+
+                {/* Stats row */}
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='grid gap-10 sm:grid-cols-3'>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>144</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Continuous Hours</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>24/7</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Unbroken Sound</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>6 &amp; 6</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Days &amp; Nights</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Avatars & CTA */}
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='flex items-center justify-between gap-6'>
+                    <div className='flex -space-x-3'>
+                      {['/nonstop/nonstop-001.jpg', '/nonstop/nonstop-048.jpg', '/nonstop/nonstop-022.jpg', '/nonstop/nonstop-047.jpg'].map((src, idx) => (
+                        <span key={idx} className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none size-12 ring-2 ring-background'>
+                          <Image className='aspect-square size-full object-cover' alt='worshipper' src={src} fill sizes='48px' />
+                        </span>
+                      ))}
+                    </div>
+                    <Button asChild className='shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold'>
+                      <Link href="/get-involved">Take Your Watch</Link>
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Section 2: Full-bleed image / Callout ─────────────────────────── */}
+      <section className='bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl'>
+        <div className='container space-y-10 lg:space-y-20'>
+          <div data-usal='fade-u duration-500' className="relative mt-4 h-96 md:h-140 w-full rounded-2xl overflow-hidden shadow-xl">
+            <Image
+              alt='Night watches'
+              fill
+              className='object-cover object-center'
+              src='/nonstop/nonstop-045.jpg'
+            />
+          </div>
+          <div className='grid grid-cols-1 gap-4 space-y-12 lg:grid-cols-6 lg:space-y-0' data-usal='fade-u duration-500'>
+            <div className='order-2 col-span-2 lg:order-none lg:pr-16 lg:pl-10 flex '>
+              <p className='text-foreground/60 text-xl md:text-xl '>
+                "I have set watchmen on your walls, O Jerusalem; they shall never hold their peace day or night." — Isaiah 62:6
+              </p>
+            </div>
+            <div className='order-1 col-span-4 lg:order-none lg:mt-0 lg:pl-6'>
+              <p className='text-3xl font-medium lg:text-4xl leading-relaxed '>
+                Particular emphasis is placed on the night and midnight watches — moments of intense consecration, deep spiritual alertness, and standing in the gap for families, cities, and nations. Watch by watch, hour by hour, we build an unbroken sound before the Lord.
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Night Watches Highlight */}
-        <div className="bg-neutral-900 text-white rounded-3xl p-8 sm:p-12 border border-white/10 space-y-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="max-w-2xl space-y-4">
-            <span className="text-amber-400 font-mono text-xs font-bold uppercase tracking-widest">Deep Consecration</span>
-            <h2 className="text-3xl sm:text-4xl font-semibold">The Night Watches</h2>
-            <p className="text-neutral-300 leading-relaxed">
-              Throughout Scripture, the night watches were moments of intense spiritual alertness, divine encounters, and intercession. The midnight and early morning watches become powerful moments of consecration — standing in the gap for families, cities, and generations while the world sleeps.
-            </p>
-            <p className="text-sm italic text-amber-300">
-              "I have set watchmen on your walls, O Jerusalem; they shall never hold their peace day or night." — Isaiah 62:6
-            </p>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center space-y-6 py-8">
-          <h2 className="text-3xl font-semibold">Take Your Place on the Altar</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Whether as a worshipper, intercessor, musician, choir member, or scripture reader, your voice matters in keeping the continuous sound ascending.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="rounded-full bg-amber-500 hover:bg-amber-600 text-white">
-              <Link href="/get-involved">Take Your Watch</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full">
-              <Link href="/live">Watch Live Stream</Link>
-            </Button>
-          </div>
-        </div>
-
-      </div>
+      </section>
     </main>
   );
 }

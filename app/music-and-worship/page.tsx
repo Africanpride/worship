@@ -1,103 +1,160 @@
-import type { Metadata } from "next";
-import React from "react";
+"use client";
+
+import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { Music, Radio, Disc, Globe, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "Music & Worship — Ministering Unto the Lord",
-  description:
-    "Discover the Davidic worship expression of The Non-Stop Series™. 144 hours of unbroken praise, prophetic songs, and presence-centered worship.",
-  alternates: { canonical: "https://thenonstop.org/music-and-worship" },
-};
-
 export default function MusicAndWorshipPage() {
-  const expressions = [
-    { title: "Corporate Praise", desc: "Joyous, triumphant celebrations of God's goodness and victory." },
-    { title: "Deep Worship & Adoration", desc: "Intimate, reverence-filled ministry directly before the Ark." },
-    { title: "Prophetic & Spontaneous Songs", desc: "Spirit-inspired melodies and fresh songs of the Lord." },
-    { title: "Scripture Songs & Psalms", desc: "Singing the word of God back to the Father." },
-    { title: "Instrumental Soaking", desc: "Continuous musical ministry creating a peaceful, anointed atmosphere." },
-    { title: "Sounds from the Nations", desc: "Indigenous praise expressions from ministers across Africa and global nations." },
-  ];
-
   return (
-    <main className="min-h-screen w-full relative pt-24 pb-16 bg-background">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
-        
-        {/* Header */}
-        <div className="text-center space-y-6 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-mono font-bold uppercase tracking-widest">
-            <Music className="h-3.5 w-3.5" /> Unbroken Sound
-          </div>
-          <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight">
-            Music &amp; Worship
-          </h1>
-          <p className="text-xl text-amber-500 font-serif italic">
-            Ministering Unto the Lord
-          </p>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            At the heart of the 144 Hours Non-Stop Series is continuous worship. Music is not treated merely as performance or entertainment, but as sacred ministry before the presence of God — a continuous offering ascending unto Him day and night.
-          </p>
-          <blockquote className="p-4 rounded-xl bg-muted/40 border-l-4 border-amber-500 text-sm italic text-muted-foreground text-left">
-            "David and the leaders of the army set apart for the ministry some of the sons of Asaph, Heman, and Jeduthun, who were to prophesy with lyres, harps and cymbals." — 1 Chronicles 25:1
-          </blockquote>
-        </div>
-
-        {/* Davidic Worship Culture */}
-        <div className="bg-muted/30 p-8 sm:p-12 rounded-3xl border border-border/50 space-y-8">
-          <div className="space-y-3">
-            <span className="text-xs font-mono text-amber-500 font-bold uppercase tracking-widest">Pattern &amp; Spirit</span>
-            <h2 className="text-3xl font-semibold">A Davidic Worship Expression</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              The worship culture of the Non-Stop Series is built around the presence of God rather than personalities. Every musician, singer, choir, and psalmists serves as part of a larger continuous ministry.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {expressions.map((exp) => (
-              <div key={exp.title} className="p-6 rounded-2xl bg-background border border-border/60 space-y-2">
-                <div className="h-2 w-2 rounded-full bg-amber-500 mb-2" />
-                <h3 className="font-semibold text-lg">{exp.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{exp.desc}</p>
+    <main className='flex flex-col min-h-screen w-full relative pt-12 md:pt-16'>
+      {/* ── Section 1: Hero Grid (Matches app/get-involved design) ──────────── */}
+      <section className='bg-background py-8 sm:py-16 lg:py-24 '>
+        <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
+          <motion.div
+            className='grid grid-cols-1 gap-9 lg:grid-cols-2'
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
+            {/* Left Column */}
+            <div className='flex flex-col gap-9 '>
+              <div className='flex items-center gap-6 overflow-hidden'>
+                <div className='to-amber-500 h-52 w-4 bg-gradient-to-t from-transparent' />
+                <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='space-y-4'>
+                    <h1 className='text-2xl font-semibold md:text-3xl lg:text-4xl flex items-center gap-3'>
+                      Music &amp; Worship
+                      <span className='bg-amber-500/10 text-amber-500 text-[10px] py-1 px-3 rounded-full border border-amber-500/20 font-bold tracking-widest uppercase'>
+                        Silver Jubilee
+                      </span>
+                    </h1>
+                    <p className='text-muted-foreground text-xl font-semibold md:text-3xl'>
+                      Ministering Unto the Lord.{' '}
+                      <span className='text-amber-500 inline-block'>
+                        A Sacred Continuous Offering.
+                      </span>
+                    </p>
+                  </div>
+                </motion.div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Sounds from the Nations */}
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-amber-500 font-mono text-xs font-bold uppercase tracking-widest">
-              <Globe className="h-4 w-4" /> Global Unity
+              <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                <div className="relative max-h-91 h-[400px] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src='/nonstop/nonstop-040.jpg'
+                    alt='Sacred Worship Ministration'
+                    fill
+                    sizes='100vw'
+                    className='object-cover object-top'
+                    priority
+                  />
+                </div>
+              </motion.div>
             </div>
-            <h2 className="text-3xl font-semibold">Sounds From the Nations</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Over the years, the Non-Stop Series has hosted ministers, choirs, instrumentalists, and worship leaders from Ghana, Nigeria, South Africa, Rwanda, Ethiopia, Benin, Namibia, Israel, Egypt, Ivory Coast, Bahamas, Switzerland, France, the United States, and beyond — blending diverse tongues and styles into one harmonious offering.
-            </p>
+
+            {/* Right Column */}
+            <div className='flex flex-col gap-6'>
+              <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+                <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
+                      src='/nonstop/nonstop-026.jpg'
+                      alt='Choir ministration'
+                      fill
+                      sizes='(max-width: 640px) 100vw, 50vw'
+                      className='object-cover object-top'
+                    />
+                  </div>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
+                      src='/nonstop/nonstop-010.jpg'
+                      alt='Instrumental soaking'
+                      fill
+                      className='object-cover object-top'
+                    />
+                  </div>
+                </motion.div>
+              </div>
+              <div className='flex flex-1 flex-col justify-center gap-9'>
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <p className='text-muted-foreground text-xl leading-relaxed'>
+                    Music is treated not as performance or entertainment, but as sacred ministry before God's presence. Drawing inspiration from 1 Chronicles 25:1, psalmists, choirs, and instrumentalists minister continuously day and night.
+                  </p>
+                </motion.div>
+
+                {/* Stats row */}
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='grid gap-10 sm:grid-cols-3'>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>144</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Hours of Praise</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>15+</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Global Nations</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>30+</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Ministries United</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Avatars & CTA */}
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='flex items-center justify-between gap-6'>
+                    <div className='flex -space-x-3'>
+                      {['/nonstop/nonstop-004.jpg', '/nonstop/nonstop-012.jpg', '/nonstop/nonstop-022.jpg', '/nonstop/nonstop-063.jpg'].map((src, idx) => (
+                        <span key={idx} className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none size-12 ring-2 ring-background'>
+                          <Image className='aspect-square size-full object-cover' alt='psalmist' src={src} fill sizes='48px' />
+                        </span>
+                      ))}
+                    </div>
+                    <Button asChild className='shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold'>
+                      <Link href="/live">Listen Live</Link>
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Section 2: Full-bleed image / Callout ─────────────────────────── */}
+      <section className='bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl'>
+        <div className='container space-y-10 lg:space-y-20'>
+          <div data-usal='fade-u duration-500' className="relative mt-4 h-96 md:h-140 w-full rounded-2xl overflow-hidden shadow-xl">
+            <Image
+              alt='Global Worship Ministration'
+              fill
+              className='object-cover object-center'
+              src='/nonstop/nonstop-063.jpg'
+            />
           </div>
-          <div className="p-8 rounded-3xl bg-neutral-900 text-white border border-white/10 space-y-4">
-            <h3 className="text-2xl font-semibold">Worship Beyond Performance</h3>
-            <p className="text-neutral-300 text-sm leading-relaxed">
-              "The altar of worship is not built around personalities or performances. It is built around the presence of God. Whether through a single instrument, a choir anthem, a spontaneous melody, or a quiet moment of adoration, every sound becomes part of the unbroken worship rising before God."
-            </p>
+          <div className='grid grid-cols-1 gap-4 space-y-12 lg:grid-cols-6 lg:space-y-0' data-usal='fade-u duration-500'>
+            <div className='order-2 col-span-2 lg:order-none lg:pr-16 lg:pl-10 flex '>
+              <p className='text-foreground/60 text-xl md:text-xl '>
+                Presence-centered worship that transcends performance, bringing together sounds from diverse nations into one unified throne room offering.
+              </p>
+            </div>
+            <div className='order-1 col-span-4 lg:order-none lg:mt-0 lg:pl-6'>
+              <p className='text-3xl font-medium lg:text-4xl leading-relaxed '>
+                Whether through acoustic soaking, corporate praise, prophetic song, or choir ministrations, every note rises to gladden the heart of God and restore the Tabernacle of David.
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Call to Action */}
-        <div className="text-center space-y-6 pt-6">
-          <h2 className="text-3xl font-semibold">Experience the Worship Live</h2>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="rounded-full bg-amber-500 hover:bg-amber-600 text-white">
-              <Link href="/live">Listen Live</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full">
-              <Link href="/get-involved">Join as a Psalmist / Choir</Link>
-            </Button>
-          </div>
-        </div>
-
-      </div>
+      </section>
     </main>
   );
 }

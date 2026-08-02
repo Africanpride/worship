@@ -1,79 +1,160 @@
-import type { Metadata } from "next";
-import React from "react";
-import Link from "next/link";
-import { BookOpen, Sparkles, Volume2, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Scripture Reading — Unbroken Word of God",
-  description:
-    "Explore the public reading of Scripture during The Non-Stop Series™. 144 hours of uninterrupted biblical proclamation.",
-  alternates: { canonical: "https://thenonstop.org/scripture-reading" },
-};
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function ScriptureReadingPage() {
   return (
-    <main className="min-h-screen w-full relative pt-24 pb-16 bg-background">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
-        
-        {/* Header */}
-        <div className="text-center space-y-6 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-mono font-bold uppercase tracking-widest">
-            <BookOpen className="h-3.5 w-3.5" /> Public Reading of Scripture
-          </div>
-          <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight">
-            Scripture Reading Altar
-          </h1>
-          <p className="text-xl text-amber-500 font-serif italic">
-            Saturating the Earth with the Word of God
-          </p>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            Along with continuous praise, worship, and prayer, the Non-Stop Series features the uninterrupted public reading of Scripture. For 144 hours, readers declare the Living Word over lives, communities, and nations.
-          </p>
-          <blockquote className="p-4 rounded-xl bg-muted/40 border-l-4 border-amber-500 text-sm italic text-muted-foreground text-left">
-            "Until I come, devote yourself to the public reading of Scripture, to exhortation, to teaching." — 1 Timothy 4:13
-          </blockquote>
-        </div>
+    <main className='flex flex-col min-h-screen w-full relative pt-12 md:pt-16'>
+      {/* ── Section 1: Hero Grid (Matches app/get-involved design) ──────────── */}
+      <section className='bg-background py-8 sm:py-16 lg:py-24 '>
+        <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
+          <motion.div
+            className='grid grid-cols-1 gap-9 lg:grid-cols-2'
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
+            {/* Left Column */}
+            <div className='flex flex-col gap-9 '>
+              <div className='flex items-center gap-6 overflow-hidden'>
+                <div className='to-amber-500 h-52 w-4 bg-gradient-to-t from-transparent' />
+                <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='space-y-4'>
+                    <h1 className='text-2xl font-semibold md:text-3xl lg:text-4xl flex items-center gap-3'>
+                      Scripture Reading
+                      <span className='bg-amber-500/10 text-amber-500 text-[10px] py-1 px-3 rounded-full border border-amber-500/20 font-bold tracking-widest uppercase'>
+                        Silver Jubilee
+                      </span>
+                    </h1>
+                    <p className='text-muted-foreground text-xl font-semibold md:text-3xl'>
+                      The Public Reading of Scripture.{' '}
+                      <span className='text-amber-500 inline-block'>
+                        Proclaiming the Living Word Day &amp; Night.
+                      </span>
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+              <motion.div variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                <div className="relative max-h-91 h-[400px] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src='/nonstop/nonstop-036.jpg'
+                    alt='Public Reading of Scripture'
+                    fill
+                    sizes='100vw'
+                    className='object-cover object-top'
+                    priority
+                  />
+                </div>
+              </motion.div>
+            </div>
 
-        {/* 3 Pillars of Scripture Reading */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-muted/30 border border-border/50 space-y-3">
-            <Volume2 className="h-6 w-6 text-amber-500" />
-            <h3 className="font-semibold text-lg">Atmospheric Saturation</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              When the Word is spoken aloud day and night, it shifts spiritual atmospheres and cleanses minds.
-            </p>
+            {/* Right Column */}
+            <div className='flex flex-col gap-6'>
+              <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+                <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
+                      src='/nonstop/nonstop-038.jpg'
+                      alt='Scripture reader at altar'
+                      fill
+                      sizes='(max-width: 640px) 100vw, 50vw'
+                      className='object-cover object-top'
+                    />
+                  </div>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='relative overflow-hidden rounded-md h-52 w-full'>
+                    <Image
+                      src='/nonstop/nonstop-041.jpg'
+                      alt='Atmosphere of the Word'
+                      fill
+                      className='object-cover object-top'
+                    />
+                  </div>
+                </motion.div>
+              </div>
+              <div className='flex flex-1 flex-col justify-center gap-9'>
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <p className='text-muted-foreground text-xl leading-relaxed'>
+                    "Until I come, devote yourself to the public reading of Scripture..." (1 Tim 4:13). For 144 continuous hours, believers take turns declaring God's Word aloud over the congregation and global stream.
+                  </p>
+                </motion.div>
+
+                {/* Stats row */}
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='grid gap-10 sm:grid-cols-3'>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>144</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Hours of Word</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>66</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Books Declared</p>
+                    </div>
+                    <div className='flex flex-col items-center gap-2.5'>
+                      <h3 className='text-foreground text-4xl font-medium'>100+</h3>
+                      <p className='text-muted-foreground text-center font-medium'>Volunteers</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Avatars & CTA */}
+                <motion.div variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}>
+                  <div className='flex items-center justify-between gap-6'>
+                    <div className='flex -space-x-3'>
+                      {['/nonstop/nonstop-001.jpg', '/nonstop/nonstop-048.jpg', '/nonstop/nonstop-022.jpg', '/nonstop/nonstop-047.jpg'].map((src, idx) => (
+                        <span key={idx} className='group/avatar relative flex shrink-0 overflow-hidden rounded-full select-none size-12 ring-2 ring-background'>
+                          <Image className='aspect-square size-full object-cover' alt='reader' src={src} fill sizes='48px' />
+                        </span>
+                      ))}
+                    </div>
+                    <Button asChild className='shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold'>
+                      <Link href="/get-involved">Sign Up to Read</Link>
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Section 2: Full-bleed image / Callout ─────────────────────────── */}
+      <section className='bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl'>
+        <div className='container space-y-10 lg:space-y-20'>
+          <div data-usal='fade-u duration-500' className="relative mt-4 h-96 md:h-140 w-full rounded-2xl overflow-hidden shadow-xl">
+            <Image
+              alt='Scripture Reading Session'
+              fill
+              className='object-cover object-center'
+              src='/nonstop/nonstop-037.jpg'
+            />
           </div>
-          <div className="p-6 rounded-2xl bg-muted/30 border border-border/50 space-y-3">
-            <ShieldCheck className="h-6 w-6 text-amber-500" />
-            <h3 className="font-semibold text-lg">Prophetic Proclamation</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Declaring God's promises, covenants, and statutes over cities, rulers, and the body of Christ.
-            </p>
-          </div>
-          <div className="p-6 rounded-2xl bg-muted/30 border border-border/50 space-y-3">
-            <Sparkles className="h-6 w-6 text-amber-500" />
-            <h3 className="font-semibold text-lg">Corporate Engagement</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Believers from all backgrounds participate by taking turns reading passages in various translations &amp; languages.
-            </p>
+          <div className='grid grid-cols-1 gap-4 space-y-12 lg:grid-cols-6 lg:space-y-0' data-usal='fade-u duration-500'>
+            <div className='order-2 col-span-2 lg:order-none lg:pr-16 lg:pl-10 flex '>
+              <p className='text-foreground/60 text-xl md:text-xl '>
+                Public reading of scripture saturates the spiritual atmosphere with divine truth and authority.
+              </p>
+            </div>
+            <div className='order-1 col-span-4 lg:order-none lg:mt-0 lg:pl-6'>
+              <p className='text-3xl font-medium lg:text-4xl leading-relaxed '>
+                From Genesis to Revelation, the Word of God is proclaimed without interruption, establishing righteousness, light, and spiritual strength across the convocation.
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* CTA */}
-        <div className="text-center space-y-6 pt-6">
-          <h2 className="text-3xl font-semibold">Become a Scripture Reader</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Lend your voice to declare the holy scriptures during the 144 hours.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="rounded-full bg-amber-500 hover:bg-amber-600 text-white">
-              <Link href="/get-involved">Sign Up to Read Scripture</Link>
-            </Button>
-          </div>
-        </div>
-
-      </div>
+      </section>
     </main>
   );
 }
