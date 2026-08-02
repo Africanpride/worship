@@ -1,9 +1,9 @@
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 const someAuthenticatedAction = async () => {
-    "use server";
-    const session = await auth.api.getSession({
-        headers: await headers()
-    })
+	"use server";
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 };

@@ -1,26 +1,26 @@
 "use client";
 
-import { useEffect, useRef, ReactNode } from "react";
 import LocomotiveScroll from "locomotive-scroll";
+import { type ReactNode, useEffect, useRef } from "react";
 import "locomotive-scroll/dist/locomotive-scroll.css";
 
 export default function LocomotiveScrollWrapper({
-  children,
+	children,
 }: {
-  children: ReactNode;
+	children: ReactNode;
 }) {
-  const scrollRef = useRef<HTMLElement>(null);
-  const locomotiveScrollRef = useRef<LocomotiveScroll | null>(null);
+	const scrollRef = useRef<HTMLElement>(null);
+	const locomotiveScrollRef = useRef<LocomotiveScroll | null>(null);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      locomotiveScrollRef.current = new LocomotiveScroll();
-    }
+	useEffect(() => {
+		if (scrollRef.current) {
+			locomotiveScrollRef.current = new LocomotiveScroll();
+		}
 
-    return () => {
-      locomotiveScrollRef.current?.destroy();
-    };
-  }, []);
+		return () => {
+			locomotiveScrollRef.current?.destroy();
+		};
+	}, []);
 
-  return <main ref={scrollRef}>{children}</main>;
+	return <main ref={scrollRef}>{children}</main>;
 }

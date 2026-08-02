@@ -1,116 +1,114 @@
-import {
-    betterAuth
-} from "better-auth";
-import { nextCookies } from "better-auth/next-js";
+import { render } from "@react-email/render";
+import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { prisma } from "./prisma";
-import { admin, multiSession } from "better-auth/plugins"
+import { nextCookies } from "better-auth/next-js";
+import { admin, multiSession } from "better-auth/plugins";
 import { resend } from "./email/resend";
 import { reactResetPasswordEmail } from "./email/rest-password";
 import VerifyEmail from "./email/VerifyEmail";
-import { render } from "@react-email/render";
-
-
+import { prisma } from "./prisma";
 
 export const auth = betterAuth({
-    appName: "The NonStop Series",
-    database: prismaAdapter(prisma, {
-        provider: "mongodb",
-    }),
-    additionalFields: {
-        user: {
-            role: {
-                type: "string",
-                default: "user",
-                input:false
-            },
-        },
-    },
-    advanced: {
-    database: {
-      generateId: false,  
-      experimental: { joins: true },
-    },
-    databaseHooks: {
-        user: {
-        create: {
-            before: async (user: any) => {
-            return {
-                data: {
-                ...user,
-                role: "user", 
-                },
-            };
-            },
-            after: async (user: any) => {
-            //  
-            },
-        },
-        },
-    },
-    },
-    trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL!, "http://localhost:3000"]
-        .concat(process.env.NODE_ENV === "development" ? ["http://localhost:3001", "http://localhost:3002"] : []),
-     account: {
-    accountLinking: {
-      enabled: true,
-      trustedProviders: ["google"],
-      updateAccountOnSignIn: true,
-    },
-  },
-  emailVerification: {
-    enabled: true,
-    requireEmailVerification: true,
-    async sendVerificationEmail({ user, url }) {
-        try {
-            const res = await resend.emails.send({
-                from: "no-reply@thenonstop.org",
-                to: user.email,
-                subject: "Verify your email address",
-                react: VerifyEmail({
-                    username: user.email,
-                    verifyLink: url,
-                }),
-            });
-            console.log("Verification email sent successfully");
-        } catch (error) {
-            console.error("Failed to send verification email:", error);
-        }
-    },
-  },
-    emailAndPassword: {
-        autoSignIn: false,
-        enabled: true,
-        requireEmailVerification: true,
-        minPasswordLength: 8,
-        async sendResetPassword({ user, url }) {
-            try {
-                const res = await resend.emails.send({
-                    from: "no-reply@thenonstop.org",
-                    to: user.email,
-                    subject: "Reset your TheNonStop password",
-                    react: reactResetPasswordEmail({
-                        username: user.email,
-                        resetLink: url,
-                    }),
-                });
-                console.log("Password reset email sent successfully");
-            } catch (error) {
-                console.error("Failed to send reset password email:", error);
-            }
-        },
-    },
-    socialProviders: {
-        google: {
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-        },
-    },
-    plugins: [
-        admin(),
-        multiSession(),
-        nextCookies(),
-    ],
-    /** if no database is provided, the user data will be stored in memory.
-     * Make sure to provide a database to persist user data **/
+	appName: "The NonStop Series",
+	database: prismaAdapter(prisma, {
+		provider: "mongodb",
+	}),
+	additionalFields: {
+		user: {
+			role: {
+				type: "string",
+				default: "user",
+				input: false,
+			},
+		},
+	},
+	advanced: {
+		database: {
+			generateId: false,
+			experimental: { joins: true },
+		},
+		databaseHooks: {
+			user: {
+				create: {
+					before: async (user: any) => {
+						return {
+							data: {
+								...user,
+								role: "user",
+							},
+						};
+					},
+					after: async (user: any) => {
+						//
+					},
+				},
+			},
+		},
+	},
+	trustedOrigins: [
+		process.env.NEXT_PUBLIC_APP_URL!,
+		"http://localhost:3000",
+	].concat(
+		process.env.NODE_ENV === "development"
+			? ["http://localhost:3001", "http://localhost:3002"]
+			: [],
+	),
+	account: {
+		accountLinking: {
+			enabled: true,
+			trustedProviders: ["google"],
+			updateAccountOnSignIn: true,
+		},
+	},
+	emailVerification: {
+		enabled: true,
+		requireEmailVerification: true,
+		async sendVerificationEmail({ user, url }) {
+			try {
+				const res = await resend.emails.send({
+					from: "no-reply@thenonstop.org",
+					to: user.email,
+					subject: "Verify your email address",
+					react: VerifyEmail({
+						username: user.email,
+						verifyLink: url,
+					}),
+				});
+				console.log("Verification email sent successfully");
+			} catch (error) {
+				console.error("Failed to send verification email:", error);
+			}
+		},
+	},
+	emailAndPassword: {
+		autoSignIn: false,
+		enabled: true,
+		requireEmailVerification: true,
+		minPasswordLength: 8,
+		async sendResetPassword({ user, url }) {
+			try {
+				const res = await resend.emails.send({
+					from: "no-reply@thenonstop.org",
+					to: user.email,
+					subject: "Reset your TheNonStop password",
+					react: reactResetPasswordEmail({
+						username: user.email,
+						resetLink: url,
+					}),
+				});
+				console.log("Password reset email sent successfully");
+			} catch (error) {
+				console.error("Failed to send reset password email:", error);
+			}
+		},
+	},
+	socialProviders: {
+		google: {
+			clientId: process.env.GOOGLE_CLIENT_ID!,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+		},
+	},
+	plugins: [admin(), multiSession(), nextCookies()],
+	/** if no database is provided, the user data will be stored in memory.
+	 * Make sure to provide a database to persist user data **/
 });

@@ -1,8 +1,13 @@
+/** biome-ignore-all lint/a11y/useButtonType: <explanation> */
 "use client";
 
-import { useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Menu, X, Heart } from "lucide-react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { Heart, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import useSWR from "swr";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,12 +15,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Logo } from "@/components/logo";
-import Link from "next/link";
 import { useCurrentSession } from "@/lib/use-current-session";
-import { motion, AnimatePresence, Variants } from "framer-motion";
 import InsideScrollDialog from "./InsideScrollDialog";
-import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -80,37 +81,34 @@ export const NavigationSheet = () => {
   const isLive = data?.isLive || false;
 
   return (
-    <Sheet
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Sheet open={open} onOpenChange={setOpen}>
       <VisuallyHidden>
         <SheetTitle>Navigation Menu</SheetTitle>
       </VisuallyHidden>
 
       <SheetTrigger asChild>
         <Button
-          className='rounded-full text-white bg-transparent border-white/10 hover:bg-white/10 hover:text-white'
-          size='icon'
-          variant='ghost'
+          className="rounded-full text-white bg-transparent border-white/10 hover:bg-white/10 hover:text-white"
+          size="icon"
+          variant="ghost"
         >
-          <Menu className='h-6 w-6' />
+          <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
 
       <SheetContent
-        side='top'
-        className='h-dvh w-full border-none bg-black p-0 text-white [&>button]:hidden'
+        side="top"
+        className="h-dvh w-full border-none bg-black p-0 text-white [&>button]:hidden"
       >
         {/* Header */}
-        <div className='flex items-center justify-between px-6 py-4 border-b border-white/10'>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
           <Logo />
           <button
             onClick={() => setOpen(false)}
-            className='flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10'
-            aria-label='Close menu'
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
+            aria-label="Close menu"
           >
-            <X className='h-5 w-5' />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
@@ -118,11 +116,11 @@ export const NavigationSheet = () => {
         <AnimatePresence>
           {open && (
             <motion.nav
-              className='flex flex-col h-[calc(100dvh-73px)] px-6 pt-2 pb-8 overflow-hidden'
+              className="flex flex-col h-[calc(100dvh-73px)] px-6 pt-2 pb-8 overflow-hidden"
               variants={containerVariants}
-              initial='hidden'
-              animate='show'
-              exit='exit'
+              initial="hidden"
+              animate="show"
+              exit="exit"
             >
               <div className="flex-1 flex flex-col justify-center">
                 <div className="flex flex-col gap-0.5">
@@ -130,28 +128,28 @@ export const NavigationSheet = () => {
                     <motion.div
                       key={item.label}
                       variants={itemVariants}
-                      className='shrink-0 border-b border-white/5 last:border-none'
+                      className="shrink-0 border-b border-white/5 last:border-none  "
                     >
                       <Link
                         href={item.href}
                         onClick={() => setOpen(false)}
-                        className='group flex items-center justify-between py-2.5 transition-colors hover:text-white/60'
+                        className="group flex items-center justify-between py-2.5 transition-colors hover:text-white/60"
                       >
-                        <div className='flex items-center gap-3'>
+                        <div className="flex items-center gap-3">
                           <span
-                            className='text-2xl font-medium tracking-tight text-white leading-none'
+                            className="text-2xl font-medium tracking-tight text-white leading-none"
                             style={{ fontFamily: "var(--font-bebas)" }}
                           >
                             {item.label}
                           </span>
                           {item.label === "Live" && isLive && (
-                            <span className='relative flex h-2.5 w-2.5'>
-                              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75'></span>
-                              <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500'></span>
+                            <span className="relative flex h-2.5 w-2.5">
+                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500"></span>
                             </span>
                           )}
                         </div>
-                        <span className='text-[10px] font-mono text-white/20 tabular-nums uppercase underline underline-offset-4 decoration-white/5'>
+                        <span className="text-[10px] font-mono text-white/20 tabular-nums uppercase underline underline-offset-4 decoration-white/5">
                           0{i + 1}
                         </span>
                       </Link>
@@ -163,70 +161,74 @@ export const NavigationSheet = () => {
               {/* Footer of sheet */}
               <motion.div
                 variants={itemVariants}
-                className='pt-8 flex flex-col gap-5 shrink-0'
+                className="pt-8 flex flex-col gap-5 shrink-0"
               >
-                <div className='flex flex-wrap items-center gap-x-5 gap-y-2 text-white/40 text-[10px] font-bold uppercase tracking-widest'>
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-white/40 text-[10px] font-bold uppercase tracking-widest">
                   <a
-                    href='https://www.facebook.com/nonstopseries/'
-                    target='_blank'
-                    className='hover:text-white transition-colors'
+                    href="https://www.facebook.com/nonstopseries/"
+                    target="_blank"
+                    className="hover:text-white transition-colors"
+                    rel="noopener"
                   >
                     Facebook
                   </a>
                   <a
-                    href='https://twitter.com/thenonstopserie'
-                    target='_blank'
-                    className='hover:text-white transition-colors'
+                    href="https://twitter.com/thenonstopserie"
+                    target="_blank"
+                    className="hover:text-white transition-colors"
+                    rel="noopener"
                   >
                     Twitter (X)
                   </a>
                   <a
-                    href='https://www.youtube.com/channel/UCszsGdub8qkbJOz_rdx-5IA'
-                    target='_blank'
-                    className='hover:text-white transition-colors'
+                    href="https://www.youtube.com/channel/UCszsGdub8qkbJOz_rdx-5IA"
+                    target="_blank"
+                    className="hover:text-white transition-colors"
+                    rel="noopener"
                   >
                     YouTube
                   </a>
                   <a
-                    href='https://www.tiktok.com/@thenonstopseries'
-                    target='_blank'
-                    className='hover:text-white transition-colors'
+                    href="https://www.tiktok.com/@thenonstopseries"
+                    target="_blank"
+                    className="hover:text-white transition-colors"
+                    rel="noopener"
                   >
                     TikTok
                   </a>
                 </div>
 
-                <div className='grid grid-cols-2 gap-3'>
+                <div className="grid grid-cols-2 gap-3">
                   <Link
-                    href='/partner#give'
+                    href="/partner#give"
                     onClick={() => setOpen(false)}
-                    className='text-center rounded-full bg-amber-500 py-3 text-[11px] font-bold uppercase tracking-widest text-white transition-all hover:bg-amber-600 active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10'
+                    className="text-center rounded-full bg-amber-500 py-3 text-[11px] font-bold uppercase tracking-widest text-white transition-all hover:bg-amber-600 active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10"
                   >
-                    <Heart className='size-3.5 fill-white' />
+                    <Heart className="size-3.5 fill-white" />
                     Donate
                   </Link>
 
                   {!isAuthenticated ? (
                     <Link
-                      href='/login'
+                      href="/login"
                       onClick={() => setOpen(false)}
-                      className='text-center rounded-full bg-white py-3 text-[11px] font-bold uppercase tracking-widest text-black transition-all hover:bg-white/90 active:scale-95 shadow-lg'
+                      className="text-center rounded-full bg-white py-3 text-[11px] font-bold uppercase tracking-widest text-black transition-all hover:bg-white/90 active:scale-95 shadow-lg"
                     >
                       Sign In
                     </Link>
                   ) : user?.role === "admin" ? (
                     <Link
-                      href='/dashboard'
+                      href="/dashboard"
                       onClick={() => setOpen(false)}
-                      className='text-center rounded-full bg-slate-800 py-3 text-[11px] font-bold uppercase tracking-widest text-white transition-all hover:bg-slate-700 active:scale-95 border border-white/10 shadow-lg'
+                      className="text-center rounded-full bg-slate-800 py-3 text-[11px] font-bold uppercase tracking-widest text-white transition-all hover:bg-slate-700 active:scale-95 border border-white/10 shadow-lg"
                     >
                       Dashboard
                     </Link>
                   ) : (
                     <Link
-                      href='/profile'
+                      href="/profile"
                       onClick={() => setOpen(false)}
-                      className='text-center rounded-full bg-white py-3 text-[11px] font-bold uppercase tracking-widest text-black transition-all hover:bg-white/90 active:scale-95 shadow-lg'
+                      className="text-center rounded-full bg-white py-3 text-[11px] font-bold uppercase tracking-widest text-black transition-all hover:bg-white/90 active:scale-95 shadow-lg"
                     >
                       Profile
                     </Link>

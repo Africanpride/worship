@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import type { ComponentProps } from "react";
-import { cn } from "@/lib/utils";
-
 import useSWR from "swr";
+import { cn } from "@/lib/utils";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -27,9 +26,13 @@ export const NavMenu = ({
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "Watches", href: "/watches" },
-    { label: "Music", href: "/music-and-worship" },
+    // { label: "Music & Worship", href: "/music-and-worship" },
+    // { label: "Prayer Wall", href: "/prayer-wall" },
+    // { label: "Scripture Reading", href: "/scripture-reading" },
+    // { label: "Daily Devotionals", href: "/blog" },
+    // { label: "Start an Altar", href: "/start-an-altar" },
     { label: "Schedule", href: "/schedule" },
-    { label: "Partner", href: "/partner" },
+    // { label: "Partner", href: "/partner" },
     { label: "Live", href: "/live", showPulse: true },
     { label: "Gallery", href: "/gallery" },
     { label: "Get Involved", href: "/get-involved" },
@@ -42,8 +45,10 @@ export const NavMenu = ({
     <nav
       className={cn(
         "flex",
-        isVertical ? "flex-col items-start gap-2" : "items-center justify-center space-x-1",
-        className
+        isVertical
+          ? "flex-col items-start gap-2"
+          : "items-center justify-center space-x-1",
+        className,
       )}
       {...props}
     >
@@ -54,26 +59,26 @@ export const NavMenu = ({
           onClick={onItemClick}
           className={cn(
             "group relative block h-12 overflow-hidden px-4 font-bold",
-            isVertical && "w-full px-0"
+            isVertical && "w-full px-0",
           )}
-          transitionTypes={['slide', 'fade']}
+          transitionTypes={["slide", "fade"]}
         >
-          <div className='flex flex-col transition-transform duration-400 group-hover:-translate-y-12 text-white '>
-            <div className='flex h-12 items-center justify-center text-[12px] font-medium uppercase tracking-wide text-white transition-colors duration-400 group-hover:text-white gap-2'>
+          <div className="flex flex-col transition-transform duration-400 group-hover:-translate-y-12 text-white ">
+            <div className="flex h-12 items-center justify-center text-[12px] font-medium uppercase tracking-wide text-white transition-colors duration-400 group-hover:text-white gap-2">
               {item.label}
               {item.label === "Live" && isLive && (
-                <span className='relative flex h-2 w-2'>
-                  <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75'></span>
-                  <span className='relative inline-flex h-2 w-2 rounded-full bg-red-500'></span>
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
                 </span>
               )}
             </div>
-            <div className='flex h-12 items-center justify-center text-[12px] font-medium uppercase tracking-wide text-white gap-2'>
+            <div className="flex h-12 items-center justify-center text-[12px] font-medium uppercase tracking-wide text-white gap-2">
               {item.label}
               {item.label === "Live" && isLive && (
-                <span className='relative flex h-2 w-2'>
-                  <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75'></span>
-                  <span className='relative inline-flex h-2 w-2 rounded-full bg-red-500'></span>
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
                 </span>
               )}
             </div>

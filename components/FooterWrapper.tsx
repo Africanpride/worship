@@ -4,23 +4,19 @@ import { usePathname } from "next/navigation";
 import Footer from "@/components/footer";
 
 export default function FooterWrapper() {
-  const pathname = usePathname();
+	const pathname = usePathname();
 
-  // Routes that should not display the footer
-  const noFooterRoutes = [
-    "/login",
-    "/signup",
-    "/dashboard",
-  ];
+	// Routes that should not display the footer
+	const noFooterRoutes = ["/login", "/signup", "/dashboard"];
 
-  // Check if current pathname matches any no-footer route
-  const shouldHideFooter = noFooterRoutes.some(
-    (route) => pathname === route || pathname?.startsWith(`${route}/`)
-  );
+	// Check if current pathname matches any no-footer route
+	const shouldHideFooter = noFooterRoutes.some(
+		(route) => pathname === route || pathname?.startsWith(`${route}/`),
+	);
 
-  if (shouldHideFooter) {
-    return null;
-  }
+	if (shouldHideFooter) {
+		return null;
+	}
 
-  return <Footer />;
+	return <Footer />;
 }

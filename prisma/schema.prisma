@@ -199,3 +199,21 @@ model Reflection {
 
   @@map("reflections")
 }
+
+model BlogPost {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String   @unique
+  category    String
+  excerpt     String
+  content     String
+  image       String?
+  author      String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_posts")
+}

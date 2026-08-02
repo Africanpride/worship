@@ -1,18 +1,18 @@
 @keyframes appear {
-    from {
-        opacity: 0;
-        transform: translateY(100px);
-    }
+	from {
+		opacity: 0;
+		transform: translateY(100px);
+	}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .card {
-    animation: appear linear;
-    animation-timeline: view();
-    /* Starts at 0% visibility, ends when 50% through the viewport */
-    animation-range: entry 0% cover 50%;
+	animation: appear linear;
+	animation-timeline: view();
+	/* Starts at 0% visibility, ends when 50% through the viewport */
+	animation-range: entry 0% cover 50%;
 }

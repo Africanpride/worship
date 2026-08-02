@@ -1,11 +1,11 @@
-import { execSync } from 'child_process';
+import { execSync } from "child_process";
 
 // Configure git
 execSync('git config user.email "v0@vercel.com"');
 execSync('git config user.name "v0"');
 
 // Add changes
-execSync('git add -A');
+execSync("git add -A");
 
 // Commit changes
 execSync(`git commit -m "feat: hide navbar from login, signup, and dashboard routes
@@ -15,6 +15,6 @@ execSync(`git commit -m "feat: hide navbar from login, signup, and dashboard rou
 - Easy to extend with additional routes in the future"`);
 
 // Push to current branch
-execSync('git push origin HEAD');
+execSync("git push origin HEAD");
 
-console.log('Changes committed and pushed successfully!');
+console.log("Changes committed and pushed successfully!");

@@ -1,30 +1,30 @@
 .title {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1;
-  color: #000;
-  font-size: 30px;
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	z-index: 1;
+	color: #000;
+	font-size: 30px;
 }
 
 .wrapper {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  min-height: 200vh;
-  background-color: #eaeaea;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	min-height: 200vh;
+	background-color: #eaeaea;
 }
 
 .box {
-  width: 30vw;
-  height: 30vw;
-  background-color: blue;
+	width: 30vw;
+	height: 30vw;
+	background-color: blue;
 }
 
 .header-wrapper {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 0 20px;
-  border-radius: 14px;
+	background-color: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	padding: 0 20px;
+	border-radius: 14px;
 }

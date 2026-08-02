@@ -1,9 +1,9 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTheme } from "@/app/providers";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
 	const { theme, toggleTheme } = useTheme();
@@ -15,20 +15,20 @@ export function ThemeToggle() {
 
 	return (
 		<Button
-			variant='ghost'
-			size='icon'
+			variant="ghost"
+			size="icon"
 			onClick={toggleTheme}
-			className='rounded-full cursor-pointer'
-			aria-label='Toggle theme'
+			className="rounded-full cursor-pointer"
+			aria-label="Toggle theme"
 		>
 			{mounted ? (
 				theme === "light" ? (
-					<Moon className='h-[1.2rem] w-[1.2rem]' />
+					<Moon className="h-[1.2rem] w-[1.2rem]" />
 				) : (
-					<Sun className='h-[1.2rem] w-[1.2rem]' />
+					<Sun className="h-[1.2rem] w-[1.2rem]" />
 				)
 			) : (
-				<Moon className='h-[1.2rem] w-[1.2rem]' />
+				<Moon className="h-[1.2rem] w-[1.2rem]" />
 			)}
 		</Button>
 	);

@@ -1,23 +1,17 @@
-import {
-    createAuthClient
-} from "better-auth/react";
-import { adminClient, inferAdditionalFields } from "better-auth/client/plugins"
-import { auth } from "./auth";
-
+import { adminClient, inferAdditionalFields } from "better-auth/client/plugins";
+import { createAuthClient } from "better-auth/react";
+import type { auth } from "./auth";
 
 export const authClient = createAuthClient({
-    baseURL: process.env.NEXT_PUBLIC_APP_URL,
-    plugins: [
-        adminClient(),
-        inferAdditionalFields<typeof auth>()
-    ]
+	baseURL: process.env.NEXT_PUBLIC_APP_URL,
+	plugins: [adminClient(), inferAdditionalFields<typeof auth>()],
 });
 
 export const {
-    signIn,
-    signOut,
-    signUp,
-    useSession,
-    verifyEmail,
-    sendVerificationEmail,
+	signIn,
+	signOut,
+	signUp,
+	useSession,
+	verifyEmail,
+	sendVerificationEmail,
 } = authClient;
