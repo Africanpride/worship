@@ -20,7 +20,12 @@ export default function HeroHeadline({
   imageSrc = "/images/cs.jpg",
 }: HeroHeadlineProps) {
   return (
-    <div className={cn("  py-20 flex flex-col md:flex-row justify-center items-center gap-10 overflow-hidden", className)}>
+    <div
+      className={cn(
+        "  py-20 flex flex-col md:flex-row justify-center items-center gap-10 overflow-hidden",
+        className,
+      )}
+    >
       <div className="flex-1">
         <h1 className="text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[7.5vw] font-bebas leading-[0.85] tracking-[-0.03em] uppercase ">
           <motion.div
@@ -31,7 +36,7 @@ export default function HeroHeadline({
           >
             {text1}
           </motion.div>
-          
+
           <div className="flex items-baseline gap-[1vw] sm:gap-[1.5vw]">
             <motion.div
               initial={{ width: 0, opacity: 0 }}
@@ -48,17 +53,21 @@ export default function HeroHeadline({
                 priority
               />
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.1,
+              }}
               className="block"
             >
               {text2}
             </motion.div>
           </div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -85,23 +94,20 @@ export default function HeroHeadline({
           whileHover={{ y: 10, opacity: 0.8 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
           onClick={() => {
-            const element = document.getElementById('why-the-tabernacle');
-            element?.scrollIntoView({ behavior: 'smooth' });
+            const element = document.getElementById("why-the-tabernacle");
+            element?.scrollIntoView({ behavior: "smooth" });
           }}
-          className="w-16 h-16 border rounded-full flex items-center justify-center p-3 opacity-20 hover:opacity-100 transition-all cursor-pointer rotate-[45deg] bg-white/5 hover:bg-white/20"
+          className="rounded-full flex items-center justify-center p-3 opacity-20 hover:opacity-100 transition-all cursor-pointer "
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M7 17L17 7" />
-            <path d="M7 7h10v10" />
-          </svg>
+          {/* Inserting logo here using <Image /> tage */}
+          <Image
+            src="/logos/logo..png"
+            alt="Highlight"
+            width={256}
+            height={256}
+            className="object-cover object-top scale-110"
+            priority
+          />
         </motion.div>
       </div>
     </div>
