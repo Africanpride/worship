@@ -102,6 +102,7 @@ const Contact31 = ({
               src={image}
               alt="Contact"
               fill
+              sizes='(max-width: 1024px) 100vw, 50vw'
               className="absolute inset-0 size-full object-cover"
             />
           </div>

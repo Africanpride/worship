@@ -103,6 +103,7 @@ export default function RootLayout({
       data-scroll-behavior='smooth'
       scrollbar-width='thin'
       scrollbar-color='#000 #fff'
+      suppressHydrationWarning
     >
       <body
         className={`${opensans.variable} ${bebas.variable} text-base antialiased`}

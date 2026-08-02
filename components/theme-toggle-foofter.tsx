@@ -1,11 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTheme, Theme } from "@/app/providers";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Moon, Sun, Monitor } from "lucide-react";
 
 export function ThemeToggleFooter() {
 	const { theme, setTheme } = useTheme();
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	const themeOptions: {
 		value: "light" | "dark" | "system";
@@ -28,6 +34,23 @@ export function ThemeToggleFooter() {
 			label: "System",
 		},
 	];
+
+	if (!mounted) {
+		return (
+			<div className='w-auto h-auto p-0.5 backdrop-blur-sm rounded-full px-2'>
+				<div className='grid grid-cols-3 gap-1 w-full h-auto rounded-full'>
+					{themeOptions.map((option) => (
+						<div
+							key={option.value}
+							className='flex items-center justify-center p-1 rounded-full'
+						>
+							{option.icon}
+						</div>
+					))}
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<Tabs

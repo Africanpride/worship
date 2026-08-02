@@ -53,6 +53,7 @@ export default function Home() {
                     src='/nonstop/nonstop-043.jpg'
                     alt='worship ministration'
                     fill
+                    sizes='100vw'
                     className='object-cover object-top'
                   />
                 </div>
@@ -70,6 +71,7 @@ export default function Home() {
                       src='/nonstop/nonstop-029.jpg'
                       alt='ministry service'
                       fill
+                      sizes='(max-width: 640px) 100vw, 50vw'
                       className='object-cover object-top'
                     />
                   </div>
@@ -133,6 +135,7 @@ export default function Home() {
                           alt='worshipper'
                           src='/nonstop/nonstop-001.jpg'
                           fill
+                          sizes='48px'
                         />
                       </span>
                       <span
@@ -146,6 +149,7 @@ export default function Home() {
                           alt='lead singer'
                           src='/nonstop/nonstop-048.jpg'
                           fill
+                          sizes='48px'
                         />
                       </span>
                       <span
@@ -159,6 +163,7 @@ export default function Home() {
                           alt='musician'
                           src='/nonstop/nonstop-022.jpg'
                           fill
+                          sizes='48px'
                         />
                       </span>
                       <span
@@ -172,6 +177,7 @@ export default function Home() {
                           alt='volunteer'
                           src='/nonstop/nonstop-047.jpg'
                           fill
+                          sizes='48px'
                         />
                       </span>
                     </div>

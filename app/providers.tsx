@@ -19,18 +19,20 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem("theme") as Theme | null;
-      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      const initialTheme = stored || systemPreference;
-      
-      const resolvedTheme = initialTheme === "system" ? systemPreference : initialTheme;
-      document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
-      return initialTheme;
+  const [theme, setThemeState] = useState<Theme>("system");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme") as Theme | null;
+    const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    const initialTheme = stored || systemPreference;
+
+    if (initialTheme !== theme) {
+      setThemeState(initialTheme);
     }
-    return "system"; 
-  });
+
+    const resolvedTheme = initialTheme === "system" ? systemPreference : initialTheme;
+    document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+  }, []);
 
   const getSystemTheme = useCallback(() => window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light", []);
 
