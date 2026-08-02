@@ -54,7 +54,7 @@ export default function InsideScrollDialog({
 							</ScrollArea.Scrollbar>
 						</ScrollArea.Root>
 						<div className="mt-4 flex justify-end gap-3">
-							<Dialog.Close render={<Button variant="outline">Close</Button>} />
+							<Dialog.Close render={<Button variant="outline" className="cursor-pointer">Close</Button>} />
 						</div>
 					</Dialog.Popup>
 				</Dialog.Viewport>

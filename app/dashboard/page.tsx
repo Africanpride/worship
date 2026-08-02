@@ -125,13 +125,13 @@ export default function DashboardPage() {
 				</div>
 				<div className="flex items-center gap-2">
 					<Button asChild className="rounded-full shadow-lg shadow-primary/20">
-						<Link href="/dashboard/admin/events">
+						<Link href="/dashboard/admin/events" className="cursor-pointer">
 							<PlusCircle className="mr-2 h-4 w-4" />
 							New Ministration
 						</Link>
 					</Button>
 					<Button variant="outline" className="rounded-full" asChild>
-						<a href="/" target="_blank" rel="noopener">
+						<a href="/" target="_blank" rel="noopener" className="cursor-pointer">
 							<ExternalLink className="mr-2 h-4 w-4" />
 							Public View
 						</a>
@@ -162,7 +162,7 @@ export default function DashboardPage() {
 							</p>
 							<Link
 								href={stat.link}
-								className="mt-4 flex items-center text-[11px] font-bold text-primary group hover:underline"
+								className="mt-4 flex items-center text-[11px] font-bold text-primary group hover:underline cursor-pointer"
 							>
 								Manage {stat.title.split(" ")[1] || stat.title}
 								<ArrowUpRight className="ml-1 size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -183,7 +183,7 @@ export default function DashboardPage() {
 							</CardDescription>
 						</div>
 						<Button variant="ghost" size="sm" asChild>
-							<Link href="/dashboard/admin/users">View All</Link>
+							<Link href="/dashboard/admin/users" className="cursor-pointer">View All</Link>
 						</Button>
 					</CardHeader>
 					<CardContent>
@@ -266,7 +266,7 @@ export default function DashboardPage() {
 										</div>
 										<Link
 											href={`/dashboard/admin/events`}
-											className="mt-3 flex items-center text-[10px] font-bold text-primary group hover:underline"
+											className="mt-3 flex items-center text-[10px] font-bold text-primary group hover:underline cursor-pointer"
 										>
 											Event Details
 											<ArrowUpRight className="ml-1 size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -279,7 +279,7 @@ export default function DashboardPage() {
 								className="w-full mt-4 border-dashed rounded-xl"
 								asChild
 							>
-								<Link href="/dashboard/admin/events">Manage Full Schedule</Link>
+								<Link href="/dashboard/admin/events" className="cursor-pointer">Manage Full Schedule</Link>
 							</Button>
 						</div>
 					</CardContent>

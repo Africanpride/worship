@@ -60,15 +60,15 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 						<Tabs defaultValue="cash" className="w-full">
 							<TabsList className="grid w-full grid-cols-2 bg-muted border border-border mb-8 h-14 min-h-[44px]">
 								<TabsTrigger
-									value="cash"
-									className="data-[state=active]:bg-amber-500 data-[state=active]:text-primary-foreground uppercase font-semibold text-xs sm:text-sm tracking-wide h-full"
-								>
+ 									value="cash"
+ 									className="data-[state=active]:bg-amber-500 data-[state=active]:text-primary-foreground uppercase font-semibold text-xs sm:text-sm tracking-wide h-full cursor-pointer"
+ 								>
 									Cash Donation
 								</TabsTrigger>
 								<TabsTrigger
-									value="kind"
-									className="data-[state=active]:bg-amber-500 data-[state=active]:text-primary-foreground uppercase font-semibold text-xs sm:text-sm tracking-wide h-full"
-								>
+ 									value="kind"
+ 									className="data-[state=active]:bg-amber-500 data-[state=active]:text-primary-foreground uppercase font-semibold text-xs sm:text-sm tracking-wide h-full cursor-pointer"
+ 								>
 									In-Kind Sacrifice
 								</TabsTrigger>
 							</TabsList>
@@ -118,15 +118,15 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 															024 123 4567
 														</p>
 													</div>
-													<Button
-														size="icon"
-														variant="ghost"
-														className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full"
-														onClick={(e) => {
-															e.stopPropagation();
-															copyToClipboard("0241234567");
-														}}
-													>
+												<Button
+ 														size="icon"
+ 														variant="ghost"
+ 														className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full cursor-pointer"
+ 														onClick={(e) => {
+ 															e.stopPropagation();
+ 															copyToClipboard("0241234567");
+ 														}}
+ 													>
 														<Copy className="size-6" />
 													</Button>
 												</div>
@@ -139,15 +139,15 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 															026 987 6543
 														</p>
 													</div>
-													<Button
-														size="icon"
-														variant="ghost"
-														className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full"
-														onClick={(e) => {
-															e.stopPropagation();
-															copyToClipboard("0269876543");
-														}}
-													>
+												<Button
+ 														size="icon"
+ 														variant="ghost"
+ 														className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full cursor-pointer"
+ 														onClick={(e) => {
+ 															e.stopPropagation();
+ 															copyToClipboard("0269876543");
+ 														}}
+ 													>
 														<Copy className="size-6" />
 													</Button>
 												</div>
@@ -199,13 +199,13 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													be redirected to our official gateway.
 												</p>
 												<a
-													href="#"
-													target="_blank"
-													className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold transition-colors"
-													rel="noopener"
-												>
-													Proceed to PayPal <ExternalLink className="size-5" />
-												</a>
+ 													href="#"
+ 													target="_blank"
+ 													className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold transition-colors cursor-pointer"
+ 													rel="noopener"
+ 												>
+ 													Proceed to PayPal <ExternalLink className="size-5" />
+ 												</a>
 											</div>
 										</AccordionContent>
 									</AccordionItem>
@@ -242,13 +242,13 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													card through our secure Stripe portal.
 												</p>
 												<a
-													href="#"
-													target="_blank"
-													className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-base font-semibold transition-colors"
-													rel="noopener"
-												>
-													Pay via Card <ExternalLink className="size-5" />
-												</a>
+ 													href="#"
+ 													target="_blank"
+ 													className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-base font-semibold transition-colors cursor-pointer"
+ 													rel="noopener"
+ 												>
+ 													Pay via Card <ExternalLink className="size-5" />
+ 												</a>
 											</div>
 										</AccordionContent>
 									</AccordionItem>
@@ -302,18 +302,18 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													, please contact our logistics coordinator directly:
 												</p>
 												<div className="flex flex-col gap-3">
-													<a
-														href="tel:+233241234567"
-														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border"
-													>
-														📞 +233 24 123 4567
-													</a>
-													<a
-														href="mailto:logistics@thenonstop.com"
-														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border"
-													>
-														✉️ logistics@thenonstop.org
-													</a>
+ 													<a
+ 														href="tel:+233241234567"
+ 														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border cursor-pointer"
+ 													>
+ 														📞 +233 24 123 4567
+ 													</a>
+ 													<a
+ 														href="mailto:logistics@thenonstop.com"
+ 														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border cursor-pointer"
+ 													>
+ 														✉️ logistics@thenonstop.org
+ 													</a>
 												</div>
 											</div>
 										</AccordionContent>
@@ -350,18 +350,18 @@ export function DonationDialog({ children }: { children: React.ReactNode }) {
 													, please contact our logistics coordinator directly:
 												</p>
 												<div className="flex flex-col gap-3">
-													<a
-														href="tel:+233241234567"
-														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border"
-													>
-														📞 +233 24 123 4567
-													</a>
-													<a
-														href="mailto:logistics@thenonstop.com"
-														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border"
-													>
-														✉️ logistics@thenonstop.org
-													</a>
+ 													<a
+ 														href="tel:+233241234567"
+ 														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border cursor-pointer"
+ 													>
+ 														📞 +233 24 123 4567
+ 													</a>
+ 													<a
+ 														href="mailto:logistics@thenonstop.com"
+ 														className="flex items-center justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-lg font-medium transition-colors border border-transparent hover:border-border cursor-pointer"
+ 													>
+ 														✉️ logistics@thenonstop.org
+ 													</a>
 												</div>
 											</div>
 										</AccordionContent>

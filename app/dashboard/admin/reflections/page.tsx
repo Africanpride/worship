@@ -300,7 +300,7 @@ function ReflectionCard({
 					{/* Actions Menu */}
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" size="icon" className="h-8 w-8 -mr-2">
+							<Button variant="ghost" size="icon" className="h-8 w-8 -mr-2 cursor-pointer">
 								<span className="sr-only">Open menu</span>
 								<Settings className="h-4 w-4" />
 							</Button>

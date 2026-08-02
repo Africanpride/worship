@@ -58,7 +58,7 @@ export const NavMenu = ({
           href={item.href}
           onClick={onItemClick}
           className={cn(
-            "group relative block h-12 overflow-hidden px-4 font-bold",
+            "group relative block h-12 overflow-hidden px-4 font-bold cursor-pointer",
             isVertical && "w-full px-0",
           )}
           transitionTypes={["slide", "fade"]}

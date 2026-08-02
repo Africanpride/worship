@@ -51,7 +51,7 @@ export default function SignIn() {
 					<div className="grid gap-2">
 						<div className="flex items-center">
 							<Label htmlFor="password">Password</Label>
-							<Link href="#" className="ml-auto inline-block text-sm underline">
+							<Link href="#" className="ml-auto inline-block text-sm underline cursor-pointer">
 								Forgot your password?
 							</Link>
 						</div>
@@ -76,7 +76,7 @@ export default function SignIn() {
 					</div>
 					<Button
 						type="submit"
-						className="w-full"
+						className="w-full cursor-pointer"
 						disabled={loading}
 						onClick={async () => {
 							await signIn.email({
@@ -108,7 +108,7 @@ export default function SignIn() {
 					>
 						<Button
 							variant="outline"
-							className="flex-grow"
+							className="flex-grow cursor-pointer"
 							disabled={loading}
 							onClick={async () => {
 								await signIn.social({
@@ -151,7 +151,7 @@ export default function SignIn() {
 						</Button>
 						<Button
 							variant="outline"
-							className="flex-grow"
+							className="flex-grow cursor-pointer"
 							disabled={loading}
 							onClick={async () => {
 								await signIn.social({
@@ -182,7 +182,7 @@ export default function SignIn() {
 						</Button>
 						<Button
 							variant="outline"
-							className="flex-grow"
+							className="flex-grow cursor-pointer"
 							disabled={loading}
 							onClick={async () => {
 								await signIn.social({
@@ -213,7 +213,7 @@ export default function SignIn() {
 						</Button>
 						<Button
 							variant="outline"
-							className="flex-grow"
+							className="flex-grow cursor-pointer"
 							disabled={loading}
 							onClick={async () => {
 								await signIn.social({

@@ -226,11 +226,11 @@ export default function FileUpload01() {
 													</span>
 												</div>
 												<Button
-													variant="ghost"
-													size="icon-sm"
-													className="bg-transparent! hover:text-red-500"
-													onClick={() => removeFile(file.name)}
-												>
+ 													variant="ghost"
+ 													size="icon-sm"
+ 													className="bg-transparent! hover:text-red-500 cursor-pointer"
+ 													onClick={() => removeFile(file.name)}
+ 												>
 													<Trash2 className="h-4 w-4" />
 												</Button>
 											</div>
@@ -260,10 +260,10 @@ export default function FileUpload01() {
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button
-										variant="ghost"
-										size="sm"
-										className="flex items-center text-muted-foreground hover:text-foreground"
-									>
+ 										variant="ghost"
+ 										size="sm"
+ 										className="flex items-center text-muted-foreground hover:text-foreground cursor-pointer"
+ 									>
 										<HelpCircle className="h-4 w-4 mr-1" />
 										Need help?
 									</Button>
@@ -284,13 +284,13 @@ export default function FileUpload01() {
 						</TooltipProvider>
 
 						<div className="flex gap-2">
-							<Button
-								variant="outline"
-								className="h-9 px-4 text-sm font-medium"
-							>
-								Cancel
-							</Button>
-							<Button className="h-9 px-4 text-sm font-medium">Continue</Button>
+ 							<Button
+ 								variant="outline"
+ 								className="h-9 px-4 text-sm font-medium cursor-pointer"
+ 							>
+ 								Cancel
+ 							</Button>
+ 							<Button className="h-9 px-4 text-sm font-medium cursor-pointer">Continue</Button>
 						</div>
 					</div>
 				</CardContent>

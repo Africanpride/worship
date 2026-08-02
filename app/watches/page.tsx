@@ -213,7 +213,7 @@ export default function WatchesPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/get-involved">Take Your Watch</Link>
+											<Link href="/get-involved" className="cursor-pointer">Take Your Watch</Link>
 										</Button>
 									</div>
 								</motion.div>
@@ -420,7 +420,7 @@ export default function WatchesPage() {
 						during the day or through the midnight hours, every watch matters.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/get-involved">
+						<Link href="/get-involved" className="cursor-pointer">
 							<Button
 								size="lg"
 								className="rounded-full font-bold uppercase tracking-widest text-xs"
@@ -428,7 +428,7 @@ export default function WatchesPage() {
 								Join The Altar
 							</Button>
 						</Link>
-						<Link href="/prayer-wall">
+						<Link href="/prayer-wall" className="cursor-pointer">
 							<Button
 								size="lg"
 								variant="outline"

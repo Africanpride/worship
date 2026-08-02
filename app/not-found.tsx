@@ -25,7 +25,7 @@ export default function NotFound() {
 						asChild
 						className="rounded-full h-12 px-8 font-bebas text-lg tracking-wider"
 					>
-						<Link href="/" className="flex items-center gap-2">
+						<Link href="/" className="flex items-center gap-2 cursor-pointer">
 							<ArrowLeft className="size-5" />
 							Return Home
 						</Link>

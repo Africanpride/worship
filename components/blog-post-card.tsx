@@ -37,11 +37,11 @@ export function BlogPostCard({
 					{excerpt}
 				</p>
 			</div>
-			<Link href={`/blog/${slug}`} className="shrink-0">
-				<Button variant="outline" size="sm" className="rounded-full">
-					Read
-				</Button>
-			</Link>
+ 		<Link href={`/blog/${slug}`} className="shrink-0 cursor-pointer">
+ 			<Button variant="outline" size="sm" className="rounded-full">
+ 				Read
+ 			</Button>
+ 		</Link>
 		</div>
 	);
 }

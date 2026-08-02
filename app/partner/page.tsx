@@ -401,7 +401,7 @@ export default function PartnerPage() {
 						generations.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/get-involved">
+						<Link href="/get-involved" className="cursor-pointer">
 							<Button
 								size="lg"
 								className="rounded-full font-bold uppercase tracking-widest text-xs"

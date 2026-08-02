@@ -75,9 +75,9 @@ const FooterComponent = ({
 					{description}
 				</p>
 				<div>
-					<Button size="lg" className="mt-4" asChild>
-						<a href={ctaHref}>{ctaText}</a>
-					</Button>
+					<Button size="lg" className="mt-4 cursor-pointer" asChild>
+ 						<a href={ctaHref} className="cursor-pointer">{ctaText}</a>
+ 					</Button>
 				</div>
 			</div>
 
@@ -91,10 +91,10 @@ const FooterComponent = ({
 							viewport={{ once: false }}
 							transition={{ duration: 0.5, delay: i * 0.1 }}
 						>
-							<Link
-								href={item.href}
-								className="font-medium transition-opacity hover:opacity-75"
-							>
+						<Link
+ 							href={item.href}
+ 							className="font-medium transition-opacity hover:opacity-75 cursor-pointer"
+ 						>
 								{item.name}
 							</Link>
 						</motion.li>
@@ -109,10 +109,10 @@ const FooterComponent = ({
 							viewport={{ once: true }}
 							transition={{ duration: 0.5, delay: i * 0.1 }}
 						>
-							<Link
-								href={item.href}
-								className="flex items-center gap-0.5 font-medium transition-opacity hover:opacity-75"
-							>
+						<Link
+ 							href={item.href}
+ 							className="flex items-center gap-0.5 font-medium transition-opacity hover:opacity-75 cursor-pointer"
+ 						>
 								{item.name} <ArrowUpRight className="size-4" />
 							</Link>
 						</motion.li>
@@ -121,10 +121,10 @@ const FooterComponent = ({
 				<ul className="flex flex-wrap items-center justify-center gap-6">
 					{legal.map((item) => (
 						<li key={item.name}>
-							<Link
-								href={item.href}
-								className="text-sm text-muted-foreground transition-opacity hover:opacity-75"
-							>
+						<Link
+ 							href={item.href}
+ 							className="text-sm text-muted-foreground transition-opacity hover:opacity-75 cursor-pointer"
+ 						>
 								{item.name}
 							</Link>
 						</li>
@@ -132,7 +132,7 @@ const FooterComponent = ({
 				</ul>
 				<div className="text-xs md:text-sm text-muted-foreground text-center md:text-left transition-opacity hover:opacity-75 pt-2 ">
 					&copy; {new Date().getFullYear()}{" "}
-					<a href="/" className="font-semibold">
+					<a href="/" className="font-semibold cursor-pointer">
 						{" The Nonstop Series"}
 					</a>
 					. <span className="capitalize">All rights reserved.</span>

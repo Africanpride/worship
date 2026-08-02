@@ -32,9 +32,9 @@ export function DonationOptions() {
 			<Tabs defaultValue="cash" className="w-full">
 				<TabsList className="flex w-full bg-muted/30 p-1.5 border border-border/40 mb-10 h-auto min-h-[4.5rem] sm:min-h-[5rem] rounded-2xl items-stretch gap-2 backdrop-blur-sm !h-auto">
 					<TabsTrigger
-						value="cash"
-						className="group flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-600 data-[state=active]:shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3 rounded-xl py-3 px-4 transition-all duration-300 border border-transparent data-[state=active]:border-border/50 hover:bg-background/50 data-[state=active]:hover:bg-background !h-auto !whitespace-normal"
-					>
+ 						value="cash"
+ 						className="group flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-600 data-[state=active]:shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3 rounded-xl py-3 px-4 transition-all duration-300 border border-transparent data-[state=active]:border-border/50 hover:bg-background/50 data-[state=active]:hover:bg-background !h-auto !whitespace-normal cursor-pointer"
+ 					>
 						<div className="p-2 rounded-xl bg-amber-500/10 group-data-[state=active]:bg-amber-500 group-data-[state=active]:text-white group-data-[state=active]:shadow-inner transition-all duration-300 shrink-0">
 							<CreditCard className="size-4 sm:size-5" />
 						</div>
@@ -48,9 +48,9 @@ export function DonationOptions() {
 						</div>
 					</TabsTrigger>
 					<TabsTrigger
-						value="kind"
-						className="group flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-600 data-[state=active]:shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3 rounded-xl py-3 px-4 transition-all duration-300 border border-transparent data-[state=active]:border-border/50 hover:bg-background/50 data-[state=active]:hover:bg-background !h-auto !whitespace-normal"
-					>
+ 						value="kind"
+ 						className="group flex-1 data-[state=active]:bg-background data-[state=active]:text-amber-600 data-[state=active]:shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3 rounded-xl py-3 px-4 transition-all duration-300 border border-transparent data-[state=active]:border-border/50 hover:bg-background/50 data-[state=active]:hover:bg-background !h-auto !whitespace-normal cursor-pointer"
+ 					>
 						<div className="p-2 rounded-xl bg-amber-500/10 group-data-[state=active]:bg-amber-500 group-data-[state=active]:text-white group-data-[state=active]:shadow-inner transition-all duration-300 shrink-0">
 							<Gift className="size-4 sm:size-5" />
 						</div>
@@ -120,14 +120,14 @@ export function DonationOptions() {
 											</p>
 										</div>
 										<Button
-											size="icon"
-											variant="ghost"
-											className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full"
-											onClick={(e) => {
-												e.stopPropagation();
-												copyToClipboard(phone);
-											}}
-										>
+ 											size="icon"
+ 											variant="ghost"
+ 											className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full cursor-pointer"
+ 											onClick={(e) => {
+ 												e.stopPropagation();
+ 												copyToClipboard(phone);
+ 											}}
+ 										>
 											<Copy className="size-6" />
 										</Button>
 									</div>
@@ -141,14 +141,14 @@ export function DonationOptions() {
 											</p>
 										</div>
 										<Button
-											size="icon"
-											variant="ghost"
-											className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full"
-											onClick={(e) => {
-												e.stopPropagation();
-												copyToClipboard(phone);
-											}}
-										>
+ 											size="icon"
+ 											variant="ghost"
+ 											className="hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/10 h-12 w-12 text-muted-foreground rounded-full cursor-pointer"
+ 											onClick={(e) => {
+ 												e.stopPropagation();
+ 												copyToClipboard(phone);
+ 											}}
+ 										>
 											<Copy className="size-6" />
 										</Button>
 									</div>
@@ -200,14 +200,14 @@ export function DonationOptions() {
 										redirected to our official gateway.
 									</p>
 									<a
-										href="#"
-										target="_blank"
-										className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold transition-colors"
-										rel="noopener"
-									>
-										Proceed to PayPal{" "}
-										<ExternalLink className="size-5 shrink-0" />
-									</a>
+ 										href="#"
+ 										target="_blank"
+ 										className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold transition-colors cursor-pointer"
+ 										rel="noopener"
+ 									>
+ 										Proceed to PayPal{" "}
+ 										<ExternalLink className="size-5 shrink-0" />
+ 									</a>
 								</div>
 							</AccordionContent>
 						</AccordionItem>
@@ -244,13 +244,13 @@ export function DonationOptions() {
 										through our secure Stripe portal.
 									</p>
 									<a
-										href="#"
-										target="_blank"
-										className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-base font-semibold transition-colors"
-										rel="noopener"
-									>
-										Pay via Card <ExternalLink className="size-5 shrink-0" />
-									</a>
+ 										href="#"
+ 										target="_blank"
+ 										className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-base font-semibold transition-colors cursor-pointer"
+ 										rel="noopener"
+ 									>
+ 										Pay via Card <ExternalLink className="size-5 shrink-0" />
+ 									</a>
 								</div>
 							</AccordionContent>
 						</AccordionItem>
@@ -311,20 +311,20 @@ export function DonationOptions() {
 										, please contact our logistics coordinator directly:
 									</p>
 									<div className="flex flex-col gap-3">
-										<a
-											href={`tel:${phone}`}
-											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2"
-										>
-											<span className="shrink-0">📞</span>{" "}
-											<span className="truncate">{phone}</span>
-										</a>
-										<a
-											href={`mailto:${email}`}
-											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2"
-										>
-											<span className="shrink-0">✉️</span>{" "}
-											<span className="truncate">{email}</span>
-										</a>
+ 										<a
+ 											href={`tel:${phone}`}
+ 											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2 cursor-pointer"
+ 										>
+ 											<span className="shrink-0">📞</span>{" "}
+ 											<span className="truncate">{phone}</span>
+ 										</a>
+ 										<a
+ 											href={`mailto:${email}`}
+ 											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2 cursor-pointer"
+ 										>
+ 											<span className="shrink-0">✉️</span>{" "}
+ 											<span className="truncate">{email}</span>
+ 										</a>
 									</div>
 								</div>
 							</AccordionContent>
@@ -361,20 +361,20 @@ export function DonationOptions() {
 										, please contact our logistics coordinator directly:
 									</p>
 									<div className="flex flex-col gap-3">
-										<a
-											href={`tel:${phone}`}
-											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2"
-										>
-											<span className="shrink-0">📞</span>{" "}
-											<span className="truncate">{phone}</span>
-										</a>
-										<a
-											href={`mailto:${email}`}
-											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2"
-										>
-											<span className="shrink-0">✉️</span>{" "}
-											<span className="truncate">{email}</span>
-										</a>
+ 										<a
+ 											href={`tel:${phone}`}
+ 											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2 cursor-pointer"
+ 										>
+ 											<span className="shrink-0">📞</span>{" "}
+ 											<span className="truncate">{phone}</span>
+ 										</a>
+ 										<a
+ 											href={`mailto:${email}`}
+ 											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2 cursor-pointer"
+ 										>
+ 											<span className="shrink-0">✉️</span>{" "}
+ 											<span className="truncate">{email}</span>
+ 										</a>
 									</div>
 								</div>
 							</AccordionContent>
@@ -410,20 +410,20 @@ export function DonationOptions() {
 										, please coordinate with our operations team:
 									</p>
 									<div className="flex flex-col gap-3">
-										<a
-											href={`tel:${phone}`}
-											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2"
-										>
-											<span className="shrink-0">📞</span>{" "}
-											<span className="truncate">{phone}</span>
-										</a>
-										<a
-											href={`mailto:${email}`}
-											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2"
-										>
-											<span className="shrink-0">✉️</span>{" "}
-											<span className="truncate">{email}</span>
-										</a>
+ 										<a
+ 											href={`tel:${phone}`}
+ 											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2 cursor-pointer"
+ 										>
+ 											<span className="shrink-0">📞</span>{" "}
+ 											<span className="truncate">{phone}</span>
+ 										</a>
+ 										<a
+ 											href={`mailto:${email}`}
+ 											className="flex items-center px-4 justify-center h-14 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-base md:text-lg font-medium transition-colors border border-transparent hover:border-border gap-2 cursor-pointer"
+ 										>
+ 											<span className="shrink-0">✉️</span>{" "}
+ 											<span className="truncate">{email}</span>
+ 										</a>
 									</div>
 								</div>
 							</AccordionContent>

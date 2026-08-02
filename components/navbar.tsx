@@ -134,11 +134,11 @@ const Navbar = () => {
 									<DropdownMenuGroup>
 										{user.role === "admin" && (
 											<DropdownMenuItem asChild>
-												<Link href="/dashboard">Dashboard</Link>
+												<Link href="/dashboard" className="cursor-pointer">Dashboard</Link>
 											</DropdownMenuItem>
 										)}
 										<DropdownMenuItem asChild>
-											<Link href="/profile">Profile</Link>
+											<Link href="/profile" className="cursor-pointer">Profile</Link>
 										</DropdownMenuItem>
 									</DropdownMenuGroup>
 									<DropdownMenuSeparator />
@@ -155,7 +155,7 @@ const Navbar = () => {
 							variant="outline"
 							asChild
 						>
-							<Link href="/login">Sign In</Link>
+							<Link href="/login" className="cursor-pointer">Sign In</Link>
 						</Button>
 					)}
 

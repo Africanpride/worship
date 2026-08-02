@@ -212,7 +212,7 @@ export default function StartAnAltarPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/contact">Register Your Altar</Link>
+											<Link href="/contact" className="cursor-pointer">Register Your Altar</Link>
 										</Button>
 									</div>
 								</motion.div>
@@ -397,7 +397,7 @@ export default function StartAnAltarPage() {
 						Build an altar. Recover. Revive. Restore.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/contact">
+						<Link href="/contact" className="cursor-pointer">
 							<Button
 								size="lg"
 								className="rounded-full font-bold uppercase tracking-widest text-xs"
@@ -405,7 +405,7 @@ export default function StartAnAltarPage() {
 								Register Your Altar
 							</Button>
 						</Link>
-						<Link href="/watches">
+						<Link href="/watches" className="cursor-pointer">
 							<Button
 								size="lg"
 								variant="outline"

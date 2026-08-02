@@ -70,7 +70,7 @@ export default function EventsPage() {
 		<div className="space-y-6 p-6">
 			<div className="flex items-center justify-between">
 				<h1 className="text-3xl">Event Management</h1>
-				<Button onClick={handleOpenForm}>
+				<Button onClick={handleOpenForm} className="cursor-pointer">
 					<Plus className="mr-2 h-4 w-4" /> Add Event
 				</Button>
 			</div>

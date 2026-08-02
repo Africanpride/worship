@@ -48,7 +48,7 @@ export default async function BlogPostPage({ params }: Props) {
 			<article className="bg-background py-8 sm:py-16 lg:py-24">
 				<div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
 					{/* Back link */}
-					<Link href="/blog" className="mb-8 inline-block">
+					<Link href="/blog" className="mb-8 inline-block cursor-pointer">
 						<Button variant="ghost" size="sm" className="rounded-full">
 							← Back to Blog
 						</Button>
@@ -99,16 +99,16 @@ export default async function BlogPostPage({ params }: Props) {
 							Continue the journey. Explore more reflections from the altar.
 						</p>
 						<div className="flex flex-wrap justify-center gap-4">
-							<Link href="/blog">
-								<Button className="rounded-full font-bold uppercase tracking-widest text-xs">
+						<Link href="/blog" className="cursor-pointer">
+							<Button className="rounded-full font-bold uppercase tracking-widest text-xs">
 									More Devotionals
 								</Button>
 							</Link>
-							<Link href="/prayer-wall">
-								<Button
-									variant="outline"
-									className="rounded-full font-bold uppercase tracking-widest text-xs"
-								>
+						<Link href="/prayer-wall" className="cursor-pointer">
+							<Button
+								variant="outline"
+								className="rounded-full font-bold uppercase tracking-widest text-xs"
+							>
 									Submit a Prayer Request
 								</Button>
 							</Link>

@@ -231,11 +231,11 @@ const Contact31 = ({
 									/>
 								</div>
 
-								<Button
-									size="lg"
-									className="w-full"
-									disabled={form.formState.isSubmitting}
-								>
+							<Button
+ 								size="lg"
+ 								className="w-full cursor-pointer"
+ 								disabled={form.formState.isSubmitting}
+ 							>
 									{form.formState.isSubmitting ? (
 										<>
 											<LoaderIcon className="mr-2 size-4 animate-spin" />

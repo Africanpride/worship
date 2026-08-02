@@ -212,7 +212,7 @@ export default function PrayerWallPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/contact">Submit Prayer Request</Link>
+											<Link href="/contact" className="cursor-pointer">Submit Prayer Request</Link>
 										</Button>
 									</div>
 								</motion.div>
@@ -422,7 +422,7 @@ export default function PrayerWallPage() {
 						before the Lord. The altar remains open.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/contact">
+						<Link href="/contact" className="cursor-pointer">
 							<Button
 								size="lg"
 								className="rounded-full font-bold uppercase tracking-widest text-xs"
@@ -430,7 +430,7 @@ export default function PrayerWallPage() {
 								Submit Your Request
 							</Button>
 						</Link>
-						<Link href="/watches">
+						<Link href="/watches" className="cursor-pointer">
 							<Button
 								size="lg"
 								variant="outline"

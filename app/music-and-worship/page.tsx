@@ -212,7 +212,7 @@ export default function MusicAndWorshipPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/live">Listen Live</Link>
+											<Link href="/live" className="cursor-pointer">Listen Live</Link>
 										</Button>
 									</div>
 								</motion.div>
@@ -394,7 +394,7 @@ export default function MusicAndWorshipPage() {
 						Lift your sound.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/live">
+						<Link href="/live" className="cursor-pointer">
 							<Button
 								size="lg"
 								className="rounded-full font-bold uppercase tracking-widest text-xs"
@@ -402,7 +402,7 @@ export default function MusicAndWorshipPage() {
 								Listen Live
 							</Button>
 						</Link>
-						<Link href="/get-involved">
+						<Link href="/get-involved" className="cursor-pointer">
 							<Button
 								size="lg"
 								variant="outline"

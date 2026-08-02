@@ -212,7 +212,7 @@ export default function ScriptureReadingPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/get-involved">Sign Up to Read</Link>
+											<Link href="/get-involved" className="cursor-pointer">Sign Up to Read</Link>
 										</Button>
 									</div>
 								</motion.div>
@@ -402,7 +402,7 @@ export default function ScriptureReadingPage() {
 						celebrate the living Word of God.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/get-involved">
+						<Link href="/get-involved" className="cursor-pointer">
 							<Button
 								size="lg"
 								className="rounded-full font-bold uppercase tracking-widest text-xs"
@@ -410,7 +410,7 @@ export default function ScriptureReadingPage() {
 								Sign Up to Read
 							</Button>
 						</Link>
-						<Link href="/live">
+						<Link href="/live" className="cursor-pointer">
 							<Button
 								size="lg"
 								variant="outline"

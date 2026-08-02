@@ -44,17 +44,17 @@ const Footer31 = ({ className }: Footer31Props) => {
 						</p>
 						<div className="space-y-1 text-sm font-light   lg:text-base">
 							<p>Get Support : </p>
-							<a href="#">hi@shadcnblocks.com</a>
+ 							<a href="#" className="cursor-pointer">hi@shadcnblocks.com</a>
 						</div>
 					</div>
 					<div className="grid w-full max-w-xs grid-cols-2 gap-10 text-sm font-light lg:text-base">
 						<ul className="space-y-1">
 							{NAVIGATION.map((item) => (
 								<li key={item.label}>
-									<a
-										href={item.href}
-										className="  text-foreground hover:text-foreground/30"
-									>
+ 									<a
+ 										href={item.href}
+ 										className="  text-foreground hover:text-foreground/30 cursor-pointer"
+ 									>
 										{item.label}
 									</a>
 								</li>
@@ -63,10 +63,10 @@ const Footer31 = ({ className }: Footer31Props) => {
 						<ul className="space-y-1">
 							{SOCIAL_LINKS.map((item) => (
 								<li key={item.label}>
-									<a
-										href={item.href}
-										className="group flex items-center gap-1   text-foreground hover:text-foreground/30"
-									>
+ 									<a
+ 										href={item.href}
+ 										className="group flex items-center gap-1   text-foreground hover:text-foreground/30 cursor-pointer"
+ 									>
 										{item.label}{" "}
 										<ArrowUpRight className="size-3.5 text-foreground group-hover:text-muted-foreground/50" />
 									</a>
@@ -85,7 +85,7 @@ const Footer31 = ({ className }: Footer31Props) => {
 									placeholder="Name*"
 									className="mt-10 rounded-none border-0 !bg-transparent p-0 uppercase shadow-none placeholder:text-foreground/20 focus-visible:ring-0 lg:text-base"
 								/>
-								<Button type="submit" variant="ghost">
+ 							<Button type="submit" variant="ghost" className="cursor-pointer">
 									<ArrowRight />
 								</Button>
 							</form>
@@ -96,10 +96,10 @@ const Footer31 = ({ className }: Footer31Props) => {
 						<ul className="space-y-1">
 							{FOOTER_LINKS.map((item) => (
 								<li key={item.label}>
-									<a
-										href={item.href}
-										className="group flex items-center gap-1   text-foreground hover:text-foreground/30"
-									>
+ 									<a
+ 										href={item.href}
+ 										className="group flex items-center gap-1   text-foreground hover:text-foreground/30 cursor-pointer"
+ 									>
 										{item.label}{" "}
 									</a>
 								</li>

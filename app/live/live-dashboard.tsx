@@ -408,7 +408,7 @@ export function LiveDashboard({
 									{liveStream && selectedVideo.id !== liveStream.id && (
 										<button
 											onClick={() => setSelectedVideo(liveStream)}
-											className="group flex items-center gap-2 px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white text-sm font-black uppercase rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl shadow-red-600/30 shrink-0"
+											className="group flex items-center gap-2 px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white text-sm font-black uppercase rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl shadow-red-600/30 shrink-0 cursor-pointer"
 										>
 											<span className="relative flex h-2.5 w-2.5">
 												<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
@@ -575,7 +575,7 @@ export function LiveDashboard({
 											<div className="mt-auto pt-4 flex items-center justify-between border-t border-black/10 dark:border-white/10">
 												<a
 													href={`/schedule#${event.slug || event.id}`}
-													className="inline-flex items-center text-sm font-semibold text-teal-500 hover:text-teal-400 transition-colors group/link"
+													className="inline-flex items-center text-sm font-semibold text-teal-500 hover:text-teal-400 transition-colors group/link cursor-pointer"
 												>
 													View Details
 													<svg
@@ -608,7 +608,7 @@ export function LiveDashboard({
 						>
 							<a
 								href="/schedule"
-								className="inline-flex items-center px-8 py-4 text-sm font-bold text-foreground bg-transparent border-2 border-black/20 dark:border-white/20 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300"
+								className="inline-flex items-center px-8 py-4 text-sm font-bold text-foreground bg-transparent border-2 border-black/20 dark:border-white/20 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 cursor-pointer"
 							>
 								<span>See Full Schedule</span>
 								<svg

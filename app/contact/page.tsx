@@ -45,10 +45,10 @@ const page = () => {
 							done in your life through this experience.{" "}
 						</p>
 						<div className="flex items-center flex-wrap ">
-							<a
-								className="text-yellow-500 dark:text-yellow-500 inline-flex items-center md:mb-2 lg:mb-0"
-								href="mailto:info@thenonstop.org"
-							>
+ 						<a
+ 							className="text-yellow-500 dark:text-yellow-500 inline-flex items-center md:mb-2 lg:mb-0 cursor-pointer"
+ 							href="mailto:info@thenonstop.org"
+ 						>
 								Click Here
 								<svg
 									className="w-4 h-4 ml-2"
@@ -72,10 +72,10 @@ const page = () => {
 							of the next Non-Stop Worship experience.
 						</p>
 						<div className="flex items-center flex-wrap ">
-							<a
-								className="text-yellow-500 dark:text-yellow-500 inline-flex items-center md:mb-2 lg:mb-0"
-								href="mailto:info@thenonstop.org"
-							>
+ 						<a
+ 							className="text-yellow-500 dark:text-yellow-500 inline-flex items-center md:mb-2 lg:mb-0 cursor-pointer"
+ 							href="mailto:info@thenonstop.org"
+ 						>
 								Click Here
 								<svg
 									className="w-4 h-4 ml-2"
@@ -99,10 +99,10 @@ const page = () => {
 							overall web presence to better serve you.
 						</p>
 						<div className="flex items-center flex-wrap ">
-							<a
-								className="text-yellow-500 dark:text-yellow-500 inline-flex items-center md:mb-2 lg:mb-0"
-								href="mailto:webmaster@thenonstop.org"
-							>
+ 						<a
+ 							className="text-yellow-500 dark:text-yellow-500 inline-flex items-center md:mb-2 lg:mb-0 cursor-pointer"
+ 							href="mailto:webmaster@thenonstop.org"
+ 						>
 								Click Here
 								<svg
 									className="w-4 h-4 ml-2"
