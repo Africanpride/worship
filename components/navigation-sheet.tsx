@@ -22,6 +22,12 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Watches", href: "/watches" },
+  { label: "Music & Worship", href: "/music-and-worship" },
+  { label: "Prayer Wall", href: "/prayer-wall" },
+  { label: "Scripture Reading", href: "/scripture-reading" },
+  { label: "Daily Devotionals", href: "/blog" },
+  { label: "Start an Altar", href: "/start-an-altar" },
   { label: "Schedule", href: "/schedule" },
   { label: "Partner", href: "/partner" },
   { label: "Live", href: "/live" },

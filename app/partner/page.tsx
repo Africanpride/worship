@@ -138,12 +138,7 @@ export default function PartnerPage() {
                   }}
                 >
                   <p className='text-muted-foreground text-xl leading-relaxed'>
-                    The Non-Stop is a massive undertaking that requires
-                    tremendous resources—from high-quality broadcasting for our
-                    global stream, to ensuring the logistics, safety, and
-                    hospitality of thousands of attendees over 6 straight days.
-                    By partnering with us, you become a foundational part of
-                    this historic 25th Anniversary altar of worship.
+                    Partnering with the Non-Stop Series is a sacred covenant investment into an unbroken altar of praise, worship, prayer, and Scripture reading. As we gather worshippers across nations for 144 continuous hours, your support enables high-definition global broadcasting, venue logistics, hospitality for hundreds of psalmists &amp; intercessors, technical infrastructure, and community outreach. By partnering with us, you become a foundational part of this historic 25th Anniversary landmark edition.
                   </p>
                 </motion.div>
                 <motion.div

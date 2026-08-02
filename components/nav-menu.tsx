@@ -26,6 +26,8 @@ export const NavMenu = ({
   const items = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
+    { label: "Watches", href: "/watches" },
+    { label: "Music", href: "/music-and-worship" },
     { label: "Schedule", href: "/schedule" },
     { label: "Partner", href: "/partner" },
     { label: "Live", href: "/live", showPulse: true },

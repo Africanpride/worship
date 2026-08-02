@@ -36,9 +36,15 @@ const FooterComponent = ({
 	ctaHref = "/get-involved",
 	navigation = [
 		{ name: "Home", href: "/" },
-		// { name: "About", href: "/about" },
-		// { name: "Get Involved", href: "/get-involved" },
+		{ name: "About", href: "/about" },
+		{ name: "Watches", href: "/watches" },
+		{ name: "Music & Worship", href: "/music-and-worship" },
+		{ name: "Prayer Wall", href: "/prayer-wall" },
+		{ name: "Scripture Reading", href: "/scripture-reading" },
+		{ name: "Daily Devotionals", href: "/blog" },
+		{ name: "Start an Altar", href: "/start-an-altar" },
 		{ name: "Partner", href: "/partner" },
+		{ name: "Get Involved", href: "/get-involved" },
 		{ name: "Contact", href: "/contact" },
 	],
 	social = [

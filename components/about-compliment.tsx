@@ -253,10 +253,19 @@ const AboutCompliment = ({
           className='relative overflow-hidden rounded-xl bg-muted p-7 md:p-16'
           data-usal='fade-u duration-500'
         >
-          <div className='flex flex-col gap-4 text-center md:text-left'>
+          <div className='flex flex-col gap-4 text-center md:text-left mb-8 border-b border-border/40 pb-8'>
+            <span className="text-amber-500 font-mono text-xs uppercase tracking-widest font-bold">144 Hours • Multiple Nations • One Altar • One King</span>
             <h2 className='text-3xl font-medium md:text-4xl'>
-              {achievementsTitle}
+              The Fire Must Not Go Out
             </h2>
+            <p className='text-muted-foreground text-base md:text-lg max-w-3xl leading-relaxed'>
+              For over two decades, the Non-Stop Series has brought together believers from around the world to sustain continuous worship before the Lord. What began as a 24-hour gathering has grown into a global movement of praise, worship, prayer, and Scripture reading — calling individuals, families, communities, cities, and nations to recover, revive, and restore the Tabernacle of David in our generation.
+            </p>
+          </div>
+          <div className='flex flex-col gap-4 text-center md:text-left'>
+            <h3 className='text-2xl font-medium md:text-3xl'>
+              {achievementsTitle}
+            </h3>
             <p className='max-w-xl text-muted-foreground'>
               {achievementsDescription}
             </p>
