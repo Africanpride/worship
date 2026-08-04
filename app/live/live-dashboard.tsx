@@ -204,7 +204,7 @@ export function LiveDashboard({
 	return (
 		<div className="min-h-screen bg-background text-foreground selection:bg-red-600 selection:text-white pb-24">
 			{/* Hero Player Section */}
-			<section className="w-full relative pt-8 md:px-8 max-w-[1600px] mx-auto">
+			<section className="w-full relative pt-8 px-2 md:px-8 max-w-[1600px] mx-auto">
 				<div className="relative z-10 w-full mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
 					{/* Main Video Player Container */}
 					<div className="lg:col-span-4 space-y-6">
@@ -431,7 +431,7 @@ export function LiveDashboard({
 			{/* VOD Grid Section */}
 			<section
 				ref={vodsRef}
-				className="w-full relative z-10 md:px-8 max-w-[1600px] mx-auto mt-16"
+				className="w-full relative z-10 px-2 md:px-8 max-w-[1600px] mx-auto mt-16"
 			>
 				<motion.h2
 					className="text-2xl font-semibold mb-6"
@@ -501,7 +501,7 @@ export function LiveDashboard({
 			{/* Upcoming Events Section */}
 			<section
 				ref={eventsRef}
-				className="w-full relative z-10 md:px-8 max-w-[1600px] mx-auto mt-24"
+				className="w-full relative z-10 px-2 md:px-8 max-w-[1600px] mx-auto mt-24"
 			>
 				{/* Header Section */}
 				<motion.div

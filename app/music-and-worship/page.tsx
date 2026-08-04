@@ -10,7 +10,7 @@ export default function MusicAndWorshipPage() {
 		<main className="flex flex-col min-h-screen w-full relative pt-12 md:pt-16">
 			{/* ── Section 1: Hero Grid (Matches app/get-involved design) ──────────── */}
 			<section className="bg-background py-8 sm:py-16 lg:py-24 ">
-				<div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 					<motion.div
 						className="grid grid-cols-1 gap-9 lg:grid-cols-2"
 						initial="hidden"
@@ -223,8 +223,8 @@ export default function MusicAndWorshipPage() {
 			</section>
 
 			{/* ── Section 2: Full-bleed image / Callout ─────────────────────────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container space-y-10 lg:space-y-20">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto space-y-10 lg:space-y-20">
 					<div
 						data-usal="fade-u duration-500"
 						className="relative mt-4 h-96 md:h-140 w-full rounded-2xl overflow-hidden shadow-xl"
@@ -259,8 +259,8 @@ export default function MusicAndWorshipPage() {
 			</section>
 
 			{/* ── Section 3: The Sound of the Altar ───────────────────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container space-y-10 lg:space-y-20">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto space-y-10 lg:space-y-20">
 					<div className="grid grid-cols-1 gap-4 space-y-12 lg:grid-cols-6 lg:space-y-0">
 						<div className="order-2 col-span-2 lg:order-none lg:pr-16 lg:pl-10 flex">
 							<p className="text-foreground/60 text-xl md:text-xl">
@@ -290,8 +290,8 @@ export default function MusicAndWorshipPage() {
 			</section>
 
 			{/* ── Section 4: A Davidic Worship Expression ──────────────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto">
 					<h2 className="text-3xl font-medium lg:text-4xl leading-relaxed mb-12 text-center">
 						A Davidic Worship Expression
 					</h2>
@@ -335,8 +335,8 @@ export default function MusicAndWorshipPage() {
 			</section>
 
 			{/* ── Section 5: Sounds From the Nations ──────────────────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container space-y-10 lg:space-y-20">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto space-y-10 lg:space-y-20">
 					<div className="grid grid-cols-1 gap-4 space-y-12 lg:grid-cols-6 lg:space-y-0">
 						<div className="col-span-4 lg:mt-0 lg:pr-6">
 							<h2 className="text-3xl font-medium lg:text-4xl leading-relaxed mb-6">
@@ -362,8 +362,8 @@ export default function MusicAndWorshipPage() {
 			</section>
 
 			{/* ── Section 6: The Role of Music in Revival ──────────────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto">
 					<h2 className="text-3xl font-medium lg:text-4xl leading-relaxed mb-12 text-center">
 						The Role of Music in Revival
 					</h2>
@@ -382,8 +382,8 @@ export default function MusicAndWorshipPage() {
 			</section>
 
 			{/* ── Section 7: Join The Sound CTA ───────────────────────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container text-center space-y-8">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto text-center space-y-8">
 					<h2 className="text-3xl font-medium lg:text-4xl leading-relaxed">
 						Join The Sound
 					</h2>

@@ -46,7 +46,7 @@ export default async function BlogPostPage({ params }: Props) {
 	return (
 		<main className="flex flex-col min-h-screen w-full relative pt-12 md:pt-16">
 			<article className="bg-background py-8 sm:py-16 lg:py-24">
-				<div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-3xl px-2 sm:px-6 lg:px-8">
 					{/* Back link */}
 					<Link href="/blog" className="mb-8 inline-block cursor-pointer">
 						<Button variant="ghost" size="sm" className="rounded-full">

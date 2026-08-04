@@ -19,7 +19,7 @@ export function BlogPageClient({ posts }: { posts: Post[] }) {
 		<main className="flex flex-col min-h-screen w-full relative pt-12 md:pt-16">
 			{/* ── Section 1: Hero Grid ──────────── */}
 			<section className="bg-background py-8 sm:py-16 lg:py-24">
-				<div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 					<motion.div
 						className="grid grid-cols-1 gap-9 lg:grid-cols-2"
 						initial="hidden"
@@ -136,8 +136,8 @@ export function BlogPageClient({ posts }: { posts: Post[] }) {
 			</section>
 
 			{/* ── Section 2: Full-bleed image / Callout ───────── */}
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-				<div className="container space-y-10 lg:space-y-20">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8 max-w-7xl">
+				<div className="container mx-auto space-y-10 lg:space-y-20">
 					<div className="relative mt-4 h-96 md:h-140 w-full rounded-2xl overflow-hidden shadow-xl">
 						<Image
 							alt="Atmosphere of Learning & Teaching"

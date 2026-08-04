@@ -9,7 +9,7 @@ export default function Home() {
 	return (
 		<main className="flex flex-col min-h-screen w-full relative">
 			<section className="bg-background py-8 sm:py-16 lg:py-24 ">
-				<div className="mx-auto max-w-7xl  sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 					<motion.div
 						className="grid grid-cols-1 gap-9 lg:grid-cols-2"
 						initial="hidden"
@@ -285,8 +285,8 @@ export default function Home() {
 				</div>
 			</section>
 
-			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto  sm:px-6 lg:px-8">
-				<div className="container space-y-10 lg:space-y-20">
+			<section className="bg-background py-8 sm:py-16 lg:py-24 mx-auto px-2 sm:px-6 lg:px-8">
+				<div className="container mx-auto space-y-10 lg:space-y-20">
 					<div
 						data-usal="fade-u duration-500"
 						className="relative mt-4 h-140 w-full rounded-2xl overflow-hidden"

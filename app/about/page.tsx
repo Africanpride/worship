@@ -74,7 +74,7 @@ export default function Home() {
 			{/* ── Section 1: Intro / Photo Grid ───────────────────────────────── */}
 			<section className="flex flex-1 items-center justify-center">
 				<div className="py-6 w-full">
-					<div className="container">
+					<div className="container mx-auto">
 						<motion.div
 							className="flex flex-col items-center justify-start gap-4 lg:flex-row"
 							variants={container}
@@ -387,7 +387,7 @@ export default function Home() {
 			</section>
 
 			{/* ── Section 4: Impact stats ─────────────────────────────────────── */}
-			<section className="container py-12 md:py-8 p-2" id="achievements">
+			<section className="container mx-auto py-12 md:py-8 p-2" id="achievements">
 				<motion.div
 					variants={container}
 					initial="hidden"

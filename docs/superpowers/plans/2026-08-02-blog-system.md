@@ -255,7 +255,7 @@ const posts = [
     title: "Why 144 Hours? Scriptural Completion",
     slug: "why-144-hours-scriptural-completion",
     category: "Vision",
-    excerpt: "Exploring the numerology of 24 elders, 120 priests, and 144 hours of unbroken ministry.",
+    excerpt: "Exploring the biblical number symbolism of 24 elders, 120 priests, and 144 hours of unbroken ministry.",
     content: `<p>The number 144 is rich with biblical significance. It is the sum of 24 and 120 — two numbers that carry profound meaning in Scripture.</p>
 <h3>24: The Elders in Heaven</h3>
 <p>Revelation 4:4 describes 24 elders surrounding God's throne, leading continuous worship. The number 24 represents the completeness of heavenly worship — an unbroken cycle of adoration before the Lord.</p>
