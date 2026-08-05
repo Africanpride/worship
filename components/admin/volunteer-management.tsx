@@ -302,12 +302,12 @@ export function VolunteerManagement() {
 										</div>
 									</TableCell>
 									<TableCell className="text-right">
- 										<Button
- 											variant="ghost"
- 											size="sm"
- 											className="h-8 gap-1 group cursor-pointer"
- 											onClick={() => setSelectedVolunteer(volunteer)}
- 										>
+										<Button
+											variant="ghost"
+											size="sm"
+											className="h-8 gap-1 group cursor-pointer"
+											onClick={() => setSelectedVolunteer(volunteer)}
+										>
 											View Profile
 											<ArrowRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
 										</Button>
@@ -439,12 +439,12 @@ export function VolunteerManagement() {
 								</div>
 
 								<div className="pt-4 border-t flex justify-end gap-3">
- 									<Button
- 										variant="outline"
- 										size="sm"
- 										onClick={() => setSelectedVolunteer(null)}
- 										className="cursor-pointer"
- 									>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => setSelectedVolunteer(null)}
+										className="cursor-pointer"
+									>
 										Close
 									</Button>
 									<Button

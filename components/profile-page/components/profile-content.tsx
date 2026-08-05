@@ -267,10 +267,10 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 						</div>
 						<div className="flex justify-end">
 							<Button
- 								onClick={savePersonal}
- 								disabled={isSavingPersonal}
- 								className="min-w-32"
- 							>
+								onClick={savePersonal}
+								disabled={isSavingPersonal}
+								className="min-w-32"
+							>
 								{isSavingPersonal ? (
 									<>
 										<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
@@ -331,10 +331,10 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 								{volunteerAreas.length !== 1 ? "s" : ""} selected
 							</p>
 							<Button
- 								onClick={saveVolunteering}
- 								disabled={isSavingVolunteer}
- 								className="min-w-48"
- 							>
+								onClick={saveVolunteering}
+								disabled={isSavingVolunteer}
+								className="min-w-48"
+							>
 								{isSavingVolunteer ? (
 									<>
 										<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...

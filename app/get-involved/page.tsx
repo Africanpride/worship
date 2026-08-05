@@ -249,7 +249,10 @@ export default function Home() {
 												/>
 											</span>
 										</div>
-										<a href="#" className="flex items-center gap-3 cursor-pointer">
+										<a
+											href="#"
+											className="flex items-center gap-3 cursor-pointer"
+										>
 											<button
 												data-slot="button"
 												data-variant="outline"

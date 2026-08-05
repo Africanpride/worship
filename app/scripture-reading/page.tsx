@@ -212,7 +212,9 @@ export default function ScriptureReadingPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/get-involved" className="cursor-pointer">Sign Up to Read</Link>
+											<Link href="/get-involved" className="cursor-pointer">
+												Sign Up to Read
+											</Link>
 										</Button>
 									</div>
 								</motion.div>

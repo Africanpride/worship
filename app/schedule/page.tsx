@@ -44,7 +44,11 @@ export default async function SchedulePage() {
 				</p>
 				{pastEvents.length > 0 && (
 					<div className="mt-16">
-						<UpcomingEventsList events={pastEvents} heading="Past Gatherings" isPast />
+						<UpcomingEventsList
+							events={pastEvents}
+							heading="Past Gatherings"
+							isPast
+						/>
 					</div>
 				)}
 				<div className="mt-10">
@@ -71,7 +75,11 @@ export default async function SchedulePage() {
 
 			{pastEvents.length > 0 && (
 				<div className="mt-16 opacity-75">
-					<UpcomingEventsList events={pastEvents} heading="Past Gatherings" isPast />
+					<UpcomingEventsList
+						events={pastEvents}
+						heading="Past Gatherings"
+						isPast
+					/>
 				</div>
 			)}
 

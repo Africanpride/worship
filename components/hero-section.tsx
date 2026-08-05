@@ -155,12 +155,12 @@ export default function HeroSection() {
 			{/* Mute/Unmute Toggle */}
 			<div className="absolute bottom-10 right-10 z-60">
 				<Button
- 					variant="outline"
- 					size="icon"
- 					onClick={toggleMute}
- 					className="rounded-full bg-black/20 backdrop-blur-md border-white/20 hover:bg-black text-white transition-all duration-300 cursor-pointer"
- 					aria-label={isMuted ? "Unmute video" : "Mute video"}
- 				>
+					variant="outline"
+					size="icon"
+					onClick={toggleMute}
+					className="rounded-full bg-black/20 backdrop-blur-md border-white/20 hover:bg-black text-white transition-all duration-300 cursor-pointer"
+					aria-label={isMuted ? "Unmute video" : "Mute video"}
+				>
 					{isMuted ? (
 						<VolumeX className="h-5 w-5" />
 					) : (

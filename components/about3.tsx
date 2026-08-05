@@ -146,9 +146,14 @@ const About3 = ({
 								<p className="text-muted-foreground">{breakout.description}</p>
 							</div>
 							<Button variant="outline" className="mr-auto" asChild>
-								<a href={breakout.buttonUrl} target="_blank" rel="noopener" className="cursor-pointer">
- 									{breakout.buttonText}
- 								</a>
+								<a
+									href={breakout.buttonUrl}
+									target="_blank"
+									rel="noopener"
+									className="cursor-pointer"
+								>
+									{breakout.buttonText}
+								</a>
 							</Button>
 						</div>
 						<div className="relative grow basis-0 rounded-xl overflow-hidden md:w-1/2 lg:min-h-0 lg:w-auto min-h-[300px]">

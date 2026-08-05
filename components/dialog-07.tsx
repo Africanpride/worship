@@ -29,7 +29,9 @@ export default function Dialog08() {
 	return (
 		<AlertDialog open={open} onOpenChange={setOpen}>
 			<AlertDialogTrigger asChild>
-				<Button variant="destructive" className="cursor-pointer">Deactivate 2FA</Button>
+				<Button variant="destructive" className="cursor-pointer">
+					Deactivate 2FA
+				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent className="sm:max-w-lg">
 				<AlertDialogHeader>
@@ -68,10 +70,10 @@ export default function Dialog08() {
 								className="pe-9"
 								required
 							/>
-						<button
- 							className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md cursor-pointer"
- 							type="button"
- 							onClick={toggleVisibility}
+							<button
+								className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md cursor-pointer"
+								type="button"
+								onClick={toggleVisibility}
 								aria-label={isVisible ? "Hide password" : "Show password"}
 								aria-pressed={isVisible}
 								aria-controls="password"
@@ -87,9 +89,13 @@ export default function Dialog08() {
 
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<Button type="submit" variant="destructive" className="cursor-pointer">
- 							Deactivate
- 						</Button>
+						<Button
+							type="submit"
+							variant="destructive"
+							className="cursor-pointer"
+						>
+							Deactivate
+						</Button>
 					</AlertDialogFooter>
 				</form>
 			</AlertDialogContent>

@@ -387,7 +387,10 @@ export default function Home() {
 			</section>
 
 			{/* ── Section 4: Impact stats ─────────────────────────────────────── */}
-			<section className="container mx-auto py-12 md:py-8 p-2" id="achievements">
+			<section
+				className="container mx-auto py-12 md:py-8 p-2"
+				id="achievements"
+			>
 				<motion.div
 					variants={container}
 					initial="hidden"

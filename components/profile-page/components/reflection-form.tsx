@@ -88,11 +88,11 @@ export default function ReflectionForm() {
 									Your reflection will be private and reviewed by an admin
 									before it can be featured on the public wall.
 								</p>
-							<Button
- 								onClick={onSubmit}
- 								disabled={loading || content.length < 10}
- 								className="rounded-full px-8 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all text-sm font-bold uppercase tracking-widest h-11 cursor-pointer"
- 							>
+								<Button
+									onClick={onSubmit}
+									disabled={loading || content.length < 10}
+									className="rounded-full px-8 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all text-sm font-bold uppercase tracking-widest h-11 cursor-pointer"
+								>
 									{loading ? (
 										<>
 											<motion.div
@@ -133,10 +133,10 @@ export default function ReflectionForm() {
 								reflection soon. Keep the fire burning!
 							</p>
 							<Button
- 								variant="outline"
- 								className="rounded-full mt-4 cursor-pointer"
- 								onClick={() => setSubmitted(false)}
- 							>
+								variant="outline"
+								className="rounded-full mt-4 cursor-pointer"
+								onClick={() => setSubmitted(false)}
+							>
 								Submit Another
 							</Button>
 						</motion.div>

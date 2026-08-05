@@ -39,11 +39,11 @@ export function NavMain({
 						return (
 							<SidebarMenuItem key={item.title}>
 								<SidebarMenuButton tooltip={item.title} asChild>
- 									<a href={item.url} className="cursor-pointer">
- 										{item.icon}
- 										<span>{item.title}</span>
- 									</a>
- 								</SidebarMenuButton>
+									<a href={item.url} className="cursor-pointer">
+										{item.icon}
+										<span>{item.title}</span>
+									</a>
+								</SidebarMenuButton>
 							</SidebarMenuItem>
 						);
 					}
@@ -67,11 +67,11 @@ export function NavMain({
 									<SidebarMenuSub>
 										{item.items?.map((subItem) => (
 											<SidebarMenuSubItem key={subItem.title}>
- 												<SidebarMenuSubButton asChild>
- 													<a href={subItem.url} className="cursor-pointer">
- 														<span>{subItem.title}</span>
- 													</a>
- 												</SidebarMenuSubButton>
+												<SidebarMenuSubButton asChild>
+													<a href={subItem.url} className="cursor-pointer">
+														<span>{subItem.title}</span>
+													</a>
+												</SidebarMenuSubButton>
 											</SidebarMenuSubItem>
 										))}
 									</SidebarMenuSub>

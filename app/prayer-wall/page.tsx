@@ -212,7 +212,9 @@ export default function PrayerWallPage() {
 											asChild
 											className="shrink-0 rounded-full bg-amber-500 hover:bg-amber-600 text-white h-12 px-8 uppercase tracking-wider font-bold"
 										>
-											<Link href="/contact" className="cursor-pointer">Submit Prayer Request</Link>
+											<Link href="/contact" className="cursor-pointer">
+												Submit Prayer Request
+											</Link>
 										</Button>
 									</div>
 								</motion.div>

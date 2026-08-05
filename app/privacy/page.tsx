@@ -186,7 +186,11 @@ export default function Privacy() {
 					<p className="mt-2">
 						The Non-Stop Series <br />
 						C/O Logos-Rhema Foundation, Behind Trade Fair, La. Accra. <br />
-						Email: <a href="mailto:{email}" className="cursor-pointer">{email}</a> <br />
+						Email:{" "}
+						<a href="mailto:{email}" className="cursor-pointer">
+							{email}
+						</a>{" "}
+						<br />
 						Phone: {phone}
 					</p>
 				</section>

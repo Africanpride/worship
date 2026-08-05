@@ -31,13 +31,15 @@ export default function CTASection() {
 						</p>
 						<div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 							<Button
- 								asChild
- 								variant="default"
- 								size="lg"
- 								className="rounded-full px-10 h-14 text-base font-bold shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95"
- 							>
- 								<a href="/partner" className="cursor-pointer">Partner with the Mission</a>
- 							</Button>
+								asChild
+								variant="default"
+								size="lg"
+								className="rounded-full px-10 h-14 text-base font-bold shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95"
+							>
+								<a href="/partner" className="cursor-pointer">
+									Partner with the Mission
+								</a>
+							</Button>
 						</div>
 					</div>
 					<div className="m-auto flex shrink-0 flex-col gap-4 sm:flex-row lg:m-0 relative z-10">

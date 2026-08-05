@@ -145,10 +145,10 @@ export default function SignUp() {
 							</div>
 						</div>
 					</div>
-				<Button
- 					type="submit"
- 					className="w-full cursor-pointer"
- 					disabled={loading}
+					<Button
+						type="submit"
+						className="w-full cursor-pointer"
+						disabled={loading}
 						onClick={async () => {
 							await signUp.email({
 								email,

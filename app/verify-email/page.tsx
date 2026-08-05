@@ -109,7 +109,9 @@ function VerifyEmailContent() {
 								Redirecting you to login in a few seconds...
 							</p>
 							<Button className="w-full" asChild>
-								<Link href="/login" className="cursor-pointer">Go to Login</Link>
+								<Link href="/login" className="cursor-pointer">
+									Go to Login
+								</Link>
 							</Button>
 						</>
 					)}
@@ -139,10 +141,14 @@ function VerifyEmailContent() {
 							</p>
 							<div className="flex w-full gap-2">
 								<Button variant="outline" className="flex-1" asChild>
-									<Link href="/login" className="cursor-pointer">Back to Login</Link>
+									<Link href="/login" className="cursor-pointer">
+										Back to Login
+									</Link>
 								</Button>
 								<Button className="flex-1" asChild>
-									<Link href="/signup" className="cursor-pointer">Create New Account</Link>
+									<Link href="/signup" className="cursor-pointer">
+										Create New Account
+									</Link>
 								</Button>
 							</div>
 						</>

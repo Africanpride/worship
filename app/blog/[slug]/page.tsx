@@ -99,16 +99,16 @@ export default async function BlogPostPage({ params }: Props) {
 							Continue the journey. Explore more reflections from the altar.
 						</p>
 						<div className="flex flex-wrap justify-center gap-4">
-						<Link href="/blog" className="cursor-pointer">
-							<Button className="rounded-full font-bold uppercase tracking-widest text-xs">
+							<Link href="/blog" className="cursor-pointer">
+								<Button className="rounded-full font-bold uppercase tracking-widest text-xs">
 									More Devotionals
 								</Button>
 							</Link>
-						<Link href="/prayer-wall" className="cursor-pointer">
-							<Button
-								variant="outline"
-								className="rounded-full font-bold uppercase tracking-widest text-xs"
-							>
+							<Link href="/prayer-wall" className="cursor-pointer">
+								<Button
+									variant="outline"
+									className="rounded-full font-bold uppercase tracking-widest text-xs"
+								>
 									Submit a Prayer Request
 								</Button>
 							</Link>
