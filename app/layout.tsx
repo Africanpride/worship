@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/app/providers";
 import FooterWrapper from "@/components/FooterWrapper";
@@ -88,6 +88,11 @@ export const metadata: Metadata = {
 		icon: "/images/favicon_io/favicon.ico",
 		apple: "/images/favicon_io/favicon.ico",
 	},
+};
+
+export const viewport: Viewport = {
+	themeColor: "#6d28d9",
+	viewportFit: "cover",
 };
 
 export default function RootLayout({
