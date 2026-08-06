@@ -13,17 +13,6 @@ export default function InsideScrollDialog({
 }) {
 	const [open, setOpen] = React.useState(false);
 
-	React.useEffect(() => {
-		if (open) {
-			document.body.style.overflow = "hidden";
-		} else {
-			document.body.style.overflow = "";
-		}
-		return () => {
-			document.body.style.overflow = "";
-		};
-	}, [open]);
-
 	return (
 		<Dialog.Root open={open} onOpenChange={setOpen}>
 			<Dialog.Trigger render={children} />
