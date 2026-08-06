@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, LogOut, Settings } from "lucide-react";
+import { Heart, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
@@ -94,7 +94,7 @@ const Navbar = () => {
 						<motion.button
 							whileHover="hover"
 							initial="initial"
-							className="relative flex items-center h-9 bg-amber-500 hover:bg-amber-600 text-white rounded-full p-2.5 overflow-hidden shadow-lg shadow-amber-500/20 active:scale-95 transition-colors cursor-pointer hidden sm:flex"
+							className="relative flex items-center justify-center size-9 sm:w-auto bg-amber-500 hover:bg-amber-600 text-white rounded-full p-2.5 overflow-hidden shadow-lg shadow-amber-500/20 active:scale-95 transition-colors cursor-pointer"
 						>
 							<Heart className="size-4 fill-white shrink-0" />
 							<motion.span
@@ -155,15 +155,27 @@ const Navbar = () => {
 							</DropdownMenu>
 						</>
 					) : (
-						<Button
-							className="hidden px-4 bg-accent text-accent-foreground rounded-full sm:inline-flex"
-							variant="outline"
-							asChild
-						>
-							<Link href="/login" className="cursor-pointer">
-								Sign In
-							</Link>
-						</Button>
+						<>
+							<Button
+								className="px-4 bg-accent text-accent-foreground rounded-full hidden lg:inline-flex"
+								variant="outline"
+								asChild
+							>
+								<Link href="/login" className="cursor-pointer">
+									Sign In
+								</Link>
+							</Button>
+							<Button
+								className="size-9 p-0 bg-accent text-accent-foreground rounded-full lg:hidden"
+								variant="outline"
+								asChild
+								aria-label="Sign In"
+							>
+								<Link href="/login" className="cursor-pointer">
+									<User className="size-4" />
+								</Link>
+							</Button>
+						</>
 					)}
 
 					{/* {isAuthenticated && user?.role === "admin" && (
