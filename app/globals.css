@@ -154,7 +154,7 @@
 	body {
 		@apply bg-background text-foreground;
 		font-family: var(--font-opensans), sans-serif;
-		font-size: 22px;
+		font-size: 16px;
 		/* font-weight: 400; */
 	}
 	h1,
