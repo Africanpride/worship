@@ -211,7 +211,7 @@ export function LiveDashboard({
 						{/* Dynamic Priority Banner: LIVE → UP NEXT → CONTINUOUS */}
 						{(activeEvent || nextEvent) && (
 							<div
-								className={`rounded-2xl p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-700 border ${
+								className={`rounded-2xl p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-4 duration-700 border ${
 									activeEvent
 										? "bg-red-600/10 border-red-600/20"
 										: "bg-amber-500/10 border-amber-500/20"
@@ -312,7 +312,7 @@ export function LiveDashboard({
 								</div>
 
 								{/* Right Side: Visitors (live only) / Countdown (upcoming) */}
-								<div className="hidden md:flex flex-col items-end text-right shrink-0">
+								<div className="flex flex-col items-start md:items-end text-left md:text-right shrink-0">
 									{activeEvent ? (
 										<>
 											<div className="flex items-center gap-2 text-neutral-400 text-xs font-bold uppercase tracking-wider mb-2">
