@@ -208,3 +208,11 @@
 		display: none; /* Chrome, Safari and Opera */
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+	[data-aos] {
+		transition-property: none !important;
+		transform: none !important;
+		opacity: 1 !important;
+	}
+}
