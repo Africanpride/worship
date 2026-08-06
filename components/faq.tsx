@@ -41,7 +41,7 @@ const faq = [
 const FAQ = () => {
 	return (
 		<div
-			className="flex min-h-screen items-center justify-center px-6 py-8"
+			className="flex items-center justify-center px-6 py-8"
 			data-usal="fade-u duration-500"
 		>
 			<div className="max-w-2xl w-full">
