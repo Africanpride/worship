@@ -37,6 +37,7 @@ const Navbar = () => {
 	}, []);
 
 	useEffect(() => {
+		// Breakpoint convention: site chrome/nav switches at lg (1024px). Dashboard sidebar uses md (768px).
 		const LG_BREAKPOINT = 1024;
 		const check = () => setIsMobile(window.innerWidth < LG_BREAKPOINT);
 		check(); // run once on mount
