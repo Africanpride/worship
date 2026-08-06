@@ -33,6 +33,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
 							src={profile.bannerUrl}
 							alt="Banner"
 							fill
+							sizes="100vw"
 							className="object-cover opacity-50"
 						/>
 					)}

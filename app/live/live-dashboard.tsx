@@ -235,6 +235,7 @@ export function LiveDashboard({
 														}
 														alt={(activeEvent ?? nextEvent)!.ministers[0].name}
 														fill
+														sizes="64px"
 														className="object-cover"
 													/>
 												</div>
@@ -464,6 +465,7 @@ export function LiveDashboard({
 										}
 										alt={video.title}
 										fill
+										sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
 										className="object-cover transition-opacity duration-300 group-hover:opacity-60"
 									/>
 								</div>
@@ -550,6 +552,7 @@ export function LiveDashboard({
 												src={displayPoster}
 												alt={event.title}
 												fill
+												sizes="(max-width: 768px) 100vw, 50vw"
 												className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
 											/>
 											<div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-3.5 py-2 text-center shadow-xl">

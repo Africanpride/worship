@@ -22,6 +22,7 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
 					src="/images/community_worship2.jpg"
 					alt="Background worship atmosphere"
 					fill
+					sizes="100vw"
 					priority
 					className="object-cover"
 					style={{

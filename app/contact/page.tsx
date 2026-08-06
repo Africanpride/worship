@@ -27,6 +27,7 @@ const page = () => {
 						alt="Non-Stop Series Feedback"
 						src="/images/feedback.svg"
 						fill
+						sizes="288px"
 						className="object-contain"
 					/>
 				</div>

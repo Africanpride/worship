@@ -129,6 +129,7 @@ export function FileUpload({
 						src={value || ""}
 						alt="Preview"
 						fill
+						sizes="384px"
 						unoptimized
 						className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 					/>

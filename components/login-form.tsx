@@ -172,6 +172,7 @@ export function LoginForm({
 							src="/non-stop-logo.webp"
 							alt="Image"
 							fill
+							sizes="50vw"
 							className="absolute inset-0 h-full w-full object-cover "
 						/>
 					</div>

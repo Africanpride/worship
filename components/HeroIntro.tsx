@@ -226,6 +226,7 @@ export default function HeroIntro({
 												src={img.src}
 												alt={img.alt}
 												fill
+												sizes="153px"
 												className="w-full origin-bottom transition-transform duration-300 group-hover:scale-105 object-cover"
 											/>
 										</div>

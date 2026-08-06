@@ -120,6 +120,7 @@ export default function Home() {
 												alt="about 1"
 												fill
 												priority
+												sizes="(max-width: 768px) 100vw, 50vw"
 												className="object-cover object-top"
 												src="/nonstop/nonstop-048.jpg"
 											/>
@@ -137,6 +138,7 @@ export default function Home() {
 												<Image
 													alt="about 2"
 													fill
+													sizes="(max-width: 768px) 100vw, 50vw"
 													className="object-cover object-top"
 													src="/nonstop/nonstop-022.jpg"
 												/>
@@ -150,6 +152,7 @@ export default function Home() {
 												<Image
 													alt="about 3"
 													fill
+													sizes="(max-width: 768px) 100vw, 50vw"
 													className="object-cover object-top"
 													src="/nonstop/nonstop-004.jpg"
 												/>
@@ -176,6 +179,7 @@ export default function Home() {
 											<Image
 												alt="about 4"
 												fill
+												sizes="(max-width: 768px) 100vw, 50vw"
 												className="object-cover object-top"
 												src="/nonstop/nonstop-012.jpg"
 											/>
@@ -193,6 +197,7 @@ export default function Home() {
 												<Image
 													alt="about 5"
 													fill
+													sizes="(max-width: 768px) 100vw, 50vw"
 													className="object-cover object-top"
 													src="/nonstop/nonstop-026.jpg"
 												/>
@@ -206,6 +211,7 @@ export default function Home() {
 												<Image
 													alt="about 6"
 													fill
+													sizes="(max-width: 768px) 100vw, 50vw"
 													className="object-cover object-top"
 													src="/nonstop/nonstop-010.jpg"
 												/>
