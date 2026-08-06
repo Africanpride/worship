@@ -103,6 +103,7 @@ export const UpNextCard: React.FC<UpNextCardProps> = ({ event }) => {
 												src={minister.image}
 												alt={minister.name}
 												fill
+												sizes="40px"
 												className="rounded-full border-2 border-background object-cover ring-1 ring-border"
 											/>
 										</div>

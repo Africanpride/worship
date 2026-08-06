@@ -136,6 +136,7 @@ const Ministration = ({ className }: ministrationsHomeProps) => {
 												src={project.image || "/placeholder.svg"}
 												alt={project.title}
 												fill
+												sizes="(max-width: 768px) 350px, (max-width: 1024px) 600px, 700px"
 												className="h-full w-full object-top object-cover transition-transform duration-500 hover:scale-105"
 											/>
 										</div>

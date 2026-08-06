@@ -587,6 +587,7 @@ export function EventManagement() {
 														src={event.poster}
 														alt={event.title}
 														fill
+														sizes="40px"
 														className="object-cover"
 													/>
 												</div>
@@ -625,6 +626,7 @@ export function EventManagement() {
 																src={m.image}
 																alt={m.name}
 																fill
+																sizes="32px"
 																className="object-cover"
 															/>
 														</div>

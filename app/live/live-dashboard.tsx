@@ -211,7 +211,7 @@ export function LiveDashboard({
 						{/* Dynamic Priority Banner: LIVE → UP NEXT → CONTINUOUS */}
 						{(activeEvent || nextEvent) && (
 							<div
-								className={`rounded-2xl p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-700 border ${
+								className={`rounded-2xl p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-4 duration-700 border ${
 									activeEvent
 										? "bg-red-600/10 border-red-600/20"
 										: "bg-amber-500/10 border-amber-500/20"
@@ -235,6 +235,7 @@ export function LiveDashboard({
 														}
 														alt={(activeEvent ?? nextEvent)!.ministers[0].name}
 														fill
+														sizes="64px"
 														className="object-cover"
 													/>
 												</div>
@@ -312,7 +313,7 @@ export function LiveDashboard({
 								</div>
 
 								{/* Right Side: Visitors (live only) / Countdown (upcoming) */}
-								<div className="hidden md:flex flex-col items-end text-right shrink-0">
+								<div className="flex flex-col items-start md:items-end text-left md:text-right shrink-0">
 									{activeEvent ? (
 										<>
 											<div className="flex items-center gap-2 text-neutral-400 text-xs font-bold uppercase tracking-wider mb-2">
@@ -464,6 +465,7 @@ export function LiveDashboard({
 										}
 										alt={video.title}
 										fill
+										sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
 										className="object-cover transition-opacity duration-300 group-hover:opacity-60"
 									/>
 								</div>
@@ -550,6 +552,7 @@ export function LiveDashboard({
 												src={displayPoster}
 												alt={event.title}
 												fill
+												sizes="(max-width: 768px) 100vw, 50vw"
 												className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
 											/>
 											<div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-3.5 py-2 text-center shadow-xl">

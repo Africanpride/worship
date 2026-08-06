@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/app/providers";
 import FooterWrapper from "@/components/FooterWrapper";
-import LocomotiveScrollWrapper from "@/components/LocomotiveScrollWrapper";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import { PartnerFAB } from "@/components/PartnerFAB";
 import PageTransition from "@/components/page-transition";
@@ -91,6 +90,11 @@ export const metadata: Metadata = {
 	},
 };
 
+export const viewport: Viewport = {
+	themeColor: "#6d28d9",
+	viewportFit: "cover",
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -101,8 +105,6 @@ export default function RootLayout({
 			lang="en"
 			className={`${opensans.variable} ${bebas.variable}`}
 			data-scroll-behavior="smooth"
-			scrollbar-width="thin"
-			scrollbar-color="#000 #fff"
 			suppressHydrationWarning
 		>
 			<body
@@ -110,13 +112,11 @@ export default function RootLayout({
 			>
 				<ThemeProvider>
 					<NavbarWrapper />
-					<LocomotiveScrollWrapper>
-						<PageTransition>
-							{children}
-							<PartnerFAB />
-						</PageTransition>
-						<FooterWrapper />
-					</LocomotiveScrollWrapper>
+					<PageTransition>
+						{children}
+						<PartnerFAB />
+					</PageTransition>
+					<FooterWrapper />
 					<Toaster richColors position="bottom-right" />
 				</ThemeProvider>
 			</body>

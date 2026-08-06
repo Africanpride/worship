@@ -11,7 +11,7 @@ export const Logo = () => (
 			<div className="absolute inset-0 bg-amber-400/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 		</div>
 		<div className="flex flex-col -space-y-1">
-			<span className="uppercase text-[14px] leading-none text-white font-extrabold tracking-tighter glow-sm whitespace-nowrap">
+			<span className="uppercase text-[14px] leading-none text-white font-extrabold tracking-tighter glow-sm whitespace-nowrap hidden sm:inline">
 				The NonStop Series ™
 			</span>
 		</div>

@@ -166,6 +166,7 @@ const AboutCompliment = ({
 								alt={mainImage.alt}
 								fill
 								priority
+								sizes="(max-width: 1024px) 100vw, 66vw"
 								className="object-cover object-top"
 							/>
 						</motion.div>
@@ -187,6 +188,7 @@ const AboutCompliment = ({
 									src={breakout.src || ""}
 									alt={breakout.alt || ""}
 									fill
+									sizes="128px"
 									className="object-contain object-left"
 								/>
 							</div>
@@ -221,6 +223,7 @@ const AboutCompliment = ({
 									src={secondaryImage.src}
 									alt={secondaryImage.alt}
 									fill
+									sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
 									className="object-cover object-top"
 								/>
 							</motion.div>
@@ -242,6 +245,7 @@ const AboutCompliment = ({
 													src={company.src || ""}
 													alt={company.alt || ""}
 													fill
+													sizes="96px"
 													className="object-contain"
 												/>
 											</div>

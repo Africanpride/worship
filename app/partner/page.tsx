@@ -78,6 +78,7 @@ export default function PartnerPage() {
 										src="/images/live-worship.jpg"
 										alt="worship ministration"
 										fill
+										sizes="(max-width: 1024px) 100vw, 50vw"
 										className="object-cover object-top"
 									/>
 								</div>
@@ -104,6 +105,7 @@ export default function PartnerPage() {
 											src="/images/uche.jpg"
 											alt="ministry service"
 											fill
+											sizes="(max-width: 640px) 100vw, 50vw"
 											className="object-cover object-top"
 										/>
 									</div>
@@ -123,6 +125,7 @@ export default function PartnerPage() {
 											src="/images/mass-choir7.jpg"
 											alt="worship atmosphere"
 											fill
+											sizes="(max-width: 640px) 100vw, 50vw"
 											className="object-cover object-top"
 										/>
 									</div>
@@ -211,6 +214,7 @@ export default function PartnerPage() {
 													alt="worshipper"
 													src="/images/david.jpg"
 													fill
+													sizes="48px"
 												/>
 											</span>
 											<span
@@ -224,6 +228,7 @@ export default function PartnerPage() {
 													alt="lead singer"
 													src="/images/samuel.jpg"
 													fill
+													sizes="48px"
 												/>
 											</span>
 											<span
@@ -237,6 +242,7 @@ export default function PartnerPage() {
 													alt="musician"
 													src="/images/marion.jpg"
 													fill
+													sizes="48px"
 												/>
 											</span>
 											<span
@@ -250,6 +256,7 @@ export default function PartnerPage() {
 													alt="volunteer"
 													src="/images/mama-t.jpg"
 													fill
+													sizes="48px"
 												/>
 											</span>
 										</div>
@@ -422,6 +429,7 @@ export default function PartnerPage() {
 						<Image
 							alt="Community worship"
 							fill
+							sizes="100vw"
 							className="object-cover object-center"
 							src="/nonstop/nonstop-063.jpg"
 						/>

@@ -111,16 +111,18 @@ export default async function FeaturedReflections() {
             100% { transform: translateX(-50%); }
         }
 
-        .marquee-inner {
-            animation: marqueeScroll 45s linear infinite;
-        }
+        @media (prefers-reduced-motion: no-preference) {
+            .marquee-inner {
+                animation: marqueeScroll 45s linear infinite;
+            }
 
-        .marquee-inner:hover {
-            animation-play-state: paused;
-        }
+            .marquee-inner:hover {
+                animation-play-state: paused;
+            }
 
-        .marquee-reverse {
-            animation-direction: reverse;
+            .marquee-reverse {
+                animation-direction: reverse;
+            }
         }
       `}</style>
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+// Breakpoint convention: dashboard/editorial switches at md (768px). Site nav uses lg (1024px).
 const MOBILE_BREAKPOINT = 768;
 
 export function useIsMobile() {

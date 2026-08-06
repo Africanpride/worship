@@ -182,7 +182,7 @@ const GalleryMain = ({ className }: GalleryMainProps) => {
 					devotion we've shared together over two-and-a-half decades. It's more
 					than just a gallery—it's a journey of worship that never stops.
 				</p>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+				<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 					{/* Column 1 */}
 					<div className="flex flex-col gap-4">
 						{column1Images.map((image, index) => (
