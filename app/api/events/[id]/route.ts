@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { syncEventSlots } from "@/lib/slots";
 
 export async function PATCH(
 	req: Request,
@@ -87,6 +88,21 @@ export async function PATCH(
 						eventId: id,
 					})),
 				});
+			}
+		}
+
+		// Union-regenerate slots when the event window moved (best-effort):
+		// only ADDS missing hourly slots; bookings/blocks are never deleted.
+		const datesChanged =
+			(startDate &&
+				new Date(startDate).getTime() !== existingEvent.startDate.getTime()) ||
+			(endDate &&
+				new Date(endDate).getTime() !== existingEvent.endDate.getTime());
+		if (datesChanged) {
+			try {
+				await syncEventSlots(id);
+			} catch (error) {
+				console.error("[EVENT_PATCH_SLOT_REGENERATION]", error);
 			}
 		}
 

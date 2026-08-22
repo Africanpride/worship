@@ -3,6 +3,7 @@
 import {
 	BookOpen,
 	Calendar,
+	Clock,
 	Heart,
 	LayoutDashboard,
 	Settings,
@@ -46,6 +47,12 @@ const defaultData = {
 			title: "Event Management",
 			url: "/dashboard/admin/events",
 			icon: <Calendar />,
+			adminOnly: true,
+		},
+		{
+			title: "Bookings and Slots",
+			url: "/dashboard/admin/bookings",
+			icon: <Clock />,
 			adminOnly: true,
 		},
 		{

@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { syncEventSlots } from "@/lib/slots";
 
 export async function GET() {
 	try {
@@ -80,6 +81,14 @@ export async function POST(req: Request) {
 				sponsors: true,
 			},
 		});
+
+		// Auto-generate hourly slots for the new event (best-effort: a slot
+		// generation failure must not fail event creation).
+		try {
+			await syncEventSlots(event.id);
+		} catch (error) {
+			console.error("[EVENTS_POST_SLOT_GENERATION]", error);
+		}
 
 		return NextResponse.json(event);
 	} catch (error) {

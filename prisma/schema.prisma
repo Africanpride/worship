@@ -14,23 +14,24 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  role          String?   @default("user")
-  banned        Boolean?  @default(false)
-  banReason     String?
-  banExpires    DateTime?
-  pendingDeletion Boolean? @default(false)
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String    @unique
+  emailVerified   Boolean   @default(false)
+  image           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  role            String?   @default("user")
+  banned          Boolean?  @default(false)
+  banReason       String?
+  banExpires      DateTime?
+  pendingDeletion Boolean?  @default(false)
 
-  sessions Session[]
-  accounts Account[]
-  profile  Profile?
+  sessions    Session[]
+  accounts    Account[]
+  profile     Profile?
   reflections Reflection[]
+  slots       EventSlot[]
 
   @@map("user")
 }
@@ -146,6 +147,8 @@ model Event {
   // Ministers: Embedded list for simplicity in MongoDB
   ministers Minister[]
 
+  slots EventSlot[]
+
   // Sponsors: Array of ObjectIds for a Many-to-Many relation
   sponsorIds String[]  @db.ObjectId
   sponsors   Sponsor[] @relation(fields: [sponsorIds], references: [id])
@@ -177,6 +180,7 @@ model Sponsor {
 
   @@map("sponsors")
 }
+
 model HeroSettings {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   videoSource String   @default("youtube") // youtube, mux, local
@@ -187,6 +191,7 @@ model HeroSettings {
 
   @@map("hero_settings")
 }
+
 model Reflection {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
@@ -201,19 +206,59 @@ model Reflection {
 }
 
 model BlogPost {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  slug        String   @unique
+  slug        String    @unique
   category    String
   excerpt     String
   content     String
   image       String?
   author      String?
-  featured    Boolean  @default(false)
-  published   Boolean  @default(false)
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@map("blog_posts")
+}
+
+model EventSlot {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventId          String   @db.ObjectId
+  event            Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  startTime        DateTime
+  endTime          DateTime
+  status           String   @default("open") // open, booked, blocked
+  assignedUserId   String?  @db.ObjectId
+  assignedUser     User?    @relation(fields: [assignedUserId], references: [id])
+  blockedByAdminId String?  @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([eventId])
+  @@map("event_slots")
+}
+
+model SlotBookingHistory {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  slotId           String   @db.ObjectId
+  previousUserId   String?  @db.ObjectId
+  newUserId        String?  @db.ObjectId
+  changedByAdminId String   @db.ObjectId // admin who performed the override
+  reason           String?  @default("admin_override")
+  createdAt        DateTime @default(now())
+
+  @@index([slotId])
+  @@map("slot_booking_history")
+}
+
+model BookingSettings {
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  allowMultipleSlotsPerUser Boolean  @default(false)
+  maxSlotsPerUser           Int? // only used if capped
+  slotVisibility            String   @default("availability_only") // full_public | availability_only | admin_only
+  updatedAt                 DateTime @updatedAt
+
+  @@map("booking_settings")
 }

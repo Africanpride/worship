@@ -4,6 +4,7 @@ import { betterFetch } from "@better-fetch/fetch";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { MyBookingsPanel } from "@/components/slots/my-bookings-panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -74,6 +75,8 @@ export default function EventsPage() {
 					<Plus className="mr-2 h-4 w-4" /> Add Event
 				</Button>
 			</div>
+
+			<MyBookingsPanel />
 
 			<div className="rounded-md border">
 				<Table>

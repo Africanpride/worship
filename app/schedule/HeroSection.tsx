@@ -4,6 +4,7 @@ import type { Event } from "@prisma/client";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { BookingDialog } from "@/components/slots/booking-dialog";
 
 interface HeroSectionProps {
 	nextEvent: Event;
@@ -163,18 +164,23 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
 							</div>
 						</div>
 
-						{nextEvent.registrationUrl && (
-							<div className="pt-4">
+						<div className="pt-4 flex flex-wrap items-center gap-3">
+							{nextEvent.registrationUrl && (
 								<a
 									href={nextEvent.registrationUrl}
 									target="_blank"
-									className="inline-flex h-14 px-10 rounded-full bg-primary text-primary-foreground items-center font-bebas text-xl tracking-wider hover:shadow-xl hover:shadow-primary/20 transition-all active:scale-95"
+									className="inline-flex h-14 px-10 rounded-full bg-primary text-primary-foreground items-center font-bebas text-xl tracking-wider hover:shadow-xl hover:shadow-primary/20 transition-all active:scale-95 cursor-pointer"
 									rel="noopener"
 								>
 									Register Now
 								</a>
-							</div>
-						)}
+							)}
+							<BookingDialog
+								eventId={nextEvent.id}
+								eventTitle={nextEvent.title}
+								className="h-14 px-10 rounded-full font-bebas text-xl tracking-wider bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all active:scale-95"
+							/>
+						</div>
 					</div>
 				</div>
 			</motion.div>
