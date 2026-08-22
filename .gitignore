@@ -60,3 +60,6 @@ mcp.json
 .continue/
 skills/
 skills-lock.json
+
+# tooling logs
+logs/

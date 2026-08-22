@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { Calendar, ExternalLink, MapPin } from "lucide-react";
 import Link from "next/link";
+import { BookingDialog } from "@/components/slots/booking-dialog";
 
 interface UpcomingEventsListProps {
 	events: Event[];
@@ -108,7 +109,15 @@ export default function UpcomingEventsList({
 								</div>
 
 								{/* Action column */}
-								<div className="flex-shrink-0 mt-6 md:mt-0">
+								<div className="flex-shrink-0 mt-6 md:mt-0 flex items-center gap-3">
+									{!isPast && (
+										<BookingDialog
+											eventId={event.id}
+											eventTitle={event.title}
+											variant="outline"
+											className="rounded-full font-opensans font-bold text-xs uppercase tracking-wider px-6"
+										/>
+									)}
 									{event.registrationUrl ? (
 										<Link
 											href={event.registrationUrl}
