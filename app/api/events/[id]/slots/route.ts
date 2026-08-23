@@ -29,7 +29,7 @@ export async function GET(
 
 		const event = await prisma.event.findUnique({
 			where: { id },
-			select: { id: true, bookingOpen: true },
+			select: { id: true, bookingOpen: true, startDate: true, endDate: true },
 		});
 		if (!event) {
 			return NextResponse.json({ error: "Event not found" }, { status: 404 });
@@ -39,7 +39,13 @@ export async function GET(
 		const visibility = normalizeVisibility(settings.slotVisibility);
 
 		const slots = await prisma.eventSlot.findMany({
-			where: { eventId: id },
+			where: {
+				eventId: id,
+				// Never surface slots outside the event's current window (guards
+				// against leftovers from an older window before a re-sync runs).
+				startTime: { lt: event.endDate },
+				endTime: { gt: event.startDate },
+			},
 			orderBy: { startTime: "asc" },
 			include: {
 				assignedUser: {

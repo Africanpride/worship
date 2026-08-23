@@ -3,10 +3,12 @@
 import { format } from "date-fns";
 import {
 	Ban,
+	CalendarDays,
 	Clock,
 	Hourglass,
 	MapPin,
 	PencilLine,
+	Search,
 	Sparkles,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -24,6 +26,13 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 interface AgendaSlot {
@@ -32,13 +41,39 @@ interface AgendaSlot {
 	startTime: string;
 	endTime: string;
 	status: string;
-	assignedUser?: { id: string; name: string; image: string | null } | null;
-	event: { id: string; title: string; location: string | null };
+	assignedUser?: {
+		id: string;
+		name: string;
+		email: string;
+		image: string | null;
+		profile?: { displayName?: string | null } | null;
+	} | null;
+	event: {
+		id: string;
+		title: string;
+		location: string | null;
+		startDate: string;
+		endDate: string;
+		bookingOpen: boolean;
+	};
+}
+
+interface EventSummary {
+	id: string;
+	title: string;
+	startDate: string;
+	endDate: string;
+	bookingOpen: boolean;
+	location: string | null;
+	_count?: { slots: number };
 }
 
 interface AgendaResponse {
-	windowDays: number;
+	timeframe: string;
+	eventId: string;
+	generatedAt: string;
 	slots: AgendaSlot[];
+	events: EventSummary[];
 }
 
 interface AdminUser {
@@ -48,8 +83,6 @@ interface AdminUser {
 	image?: string | null;
 	profile?: { displayName?: string | null } | null;
 }
-
-const AGENDA_DAYS = 7;
 
 const TONES = ["indigo", "teal", "amber", "rose", "violet"] as const;
 type Tone = (typeof TONES)[number];
@@ -72,49 +105,72 @@ function toneForEvent(eventId: string): Tone {
 
 type RowItem =
 	| { kind: "slot"; slot: AgendaSlot }
-	| { kind: "gap"; key: string; from: Date; to: Date; count: number };
+	| {
+			kind: "gap";
+			key: string;
+			from: Date;
+			to: Date;
+			count: number;
+			slotIds: string[];
+	  };
 
-function buildDayRows(slots: AgendaSlot[]): RowItem[] {
-	const now = Date.now();
-	const upcoming = slots
-		.filter((s) => new Date(s.startTime).getTime() > now)
-		.sort(
-			(a, b) =>
-				new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
-		);
+function buildDayRows(slots: AgendaSlot[], statusFilter: string): RowItem[] {
+	// If filtering specifically by booked or blocked, or when showing all slots individually
+	if (statusFilter === "booked" || statusFilter === "blocked") {
+		return slots.map((slot) => ({ kind: "slot", slot }));
+	}
+
+	const sorted = [...slots].sort(
+		(a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+	);
 
 	const rows: RowItem[] = [];
 	let gapStart: Date | null = null;
 	let gapEnd: Date | null = null;
 	let gapCount = 0;
+	let gapSlotIds: string[] = [];
 
 	const flushGap = () => {
 		if (gapStart && gapEnd && gapCount > 0) {
-			rows.push({
-				kind: "gap",
-				key: gapStart.toISOString(),
-				from: gapStart,
-				to: gapEnd,
-				count: gapCount,
-			});
+			// For single isolated open slots, display as a regular slot row for faster access
+			if (gapCount === 1) {
+				const singleSlot = sorted.find(
+					(s) => new Date(s.startTime).getTime() === gapStart?.getTime(),
+				);
+				if (singleSlot) {
+					rows.push({ kind: "slot", slot: singleSlot });
+				}
+			} else {
+				rows.push({
+					kind: "gap",
+					key: `${gapStart.toISOString()}_${gapEnd.toISOString()}`,
+					from: gapStart,
+					to: gapEnd,
+					count: gapCount,
+					slotIds: gapSlotIds,
+				});
+			}
 		}
 		gapStart = null;
 		gapEnd = null;
 		gapCount = 0;
+		gapSlotIds = [];
 	};
 
-	for (const slot of upcoming) {
+	for (const slot of sorted) {
 		const start = new Date(slot.startTime);
 		const end = new Date(slot.endTime);
 		if (slot.status === "open") {
 			if (gapStart && gapEnd && start.getTime() === gapEnd.getTime()) {
 				gapEnd = end;
 				gapCount += 1;
+				gapSlotIds.push(slot.id);
 			} else {
 				flushGap();
 				gapStart = start;
 				gapEnd = end;
 				gapCount = 1;
+				gapSlotIds = [slot.id];
 			}
 			continue;
 		}
@@ -134,14 +190,35 @@ async function fetcher<T>(url: string): Promise<T> {
 export function BookingsAgenda() {
 	const [targetSlot, setTargetSlot] = useState<AgendaSlot | null>(null);
 	const [expandedGaps, setExpandedGaps] = useState<Set<string>>(new Set());
+	const [selectedEventId, setSelectedEventId] = useState<string>("all");
+	const [timeframe, setTimeframe] = useState<string>("all");
+	const [statusFilter, setStatusFilter] = useState<string>("all");
+	const [searchQuery, setSearchQuery] = useState<string>("");
+	const [isPerformingAction, setIsPerformingAction] = useState(false);
+
+	const apiUrl = useMemo(() => {
+		const params = new URLSearchParams();
+		if (selectedEventId && selectedEventId !== "all") {
+			params.set("eventId", selectedEventId);
+		}
+		if (timeframe && timeframe !== "all") {
+			params.set("timeframe", timeframe);
+		}
+		if (statusFilter && statusFilter !== "all") {
+			params.set("status", statusFilter);
+		}
+		const query = params.toString();
+		return `/api/admin/slots/agenda${query ? `?${query}` : ""}`;
+	}, [selectedEventId, timeframe, statusFilter]);
 
 	const { data, error, isLoading, mutate } = useSWR<AgendaResponse>(
-		`/api/admin/slots/agenda?days=${AGENDA_DAYS}`,
+		apiUrl,
 		fetcher,
 		{ refreshInterval: 60_000 },
 	);
 
 	async function runAction(url: string, init: RequestInit, okMsg: string) {
+		setIsPerformingAction(true);
 		try {
 			const res = await fetch(url, init);
 			const json = await res.json().catch(() => ({}));
@@ -150,6 +227,32 @@ export function BookingsAgenda() {
 			await mutate();
 		} catch (err) {
 			toast.error(err instanceof Error ? err.message : String(err));
+		} finally {
+			setIsPerformingAction(false);
+		}
+	}
+
+	async function runBatchAction(
+		slotIds: string[],
+		action: "block" | "unblock",
+		okMsg: string,
+	) {
+		if (slotIds.length === 0) return;
+		setIsPerformingAction(true);
+		try {
+			const res = await fetch("/api/admin/slots/batch", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ slotIds, action }),
+			});
+			const json = await res.json().catch(() => ({}));
+			if (!res.ok) throw new Error(json?.error ?? "Batch action failed");
+			toast.success(`${okMsg} (${json.count ?? slotIds.length} slots)`);
+			await mutate();
+		} catch (err) {
+			toast.error(err instanceof Error ? err.message : String(err));
+		} finally {
+			setIsPerformingAction(false);
 		}
 	}
 
@@ -162,84 +265,331 @@ export function BookingsAgenda() {
 		});
 	}
 
+	// Filter slots by search query (booker name, email, event title)
+	const filteredSlots = useMemo(() => {
+		const slots = data?.slots ?? [];
+		const q = searchQuery.trim().toLowerCase();
+		if (!q) return slots;
+
+		return slots.filter((slot) => {
+			const bookerName =
+				slot.assignedUser?.profile?.displayName ||
+				slot.assignedUser?.name ||
+				"";
+			const bookerEmail = slot.assignedUser?.email || "";
+			const eventTitle = slot.event?.title || "";
+			const timeLabel = `${format(new Date(slot.startTime), "HH:mm")} ${format(new Date(slot.endTime), "HH:mm")}`;
+
+			return (
+				bookerName.toLowerCase().includes(q) ||
+				bookerEmail.toLowerCase().includes(q) ||
+				eventTitle.toLowerCase().includes(q) ||
+				timeLabel.includes(q)
+			);
+		});
+	}, [data?.slots, searchQuery]);
+
+	// Group slots by day
 	const days = useMemo(() => {
 		const map = new Map<string, AgendaSlot[]>();
-		for (const slot of data?.slots ?? []) {
+		for (const slot of filteredSlots) {
 			const key = format(new Date(slot.startTime), "yyyy-MM-dd");
 			const list = map.get(key) ?? [];
 			list.push(slot);
 			map.set(key, list);
 		}
 		return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
-	}, [data]);
+	}, [filteredSlots]);
 
-	const stats = useMemo(() => {
+	const metrics = useMemo(() => {
 		const all = data?.slots ?? [];
-		const now = Date.now();
-		const future = all.filter((s) => new Date(s.startTime).getTime() > now);
-		const booked = future.filter((s) => s.status === "booked").length;
-		const blocked = future.filter((s) => s.status === "blocked").length;
-		return `${booked} booked · ${blocked} blocked · ${future.length - booked - blocked} open hours ahead`;
-	}, [data]);
+		const booked = all.filter((s) => s.status === "booked").length;
+		const blocked = all.filter((s) => s.status === "blocked").length;
+		const open = all.filter((s) => s.status === "open").length;
+		return { total: all.length, booked, blocked, open };
+	}, [data?.slots]);
 
 	return (
-		<div className="rounded-xl border bg-card">
+		<div className="rounded-xl border bg-card shadow-sm">
+			{/* Top Header with title & stats */}
 			<div className="border-b px-5 py-4">
-				<p className="font-mono text-[10px] text-muted-foreground uppercase tracking-[0.3em]">
-					next {AGENDA_DAYS} days
-				</p>
-				<h2 className="mt-1 font-medium tracking-tight">Worship agenda</h2>
-				<p className="text-muted-foreground text-sm">{stats}</p>
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+					<div>
+						<div className="flex items-center gap-2">
+							<CalendarDays className="size-4 text-primary" />
+							<h2 className="font-semibold text-lg tracking-tight">
+								Worship Agenda & Slot Management
+							</h2>
+						</div>
+						<p className="mt-1 text-muted-foreground text-xs">
+							Manage worship slots, reassign booked hours, and block out hours
+							across events.
+						</p>
+					</div>
+
+					<div className="flex flex-wrap items-center gap-2 text-xs">
+						<Badge
+							variant="outline"
+							className="gap-1 border-primary/30 text-primary"
+						>
+							<span className="font-bold">{metrics.booked}</span> Booked
+						</Badge>
+						<Badge variant="secondary" className="gap-1">
+							<span className="font-bold">{metrics.blocked}</span> Blocked
+						</Badge>
+						<Badge variant="outline" className="gap-1 text-muted-foreground">
+							<span className="font-bold">{metrics.open}</span> Open
+						</Badge>
+					</div>
+				</div>
+
+				{/* Filter & Control Bar */}
+				<div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-border/50">
+					{/* Event Selector */}
+					<div className="space-y-1">
+						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+							Event
+						</span>
+						<Select
+							value={selectedEventId}
+							onValueChange={(val) => {
+								setSelectedEventId(val);
+								setExpandedGaps(new Set());
+							}}
+						>
+							<SelectTrigger className="w-full h-8 text-xs cursor-pointer">
+								<SelectValue placeholder="All Events" />
+							</SelectTrigger>
+							<SelectContent className="max-w-xs">
+								<SelectItem
+									value="all"
+									className="cursor-pointer text-xs font-medium"
+								>
+									All Events
+								</SelectItem>
+								{(data?.events ?? []).map((ev) => (
+									<SelectItem
+										key={ev.id}
+										value={ev.id}
+										className="cursor-pointer text-xs"
+									>
+										<span className="truncate">{ev.title}</span>
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
+
+					{/* Timeframe Selector */}
+					<div className="space-y-1">
+						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+							Timeframe
+						</span>
+						<Select
+							value={timeframe}
+							onValueChange={(val) => {
+								setTimeframe(val);
+								setExpandedGaps(new Set());
+							}}
+						>
+							<SelectTrigger className="w-full h-8 text-xs cursor-pointer">
+								<SelectValue placeholder="All Dates" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all" className="cursor-pointer text-xs">
+									All Event Dates
+								</SelectItem>
+								<SelectItem value="7d" className="cursor-pointer text-xs">
+									Next 7 Days
+								</SelectItem>
+								<SelectItem value="14d" className="cursor-pointer text-xs">
+									Next 14 Days
+								</SelectItem>
+								<SelectItem value="30d" className="cursor-pointer text-xs">
+									Next 30 Days
+								</SelectItem>
+								<SelectItem value="90d" className="cursor-pointer text-xs">
+									Next 90 Days
+								</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+
+					{/* Status Selector */}
+					<div className="space-y-1">
+						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+							Status
+						</span>
+						<Select
+							value={statusFilter}
+							onValueChange={(val) => {
+								setStatusFilter(val);
+								setExpandedGaps(new Set());
+							}}
+						>
+							<SelectTrigger className="w-full h-8 text-xs cursor-pointer">
+								<SelectValue placeholder="All Statuses" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all" className="cursor-pointer text-xs">
+									All Slots ({metrics.total})
+								</SelectItem>
+								<SelectItem value="booked" className="cursor-pointer text-xs">
+									Booked ({metrics.booked})
+								</SelectItem>
+								<SelectItem value="blocked" className="cursor-pointer text-xs">
+									Blocked ({metrics.blocked})
+								</SelectItem>
+								<SelectItem value="open" className="cursor-pointer text-xs">
+									Open ({metrics.open})
+								</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+				</div>
+
+				{/* Search Bar */}
+				<div className="mt-3 relative">
+					<Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+					<Input
+						placeholder="Filter by singer name, email, time, or event…"
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						className="h-8 pl-8 text-xs bg-background/50"
+					/>
+				</div>
 			</div>
 
+			{/* Slot Agenda Content */}
 			<div className="p-4 sm:p-5">
 				{isLoading && (
-					<p className="py-8 text-center text-muted-foreground text-sm">
-						Loading agenda…
-					</p>
+					<div className="py-12 text-center text-muted-foreground text-sm space-y-2">
+						<Hourglass className="size-6 animate-spin mx-auto text-primary" />
+						<p>Loading worship agenda & slots…</p>
+					</div>
 				)}
-				{error && (
-					<p className="py-8 text-center text-destructive text-sm">
-						Failed to load the agenda.
-					</p>
-				)}
-				{!isLoading &&
-					!error &&
-					days.every(([, slots]) => buildDayRows(slots).length === 0) && (
-						<p className="py-8 text-center text-muted-foreground text-sm">
-							Nothing scheduled in the next {AGENDA_DAYS} days. Generate slots
-							from Event Management to fill the calendar.
-						</p>
-					)}
 
-				{days.map(([dayKey, slots]) => {
-					const rows = buildDayRows(slots);
+				{error && (
+					<div className="py-8 text-center text-destructive text-sm space-y-1">
+						<p className="font-medium">Failed to load the agenda.</p>
+						<p className="text-xs text-muted-foreground">
+							Please refresh or check your admin connection.
+						</p>
+					</div>
+				)}
+
+				{!isLoading && !error && days.length === 0 && (
+					<div className="py-12 text-center text-muted-foreground text-sm space-y-2">
+						<CalendarDays className="size-8 mx-auto text-muted-foreground/40" />
+						<p className="font-medium text-foreground">
+							No slots found for this filter.
+						</p>
+						<p className="text-xs max-w-sm mx-auto">
+							{searchQuery
+								? `No slots match "${searchQuery}". Try a different search.`
+								: "No slots match the current event or timeframe. You can select 'All Events' or generate slots in Event Management."}
+						</p>
+					</div>
+				)}
+
+				{days.map(([dayKey, daySlots]) => {
+					const rows = buildDayRows(daySlots, statusFilter);
 					if (rows.length === 0) return null;
+
 					const date = new Date(dayKey);
-					const label = format(date, "EEE d MMM");
-					const todayLabel =
-						format(new Date(), "yyyy-MM-dd") === dayKey
-							? "Today"
-							: format(new Date(Date.now() + 86_400_000), "yyyy-MM-dd") ===
-									dayKey
-								? "Tomorrow"
-								: label;
+					const label = format(date, "EEEE, d MMMM yyyy");
+					const isToday = format(new Date(), "yyyy-MM-dd") === dayKey;
+					const isTomorrow =
+						format(new Date(Date.now() + 86_400_000), "yyyy-MM-dd") === dayKey;
+
+					const dayBooked = daySlots.filter(
+						(s) => s.status === "booked",
+					).length;
+					const dayBlocked = daySlots.filter(
+						(s) => s.status === "blocked",
+					).length;
+					const dayOpen = daySlots.filter((s) => s.status === "open").length;
+					const openSlotIds = daySlots
+						.filter((s) => s.status === "open")
+						.map((s) => s.id);
+					const blockedSlotIds = daySlots
+						.filter((s) => s.status === "blocked")
+						.map((s) => s.id);
 
 					return (
-						<section key={dayKey} className="mb-6 last:mb-0">
-							<div className="mb-2 flex items-end justify-between">
-								<span className="font-mono text-[10px] text-primary uppercase tracking-[0.25em]">
-									{todayLabel}
-								</span>
-								<span className="font-mono text-[10px] text-muted-foreground uppercase tracking-[0.25em]">
-									{label}
-								</span>
+						<section key={dayKey} className="mb-8 last:mb-0">
+							{/* Day Header */}
+							<div className="mb-2.5 flex flex-wrap items-center justify-between gap-2 border-b pb-1.5">
+								<div className="flex items-center gap-2">
+									<span className="font-semibold text-xs text-foreground uppercase tracking-wide">
+										{isToday ? "Today · " : isTomorrow ? "Tomorrow · " : ""}
+										{label}
+									</span>
+									<div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+										<span>({daySlots.length} hrs:</span>
+										{dayBooked > 0 && (
+											<span className="text-primary font-medium">
+												{dayBooked} booked
+											</span>
+										)}
+										{dayBlocked > 0 && (
+											<span className="text-amber-500">
+												· {dayBlocked} blocked
+											</span>
+										)}
+										{dayOpen > 0 && <span>· {dayOpen} open</span>}
+										<span>)</span>
+									</div>
+								</div>
+
+								{/* Day Batch Actions */}
+								<div className="flex items-center gap-1.5">
+									{openSlotIds.length > 0 && (
+										<Button
+											variant="ghost"
+											size="sm"
+											disabled={isPerformingAction}
+											onClick={() =>
+												runBatchAction(
+													openSlotIds,
+													"block",
+													`Blocked all ${openSlotIds.length} open slots for ${format(date, "d MMM")}`,
+												)
+											}
+											className="cursor-pointer h-6 px-2 text-[10px] text-muted-foreground hover:text-destructive"
+										>
+											<Ban className="size-2.5 mr-1" />
+											Block day ({openSlotIds.length})
+										</Button>
+									)}
+									{dayBlocked > 0 && (
+										<Button
+											variant="ghost"
+											size="sm"
+											disabled={isPerformingAction}
+											onClick={() =>
+												runBatchAction(
+													blockedSlotIds,
+													"unblock",
+													`Unblocked ${blockedSlotIds.length} slots for ${format(date, "d MMM")}`,
+												)
+											}
+											className="cursor-pointer h-6 px-2 text-[10px] text-emerald-600 hover:text-emerald-700"
+										>
+											<Sparkles className="size-2.5 mr-1" />
+											Unblock day ({blockedSlotIds.length})
+										</Button>
+									)}
+								</div>
 							</div>
+
+							{/* Day Slots List */}
 							<ol className="flex flex-col gap-1.5">
-								{rows.map((row) =>
-									row.kind === "gap" ? (
-										expandedGaps.has(row.key) ? (
-											slots
+								{rows.map((row) => {
+									if (row.kind === "gap") {
+										const isExpanded = expandedGaps.has(row.key);
+										return isExpanded ? (
+											daySlots
 												.filter(
 													(s) =>
 														s.status === "open" &&
@@ -250,37 +600,73 @@ export function BookingsAgenda() {
 													<AgendaRow
 														key={slot.id}
 														slot={slot}
+														disabled={isPerformingAction}
 														onAssign={() => setTargetSlot(slot)}
+														onBlock={() =>
+															runAction(
+																`/api/admin/slots/${slot.id}/block`,
+																{ method: "POST" },
+																"Slot blocked from user bookings",
+															)
+														}
 													/>
 												))
 										) : (
 											<li key={row.key}>
-												<button
-													type="button"
-													onClick={() => toggleGap(row.key)}
-													className="flex w-full cursor-pointer items-center gap-3 px-1 py-1.5 text-muted-foreground text-xs transition-colors hover:text-foreground"
-												>
-													<span className="h-px flex-1 bg-border/40" />
-													<span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em]">
-														<Hourglass className="size-3" />
-														{row.count} hr unbooked ·{" "}
-														{format(row.from, "HH:mm")}–
-														{format(row.to, "HH:mm")}
-													</span>
-													<span className="h-px flex-1 bg-border/40" />
-												</button>
+												<div className="flex items-center justify-between gap-2 rounded-lg border border-dashed border-border/60 bg-muted/20 px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/40">
+													<button
+														type="button"
+														onClick={() => toggleGap(row.key)}
+														className="flex flex-1 cursor-pointer items-center gap-2 text-left text-xs hover:text-foreground"
+													>
+														<Hourglass className="size-3.5 text-muted-foreground/70" />
+														<span className="font-mono text-[11px] tabular-nums font-medium">
+															{format(row.from, "HH:mm")} –{" "}
+															{format(row.to, "HH:mm")}
+														</span>
+														<span className="text-[11px]">
+															· {row.count} consecutive unbooked hours
+														</span>
+														<Badge
+															variant="outline"
+															className="ml-auto cursor-pointer text-[10px] py-0 h-5"
+														>
+															View {row.count} slots
+														</Badge>
+													</button>
+
+													<Button
+														variant="ghost"
+														size="sm"
+														disabled={isPerformingAction}
+														onClick={() =>
+															runBatchAction(
+																row.slotIds,
+																"block",
+																`Blocked ${row.count} hours (${format(row.from, "HH:mm")}–${format(row.to, "HH:mm")})`,
+															)
+														}
+														className="cursor-pointer h-6 px-2 text-[10px] text-destructive hover:bg-destructive/10"
+													>
+														<Ban className="size-2.5 mr-1" />
+														Block {row.count} hrs
+													</Button>
+												</div>
 											</li>
-										)
-									) : (
+										);
+									}
+
+									return (
 										<AgendaRow
 											key={row.slot.id}
 											slot={row.slot}
+											disabled={isPerformingAction}
 											onAssign={() => setTargetSlot(row.slot)}
 											onBlock={() =>
 												runAction(
 													`/api/admin/slots/${row.slot.id}/block`,
 													{ method: "POST" },
-													"Slot blocked",
+													"Slot blocked from user bookings",
 												)
 											}
 											onUnblock={() =>
@@ -291,14 +677,15 @@ export function BookingsAgenda() {
 												)
 											}
 										/>
-									),
-								)}
+									);
+								})}
 							</ol>
 						</section>
 					);
 				})}
 			</div>
 
+			{/* Reassign Dialog */}
 			<ReassignDialog
 				slot={targetSlot}
 				open={!!targetSlot}
@@ -314,19 +701,24 @@ export function BookingsAgenda() {
 
 function AgendaRow({
 	slot,
+	disabled = false,
 	onAssign,
 	onBlock,
 	onUnblock,
 }: {
 	slot: AgendaSlot;
+	disabled?: boolean;
 	onAssign: () => void;
 	onBlock?: () => void;
 	onUnblock?: () => void;
 }) {
 	const tone = toneForEvent(slot.eventId);
 	const isBlocked = slot.status === "blocked";
+	const isOpen = slot.status === "open";
+	const _isBooked = slot.status === "booked";
 	const booker = slot.assignedUser;
-	const initials = (booker?.name ?? "?")
+	const displayName = booker?.profile?.displayName || booker?.name || "?";
+	const initials = displayName
 		.split(" ")
 		.map((p) => p[0])
 		.slice(0, 2)
@@ -334,12 +726,12 @@ function AgendaRow({
 		.toUpperCase();
 
 	return (
-		<li className="group grid grid-cols-[64px_1fr] gap-3 rounded-xl border border-border/60 bg-background/40 px-3 py-3 transition-colors hover:bg-background/60 sm:grid-cols-[80px_1fr]">
+		<li className="group grid grid-cols-[64px_1fr] gap-3 rounded-xl border border-border/60 bg-background/40 px-3 py-3 transition-colors hover:bg-background/80 sm:grid-cols-[80px_1fr]">
 			<div className="font-mono text-[11px]">
-				<div className="text-foreground">
+				<div className="font-medium text-foreground">
 					{format(new Date(slot.startTime), "HH:mm")}
 				</div>
-				<div className="text-muted-foreground">
+				<div className="text-muted-foreground text-[10px]">
 					{format(new Date(slot.endTime), "HH:mm")}
 				</div>
 			</div>
@@ -347,18 +739,41 @@ function AgendaRow({
 				<span
 					className={cn(
 						"h-12 w-1 shrink-0 rounded-full",
-						isBlocked ? "bg-zinc-400 dark:bg-zinc-600" : TONE_BG[tone],
+						isBlocked
+							? "bg-zinc-400 dark:bg-zinc-600"
+							: isOpen
+								? "bg-emerald-400/50"
+								: TONE_BG[tone],
 					)}
 				/>
 				<div className="min-w-0 flex-1">
-					<div
-						className={cn(
-							"text-sm truncate",
-							isBlocked && "line-through text-muted-foreground",
+					<div className="flex items-center gap-2">
+						<span
+							className={cn(
+								"text-sm font-medium truncate",
+								isBlocked && "line-through text-muted-foreground",
+							)}
+						>
+							{slot.event.title}
+						</span>
+						{isBlocked && (
+							<Badge
+								variant="secondary"
+								className="text-[10px] px-1.5 py-0 shrink-0"
+							>
+								<Ban className="mr-1 size-2.5" /> Blocked
+							</Badge>
 						)}
-					>
-						{slot.event.title}
+						{isOpen && (
+							<Badge
+								variant="outline"
+								className="text-[10px] px-1.5 py-0 text-emerald-600 border-emerald-500/30 shrink-0"
+							>
+								Open
+							</Badge>
+						)}
 					</div>
+
 					<div className="mt-0.5 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
 						{slot.event.location && (
 							<>
@@ -367,12 +782,24 @@ function AgendaRow({
 							</>
 						)}
 					</div>
+
 					{booker ? (
 						<div className="mt-1 flex items-center gap-1.5 text-muted-foreground text-xs">
 							<span className="truncate">
 								{isBlocked ? "held by" : "booked by"}{" "}
-								<span className="text-foreground">{booker.name}</span>
+								<span className="text-foreground font-medium">
+									{displayName}
+								</span>
+								{booker.email && (
+									<span className="text-[10px] text-muted-foreground/80 ml-1">
+										({booker.email})
+									</span>
+								)}
 							</span>
+						</div>
+					) : isBlocked ? (
+						<div className="mt-0.5 text-xs text-muted-foreground italic">
+							Blocked from public bookings
 						</div>
 					) : null}
 				</div>
@@ -380,46 +807,47 @@ function AgendaRow({
 				{booker && (
 					<Avatar className="size-7 border-2 border-background shrink-0">
 						{booker.image && (
-							<AvatarImage src={booker.image} alt={booker.name} />
+							<AvatarImage src={booker.image} alt={displayName} />
 						)}
 						<AvatarFallback className="text-[9px]">{initials}</AvatarFallback>
 					</Avatar>
 				)}
-				{isBlocked && !booker && (
-					<Badge variant="secondary" className="shrink-0">
-						<Ban className="mr-1 size-3" /> Blocked
-					</Badge>
-				)}
 
-				<div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
+				<div className="flex shrink-0 items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
+					{/* Reassign / Assign Button */}
 					<Button
 						variant="ghost"
 						size="sm"
+						disabled={disabled}
 						onClick={onAssign}
 						className="cursor-pointer h-7 px-2 text-xs"
 					>
-						<PencilLine className="size-3" />
+						<PencilLine className="size-3 mr-1" />
 						{booker ? "Reassign" : "Assign"}
 					</Button>
+
+					{/* Block / Unblock Button */}
 					{isBlocked
 						? onUnblock && (
 								<Button
 									variant="ghost"
 									size="sm"
+									disabled={disabled}
 									onClick={onUnblock}
-									className="cursor-pointer h-7 px-2 text-xs text-emerald-600 hover:text-emerald-700"
+									className="cursor-pointer h-7 px-2 text-xs text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10"
 								>
-									<Sparkles className="size-3" /> Unblock
+									<Sparkles className="size-3 mr-1" /> Unblock
 								</Button>
 							)
 						: onBlock && (
 								<Button
 									variant="ghost"
 									size="sm"
+									disabled={disabled}
 									onClick={onBlock}
-									className="cursor-pointer h-7 px-2 text-xs text-destructive hover:text-destructive"
+									className="cursor-pointer h-7 px-2 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
 								>
-									<Ban className="size-3" /> Block
+									<Ban className="size-3 mr-1" /> Block
 								</Button>
 							)}
 				</div>
@@ -456,7 +884,8 @@ function ReassignDialog({
 			.filter(
 				(u) =>
 					u.name?.toLowerCase().includes(q) ||
-					u.email?.toLowerCase().includes(q),
+					u.email?.toLowerCase().includes(q) ||
+					u.profile?.displayName?.toLowerCase().includes(q),
 			)
 			.slice(0, 30);
 	}, [users, search]);
@@ -490,9 +919,9 @@ function ReassignDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
-				<DialogHeader className="border-b px-5 py-4 space-y-0.5">
-					<DialogTitle className="text-sm font-medium">
+			<DialogContent className="max-w-md p-0 gap-0 overflow-hidden flex flex-col max-h-[85dvh]">
+				<DialogHeader className="shrink-0 border-b px-6 py-4 space-y-0.5">
+					<DialogTitle className="text-sm ">
 						{slot?.assignedUser ? "Reassign this hour" : "Assign this hour"}
 					</DialogTitle>
 					<DialogDescription className="text-muted-foreground text-xs">
@@ -505,7 +934,7 @@ function ReassignDialog({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className="border-b px-5 py-3">
+				<div className="shrink-0 border-b px-6 py-3">
 					<Input
 						placeholder="Search singers by name or email…"
 						value={search}
@@ -514,7 +943,7 @@ function ReassignDialog({
 					/>
 				</div>
 
-				<div className="max-h-72 overflow-y-auto">
+				<div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
 					{filtered.length === 0 && (
 						<p className="py-8 text-center text-muted-foreground text-sm">
 							No users match “{search}”.
@@ -562,19 +991,19 @@ function ReassignDialog({
 					})}
 				</div>
 
-				<DialogFooter className="border-t px-5 py-3 space-x-2">
+				<DialogFooter className="mx-0 mb-0 grid grid-cols-1 gap-2 px-4 py-4 sm:grid-cols-2 sm:!grid-flow-row [&>button]:w-full">
 					{slot?.assignedUser && (
 						<Button
 							variant="outline"
 							disabled={saving}
 							onClick={() => assign(null)}
-							className="cursor-pointer mr-auto"
+							className="cursor-pointer sm:col-span-full"
 						>
 							Remove assignment
 						</Button>
 					)}
 					<Button
-						variant="ghost"
+						variant="destructive"
 						disabled={saving}
 						onClick={() => onOpenChange(false)}
 						className="cursor-pointer"

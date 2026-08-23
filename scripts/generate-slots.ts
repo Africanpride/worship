@@ -17,9 +17,10 @@ async function main() {
 
 	for (const event of events) {
 		try {
-			const { created } = await syncEventSlots(event.id);
+			const { created, pruned, stranded } = await syncEventSlots(event.id);
 			console.log(
-				`[generate-slots] ${event.title}: +${created} slot(s) created`,
+				`[generate-slots] ${event.title}: +${created} created, ${pruned} stale pruned` +
+					(stranded > 0 ? `, ${stranded} stranded (booked/blocked outside window)` : ""),
 			);
 		} catch (error) {
 			console.error(`[generate-slots] FAILED for "${event.title}"`, error);

@@ -239,6 +239,7 @@ model EventSlot {
   updatedAt        DateTime @updatedAt
 
   @@index([eventId])
+  @@index([startTime])
   @@map("event_slots")
 }
 

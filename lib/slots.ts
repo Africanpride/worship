@@ -48,22 +48,34 @@ export function buildSlotRanges(
 }
 
 /**
- * Union-semantics regeneration: only adds missing hourly slots.
- * Existing slots are never modified or deleted, so bookings/blocks survive
- * schedule tweaks. Returns how many slots were added.
+ * Union-semantics regeneration:
+ * - ADDS missing hourly slots inside [startDate, endDate]
+ * - PRUNES leftover "open" slots that fall OUTSIDE the current window
+ *   (e.g. generated before the event dates were corrected)
+ * - Booked/blocked slots are never touched — outside-the-window ones are
+ *   reported as `stranded` for admins to resolve.
  */
-export async function syncEventSlots(
-	eventId: string,
-): Promise<{ created: number }> {
+export async function syncEventSlots(eventId: string): Promise<{
+	created: number;
+	pruned: number;
+	stranded: number;
+}> {
 	const event = await prisma.event.findUnique({ where: { id: eventId } });
 	if (!event) throw new Error("EVENT_NOT_FOUND");
 
 	const existing = await prisma.eventSlot.findMany({
 		where: { eventId },
-		select: { startTime: true },
+		select: {
+			id: true,
+			status: true,
+			startTime: true,
+			endTime: true,
+		},
 	});
-	const existingStarts = new Set(existing.map((s) => s.startTime.getTime()));
 
+	const existingStarts = new Set(
+		existing.map((s) => s.startTime.getTime()),
+	);
 	const missing = buildSlotRanges(event.startDate, event.endDate).filter(
 		(range) => !existingStarts.has(range.startTime.getTime()),
 	);
@@ -78,7 +90,25 @@ export async function syncEventSlots(
 		});
 	}
 
-	return { created: missing.length };
+	const inWindow = (s: { startTime: Date; endTime: Date }) =>
+		s.startTime >= event.startDate && s.endTime <= event.endDate;
+
+	const stranded = existing.filter(
+		(s) => !inWindow(s) && s.status !== "open",
+	);
+	const prunableIds = existing
+		.filter((s) => !inWindow(s) && s.status === "open")
+		.map((s) => s.id);
+
+	let pruned = 0;
+	if (prunableIds.length > 0) {
+		const result = await prisma.eventSlot.deleteMany({
+			where: { id: { in: prunableIds } },
+		});
+		pruned = result.count;
+	}
+
+	return { created: missing.length, pruned, stranded: stranded.length };
 }
 
 export async function getBookingSettings(): Promise<BookingSettings> {

@@ -151,7 +151,7 @@ const AboutCompliment = ({
 				>
 					<div className="relative aspect-square md:aspect-video lg:aspect-auto lg:col-span-2 overflow-hidden rounded-xl lg:min-h-[500px]">
 						<motion.div
-							className="size-full"
+							className="relative size-full"
 							variants={{
 								hidden: { opacity: 0, y: 50 },
 								show: {
@@ -209,7 +209,7 @@ const AboutCompliment = ({
 						</motion.div>
 						<div className="relative grow rounded-xl overflow-hidden min-h-80 md:w-1/2 lg:w-auto lg:min-h-0 lg:h-full">
 							<motion.div
-								className="size-full min-h-[300px]"
+								className="relative size-full min-h-[300px]"
 								variants={{
 									hidden: { opacity: 0, y: 50 },
 									show: {

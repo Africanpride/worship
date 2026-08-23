@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { withDbRetry } from "@/lib/with-db-retry";
 export const dynamic = "force-dynamic";
 
 import UpcomingEventsList from "@/components/upcoming-events-list";
@@ -21,16 +22,39 @@ export const metadata: Metadata = {
 export default async function SchedulePage() {
 	const now = new Date();
 
-	const [upcomingEvents, pastEvents] = await Promise.all([
-		prisma.event.findMany({
-			where: { status: "published", endDate: { gte: now } },
-			orderBy: { startDate: "asc" },
-		}),
-		prisma.event.findMany({
-			where: { status: "published", endDate: { lt: now } },
-			orderBy: { startDate: "desc" },
-		}),
-	]);
+	type Event = Awaited<
+		ReturnType<typeof prisma.event.findMany>
+	>[number];
+
+	let upcomingEvents: Event[];
+	let pastEvents: Event[];
+	try {
+		[upcomingEvents, pastEvents] = await Promise.all([
+			withDbRetry(() =>
+				prisma.event.findMany({
+					where: { status: "published", endDate: { gte: now } },
+					orderBy: { startDate: "asc" },
+				}),
+			),
+			withDbRetry(() =>
+				prisma.event.findMany({
+					where: { status: "published", endDate: { lt: now } },
+					orderBy: { startDate: "desc" },
+				}),
+			),
+		]);
+	} catch (error) {
+		console.error("[SCHEDULE_DB]", error);
+		return (
+			<main className="w-full py-16 text-center">
+				<h1 className="text-4xl font-bebas mb-4">Silver Jubilee Schedule</h1>
+				<p className="text-muted-foreground max-w-md mx-auto">
+					We&apos;re having trouble loading the schedule right now. Please
+					refresh in a moment.
+				</p>
+			</main>
+		);
+	}
 
 	const nextEvent = upcomingEvents[0];
 	const otherUpcoming = upcomingEvents.slice(1);

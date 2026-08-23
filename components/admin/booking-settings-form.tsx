@@ -167,7 +167,7 @@ export function BookingSettingsForm() {
 				<div className="space-y-3">
 					<Label>Slot visibility to users</Label>
 					<Select value={visibility} onValueChange={setVisibility}>
-						<SelectTrigger className="w-full sm:w-72 cursor-pointer">
+						<SelectTrigger className="w-full cursor-pointer">
 							<SelectValue placeholder="Choose visibility mode" />
 						</SelectTrigger>
 						<SelectContent>
