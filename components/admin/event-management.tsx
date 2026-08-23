@@ -208,6 +208,11 @@ export function EventManagement() {
 	};
 
 	const toggleBookingOpen = async (event: Event, next: boolean) => {
+		// Optimistic: flip the switch immediately, reconcile with the server
+		// in the background, revert if the request fails.
+		setEvents((prev) =>
+			prev.map((e) => (e.id === event.id ? { ...e, bookingOpen: next } : e)),
+		);
 		setTogglingBookings(event.id);
 		try {
 			const { error } = await $fetch(`/events/${event.id}`, {
@@ -215,15 +220,15 @@ export function EventManagement() {
 				body: { id: event.id, bookingOpen: next },
 			});
 			if (error) throw error;
-			setEvents((prev) =>
-				prev.map((e) => (e.id === event.id ? { ...e, bookingOpen: next } : e)),
-			);
 			toast.success(
 				next
 					? `Bookings opened for “${event.title}”`
 					: `Bookings closed for “${event.title}”`,
 			);
 		} catch (error) {
+			setEvents((prev) =>
+				prev.map((e) => (e.id === event.id ? { ...e, bookingOpen: !next } : e)),
+			);
 			toast.error("Failed to update bookings");
 			console.error(error);
 		} finally {

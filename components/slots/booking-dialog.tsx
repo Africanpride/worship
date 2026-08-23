@@ -145,11 +145,43 @@ export function BookingDialog({
 			setCarouselReady(false);
 			return;
 		}
-		const t = setTimeout(() => {
+
+		// Wait for the dialog open-animation (zoom-in-95 / fade-in) to
+		// finish before mounting the carousel so Embla measures slide widths
+		// at the dialog's final scale, not at ~95 %.
+		let cancelled = false;
+		const dialogEl = document.querySelector<HTMLElement>(
+			'[data-slot="dialog-content"]',
+		);
+
+		const mount = () => {
+			if (cancelled) return;
 			setCarouselReady(true);
 			requestAnimationFrame(() => api?.reInit());
-		}, 200);
-		return () => clearTimeout(t);
+		};
+
+		if (dialogEl) {
+			const handler = () => {
+				dialogEl.removeEventListener("animationend", handler);
+				mount();
+			};
+			dialogEl.addEventListener("animationend", handler);
+
+			// Fallback in case the event never fires (e.g. prefers-reduced-motion)
+			const fallback = setTimeout(mount, 300);
+			return () => {
+				cancelled = true;
+				dialogEl.removeEventListener("animationend", handler);
+				clearTimeout(fallback);
+			};
+		}
+
+		// No dialog element found – fall back to a generous timeout
+		const t = setTimeout(mount, 300);
+		return () => {
+			cancelled = true;
+			clearTimeout(t);
+		};
 	}, [open, api]);
 
 	const scrollPrev = useCallback(() => api?.scrollPrev(), [api]);
@@ -249,7 +281,7 @@ export function BookingDialog({
 						</div>
 					</div>
 
-					<div className="min-h-44">
+					<div className="min-h-44 w-full min-w-0 overflow-hidden">
 						{isLoading && (
 							<p className="px-5 py-8 text-sm text-muted-foreground">
 								Loading slots…
@@ -290,11 +322,14 @@ export function BookingDialog({
 								<Carousel
 									setApi={setApi}
 									opts={{ loop: false, containScroll: "trimSnaps" }}
-									className="w-full"
+									className="w-full min-w-0"
 								>
 									<CarouselContent className="ml-0">
 										{dayGroups.map((group, i) => (
-											<CarouselItem key={days[i]} className="min-w-0 pl-0">
+											<CarouselItem
+												key={days[i]}
+												className="min-w-0 pl-0 basis-full"
+											>
 												<div className="grid w-full grid-cols-3 gap-2 px-5 py-4 sm:grid-cols-4">
 													{group.map((slot) => (
 														<SlotButton
@@ -329,7 +364,7 @@ export function BookingDialog({
 					{hasDays && !isLoading && (
 						<div
 							className={cn(
-								"flex items-center justify-center gap-1.5 border-t px-5 py-2",
+								"flex flex-wrap items-center justify-center gap-1.5 border-t px-5 py-2 max-w-full overflow-hidden",
 								!isAuthenticated && "border-t-0",
 							)}
 						>
@@ -419,11 +454,13 @@ function SlotButton({
 				isMine && "border-primary/50 text-primary not-italic no-underline",
 			)}
 		>
-			<Clock className="size-3" />
-			<span className="font-mono text-xs tabular-nums">
+			<Clock className="size-3 shrink-0" />
+			<span className="font-mono text-xs tabular-nums whitespace-nowrap">
 				{format(start, "h:mm aa")}
 			</span>
-			{isMine && <Badge className="ml-1 text-[10px] px-1.5 py-0">You</Badge>}
+			{isMine && (
+				<Badge className="ml-1 text-[10px] px-1.5 py-0 shrink-0">You</Badge>
+			)}
 		</button>
 	);
 }
