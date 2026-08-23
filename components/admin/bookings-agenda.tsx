@@ -17,6 +17,7 @@ import useSWR from "swr";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Dialog,
 	DialogContent,
@@ -219,6 +220,7 @@ export function BookingsAgenda() {
 	const [timeframe, setTimeframe] = useState<string>("all");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [searchQuery, setSearchQuery] = useState<string>("");
+	const [hidePastEvents, setHidePastEvents] = useState(true);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
 
 	const apiUrl = useMemo(() => {
@@ -303,8 +305,20 @@ export function BookingsAgenda() {
 	}
 
 	// Filter slots by search query (booker name, email, event title)
-	const filteredSlots = useMemo(() => {
+	// "Hide past events" only applies while viewing All Events; a specific
+	// event selection always shows its full history.
+	const hidePast = hidePastEvents && selectedEventId === "all";
+
+	// Drop slots of ended events from the working set when the filter is on.
+	const visibleSlots = useMemo(() => {
 		const slots = data?.slots ?? [];
+		if (!hidePast) return slots;
+		const now = Date.now();
+		return slots.filter((slot) => new Date(slot.event.endDate).getTime() > now);
+	}, [data?.slots, hidePast]);
+
+	const filteredSlots = useMemo(() => {
+		const slots = visibleSlots;
 		const q = searchQuery.trim().toLowerCase();
 		if (!q) return slots;
 
@@ -324,7 +338,7 @@ export function BookingsAgenda() {
 				timeLabel.includes(q)
 			);
 		});
-	}, [data?.slots, searchQuery]);
+	}, [visibleSlots, searchQuery]);
 
 	// Group slots by day
 	const days = useMemo(() => {
@@ -340,7 +354,7 @@ export function BookingsAgenda() {
 
 	const metrics = useMemo(() => {
 		const now = Date.now();
-		const all = data?.slots ?? [];
+		const all = visibleSlots;
 		const bookable = (s: AgendaSlot) =>
 			new Date(s.startTime).getTime() > now &&
 			new Date(s.event.endDate).getTime() > now;
@@ -348,7 +362,7 @@ export function BookingsAgenda() {
 		const blocked = all.filter((s) => s.status === "blocked").length;
 		const open = all.filter((s) => s.status === "open" && bookable(s)).length;
 		return { total: all.length, booked, blocked, open };
-	}, [data?.slots]);
+	}, [visibleSlots]);
 
 	return (
 		<div className="rounded-xl border bg-card shadow-sm">
@@ -379,6 +393,17 @@ export function BookingsAgenda() {
 						<Badge variant="outline" className="gap-1 text-muted-foreground">
 							<span className="font-bold">{metrics.open}</span> Open
 						</Badge>
+						{selectedEventId === "all" && (
+							<label className="ml-1 flex cursor-pointer items-center gap-1.5 text-muted-foreground select-none">
+								<Checkbox
+									checked={hidePastEvents}
+									onCheckedChange={(v) => setHidePastEvents(v === true)}
+									className="size-3.5 cursor-pointer"
+									aria-label="Hide past events"
+								/>
+								Hide past events
+							</label>
+						)}
 					</div>
 				</div>
 
@@ -406,38 +431,42 @@ export function BookingsAgenda() {
 								>
 									All Events
 								</SelectItem>
-								{(data?.events ?? []).map((ev) => (
-									<SelectItem
-										key={ev.id}
-										value={ev.id}
-										className="cursor-pointer text-xs"
-									>
-										<span className="flex min-w-0 items-center gap-2">
-											{eventTemporalState(ev) === "ongoing" ? (
-												<span className="relative flex size-2.5 shrink-0">
-													<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
-													<span className="relative inline-flex size-2.5 rounded-full bg-purple-500" />
+								{(data?.events ?? [])
+									.filter(
+										(ev) => !hidePast || eventTemporalState(ev) !== "past",
+									)
+									.map((ev) => (
+										<SelectItem
+											key={ev.id}
+											value={ev.id}
+											className="cursor-pointer text-xs"
+										>
+											<span className="flex min-w-0 items-center gap-2">
+												{eventTemporalState(ev) === "ongoing" ? (
+													<span className="relative flex size-2.5 shrink-0">
+														<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+														<span className="relative inline-flex size-2.5 rounded-full bg-purple-500" />
+													</span>
+												) : (
+													<span
+														aria-hidden
+														className={cn(
+															"size-2 shrink-0 rounded-full",
+															eventTemporalState(ev) === "past"
+																? "bg-zinc-400 dark:bg-zinc-600"
+																: TONE_BG[toneForEvent(ev.id)],
+														)}
+													/>
+												)}
+												<span className="truncate">{ev.title}</span>
+												<span className="shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground">
+													{format(new Date(ev.startDate), "d MMM")} –{" "}
+													{format(new Date(ev.endDate), "d MMM yyyy")} ·{" "}
+													{ev._count?.slots ?? 0} slots
 												</span>
-											) : (
-												<span
-													aria-hidden
-													className={cn(
-														"size-2 shrink-0 rounded-full",
-														eventTemporalState(ev) === "past"
-															? "bg-zinc-400 dark:bg-zinc-600"
-															: TONE_BG[toneForEvent(ev.id)],
-													)}
-												/>
-											)}
-											<span className="truncate">{ev.title}</span>
-											<span className="shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground">
-												{format(new Date(ev.startDate), "d MMM")} –{" "}
-												{format(new Date(ev.endDate), "d MMM yyyy")} ·{" "}
-												{ev._count?.slots ?? 0} slots
 											</span>
-										</span>
-									</SelectItem>
-								))}
+										</SelectItem>
+									))}
 							</SelectContent>
 						</Select>
 					</div>
