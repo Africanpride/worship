@@ -40,6 +40,18 @@ export async function POST(
 		if (!slot || slot.eventId !== eventId) {
 			return NextResponse.json({ error: "Slot not found" }, { status: 404 });
 		}
+
+		const event = await prisma.event.findUnique({
+			where: { id: eventId },
+			select: { bookingOpen: true },
+		});
+		if (!event?.bookingOpen) {
+			return NextResponse.json(
+				{ error: "Bookings for this event haven't opened yet." },
+				{ status: 403 },
+			);
+		}
+
 		if (slot.status !== "open") {
 			return NextResponse.json(
 				{ error: "This slot is no longer available." },

@@ -29,6 +29,7 @@ export async function PATCH(
 			status,
 			ministers,
 			sponsorIds,
+			bookingOpen,
 		} = body;
 
 		if (!id) {
@@ -68,6 +69,7 @@ export async function PATCH(
 				location,
 				status,
 				sponsorIds: sponsorIds || [],
+				...(typeof bookingOpen === "boolean" ? { bookingOpen } : {}),
 			},
 		});
 

@@ -44,6 +44,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
 	Table,
 	TableBody,
@@ -97,6 +98,7 @@ interface Event {
 	description: string | null;
 	location: string | null;
 	status: string;
+	bookingOpen?: boolean;
 	ministers: Minister[];
 	sponsors: Sponsor[];
 }
@@ -111,6 +113,7 @@ export function EventManagement() {
 	const [loading, setLoading] = useState(true);
 	const [open, setOpen] = useState(false);
 	const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+	const [togglingBookings, setTogglingBookings] = useState<string | null>(null);
 
 	const form = useForm<EventFormValues>({
 		resolver: zodResolver(eventSchema),
@@ -201,6 +204,30 @@ export function EventManagement() {
 		} catch (error) {
 			toast.error("Failed to delete event");
 			console.error(error);
+		}
+	};
+
+	const toggleBookingOpen = async (event: Event, next: boolean) => {
+		setTogglingBookings(event.id);
+		try {
+			const { error } = await $fetch(`/events/${event.id}`, {
+				method: "PATCH",
+				body: { id: event.id, bookingOpen: next },
+			});
+			if (error) throw error;
+			setEvents((prev) =>
+				prev.map((e) => (e.id === event.id ? { ...e, bookingOpen: next } : e)),
+			);
+			toast.success(
+				next
+					? `Bookings opened for “${event.title}”`
+					: `Bookings closed for “${event.title}”`,
+			);
+		} catch (error) {
+			toast.error("Failed to update bookings");
+			console.error(error);
+		} finally {
+			setTogglingBookings(null);
 		}
 	};
 
@@ -540,6 +567,7 @@ export function EventManagement() {
 							<TableHead>Status</TableHead>
 							<TableHead>Event</TableHead>
 							<TableHead>Date</TableHead>
+							<TableHead className="text-center">Bookings</TableHead>
 							<TableHead className="hidden md:table-cell text-center">
 								Ministers
 							</TableHead>
@@ -549,14 +577,14 @@ export function EventManagement() {
 					<TableBody>
 						{loading ? (
 							<TableRow>
-								<TableCell colSpan={5} className="h-24 text-center">
+								<TableCell colSpan={6} className="h-24 text-center">
 									<Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
 								</TableCell>
 							</TableRow>
 						) : events.length === 0 ? (
 							<TableRow>
 								<TableCell
-									colSpan={5}
+									colSpan={6}
 									className="h-24 text-center text-muted-foreground"
 								>
 									No events found. Create your first one!
@@ -611,6 +639,15 @@ export function EventManagement() {
 										<div className="text-xs text-muted-foreground">
 											{format(new Date(event.startDate), "HH:mm")}
 										</div>
+									</TableCell>
+									<TableCell className="text-center">
+										<Switch
+											checked={event.bookingOpen ?? false}
+											onCheckedChange={(v) => toggleBookingOpen(event, v)}
+											disabled={togglingBookings === event.id}
+											className="cursor-pointer"
+											aria-label={`Toggle bookings for ${event.title}`}
+										/>
 									</TableCell>
 									<TableCell className="hidden md:table-cell">
 										<div className="flex justify-center -space-x-2">

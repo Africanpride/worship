@@ -175,11 +175,13 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
 									Register Now
 								</a>
 							)}
-							<BookingDialog
-								eventId={nextEvent.id}
-								eventTitle={nextEvent.title}
-								className="h-14 px-10 rounded-full font-bebas text-xl tracking-wider bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all active:scale-95"
-							/>
+							{nextEvent.bookingOpen && (
+								<BookingDialog
+									eventId={nextEvent.id}
+									eventTitle={nextEvent.title}
+									className="h-14 px-10 rounded-full font-bebas text-xl tracking-wider bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all active:scale-95"
+								/>
+							)}
 						</div>
 					</div>
 				</div>

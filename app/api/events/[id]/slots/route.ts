@@ -27,7 +27,10 @@ export async function GET(
 			return NextResponse.json({ error: "Missing event ID" }, { status: 400 });
 		}
 
-		const event = await prisma.event.findUnique({ where: { id } });
+		const event = await prisma.event.findUnique({
+			where: { id },
+			select: { id: true, bookingOpen: true },
+		});
 		if (!event) {
 			return NextResponse.json({ error: "Event not found" }, { status: 404 });
 		}
@@ -64,6 +67,7 @@ export async function GET(
 
 		return NextResponse.json({
 			eventId: id,
+			bookingOpen: event.bookingOpen,
 			visibility,
 			slots: redacted,
 		});

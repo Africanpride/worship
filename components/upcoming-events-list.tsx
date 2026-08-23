@@ -110,7 +110,7 @@ export default function UpcomingEventsList({
 
 								{/* Action column */}
 								<div className="flex-shrink-0 mt-6 md:mt-0 flex items-center gap-3">
-									{!isPast && (
+									{!isPast && event.bookingOpen && (
 										<BookingDialog
 											eventId={event.id}
 											eventTitle={event.title}

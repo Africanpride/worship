@@ -37,6 +37,7 @@ import { cn } from "@/lib/utils";
 
 interface SlotsResponse {
 	eventId: string;
+	bookingOpen: boolean;
 	visibility: SlotVisibilityMode;
 	slots: RedactedSlot[];
 }
@@ -69,6 +70,11 @@ export function BookingDialog({
 	const [booking, setBooking] = useState(false);
 	const [api, setApi] = useState<CarouselApi>();
 	const [currentDayIndex, setCurrentDayIndex] = useState(0);
+	// Embla measures slide widths at mount. Mounting it while the Radix
+	// open-animation (scale) is still running produces oversized slides that
+	// spill past the dialog edge — only visible once an event has multiple
+	// day-slides. Defer mounting until the animation settles.
+	const [carouselReady, setCarouselReady] = useState(false);
 
 	const { data, error, isLoading, mutate } = useSWR<SlotsResponse>(
 		open ? `/api/events/${eventId}/slots` : null,
@@ -134,6 +140,18 @@ export function BookingDialog({
 		api.scrollTo(target, true);
 	}, [api, data, days, currentDayIndex]);
 
+	useEffect(() => {
+		if (!open) {
+			setCarouselReady(false);
+			return;
+		}
+		const t = setTimeout(() => {
+			setCarouselReady(true);
+			requestAnimationFrame(() => api?.reInit());
+		}, 200);
+		return () => clearTimeout(t);
+	}, [open, api]);
+
 	const scrollPrev = useCallback(() => api?.scrollPrev(), [api]);
 	const scrollNext = useCallback(() => api?.scrollNext(), [api]);
 
@@ -163,6 +181,7 @@ export function BookingDialog({
 	}
 
 	const isAdminManaged = data?.visibility === "admin_only" && !isAdmin;
+	const bookingsClosed = data ? data.bookingOpen === false : false;
 	const hasDays = days.length > 0;
 
 	return (
@@ -247,45 +266,64 @@ export function BookingDialog({
 								contact us to reserve a slot.
 							</p>
 						)}
-						{!isLoading && !error && !isAdminManaged && !hasDays && (
+						{!isLoading && !error && bookingsClosed && !isAdminManaged && (
 							<p className="px-5 py-8 text-sm text-muted-foreground">
-								No slots have been published for this event yet.
+								Bookings for this event haven&apos;t opened yet. Check back soon
+								— hours will appear here the moment they open.
 							</p>
 						)}
-						{!isLoading && !error && !isAdminManaged && hasDays && (
-							<Carousel
-								setApi={setApi}
-								opts={{ loop: false, containScroll: "trimSnaps" }}
-								className="w-full"
-							>
-								<CarouselContent className="ml-0">
-									{dayGroups.map((group, i) => (
-										<CarouselItem key={days[i]} className="pl-0">
-											<div className="grid grid-cols-3 gap-2 px-5 py-4 sm:grid-cols-4">
-												{group.map((slot) => (
-													<SlotButton
-														key={slot.id}
-														slot={slot}
-														isMine={mySlots.has(slot.id)}
-														onSelect={() => setPendingSlot(slot)}
-													/>
-												))}
-											</div>
-										</CarouselItem>
-									))}
-								</CarouselContent>
-							</Carousel>
-						)}
+						{!isLoading &&
+							!error &&
+							!bookingsClosed &&
+							!isAdminManaged &&
+							!hasDays && (
+								<p className="px-5 py-8 text-sm text-muted-foreground">
+									No slots have been published for this event yet.
+								</p>
+							)}
+						{!isLoading &&
+							!error &&
+							!isAdminManaged &&
+							!bookingsClosed &&
+							hasDays &&
+							carouselReady && (
+								<Carousel
+									setApi={setApi}
+									opts={{ loop: false, containScroll: "trimSnaps" }}
+									className="w-full"
+								>
+									<CarouselContent className="ml-0">
+										{dayGroups.map((group, i) => (
+											<CarouselItem key={days[i]} className="min-w-0 pl-0">
+												<div className="grid w-full grid-cols-3 gap-2 px-5 py-4 sm:grid-cols-4">
+													{group.map((slot) => (
+														<SlotButton
+															key={slot.id}
+															slot={slot}
+															isMine={mySlots.has(slot.id)}
+															onSelect={() => setPendingSlot(slot)}
+														/>
+													))}
+												</div>
+											</CarouselItem>
+										))}
+									</CarouselContent>
+								</Carousel>
+							)}
 
-						{!isLoading && !error && !isAuthenticated && (
-							<p className="border-t px-5 py-2.5 text-xs text-muted-foreground">
-								You&apos;ll need to{" "}
-								<a href="/login" className="underline cursor-pointer">
-									sign in
-								</a>{" "}
-								to book a slot.
-							</p>
-						)}
+						{!isLoading &&
+							!error &&
+							!isAuthenticated &&
+							!bookingsClosed &&
+							!isAdminManaged && (
+								<p className="border-t px-5 py-2.5 text-xs text-muted-foreground">
+									You&apos;ll need to{" "}
+									<a href="/login" className="underline cursor-pointer">
+										sign in
+									</a>{" "}
+									to book a slot.
+								</p>
+							)}
 					</div>
 
 					{hasDays && !isLoading && (

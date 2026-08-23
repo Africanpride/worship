@@ -143,6 +143,8 @@ model Event {
   category        String?
   registrationUrl String?
   status          String   @default("published") // draft, published, cancelled
+  // Admin-controlled gate: bookings are only accepted while true.
+  bookingOpen     Boolean  @default(false)
 
   // Ministers: Embedded list for simplicity in MongoDB
   ministers Minister[]
