@@ -32,7 +32,7 @@ export function BlogPostCard({
 					{category}
 					{dateStr && ` • ${dateStr}`}
 				</span>
-				<h3 className="font-semibold text-lg mt-1">{title}</h3>
+				<h3 className="text-lg mt-1">{title}</h3>
 				<p className="text-xs text-muted-foreground line-clamp-1 mt-1">
 					{excerpt}
 				</p>

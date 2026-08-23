@@ -157,10 +157,17 @@ function buildDayRows(slots: AgendaSlot[], statusFilter: string): RowItem[] {
 		gapSlotIds = [];
 	};
 
+	// A slot is only meaningfully "open" (bookable inventory) if its hour is
+	// in the future AND its event hasn't ended. Everything else — past hours,
+	// hours of ended events — is history and must never render as Open.
 	for (const slot of sorted) {
 		const start = new Date(slot.startTime);
 		const end = new Date(slot.endTime);
-		if (slot.status === "open") {
+		const bookable =
+			slot.status === "open" &&
+			start.getTime() > Date.now() &&
+			new Date(slot.event.endDate).getTime() > Date.now();
+		if (bookable) {
 			if (gapStart && gapEnd && start.getTime() === gapEnd.getTime()) {
 				gapEnd = end;
 				gapCount += 1;
@@ -185,6 +192,24 @@ async function fetcher<T>(url: string): Promise<T> {
 	const res = await fetch(url);
 	if (!res.ok) throw new Error("Request failed");
 	return res.json();
+}
+
+function slotTemporalState(slot: AgendaSlot): "past" | "ongoing" | "upcoming" {
+	const now = Date.now();
+	const start = new Date(slot.startTime).getTime();
+	const end = new Date(slot.endTime).getTime();
+	if (now >= end) return "past";
+	if (now >= start) return "ongoing";
+	return "upcoming";
+}
+
+function eventTemporalState(ev: EventSummary): "past" | "ongoing" | "upcoming" {
+	const now = Date.now();
+	const start = new Date(ev.startDate).getTime();
+	const end = new Date(ev.endDate).getTime();
+	if (now >= end) return "past";
+	if (now >= start) return "ongoing";
+	return "upcoming";
 }
 
 export function BookingsAgenda() {
@@ -224,6 +249,7 @@ export function BookingsAgenda() {
 			const json = await res.json().catch(() => ({}));
 			if (!res.ok) throw new Error(json?.error ?? "Action failed");
 			toast.success(okMsg);
+			setExpandedGaps(new Set());
 			await mutate();
 		} catch (err) {
 			toast.error(err instanceof Error ? err.message : String(err));
@@ -247,7 +273,18 @@ export function BookingsAgenda() {
 			});
 			const json = await res.json().catch(() => ({}));
 			if (!res.ok) throw new Error(json?.error ?? "Batch action failed");
-			toast.success(`${okMsg} (${json.count ?? slotIds.length} slots)`);
+			const changed =
+				typeof json.count === "number" ? json.count : slotIds.length;
+			if (changed < slotIds.length) {
+				toast.warning(
+					`${changed} of ${slotIds.length} slots updated — the rest changed state elsewhere. Refreshed.`,
+				);
+			} else {
+				toast.success(`${okMsg} (${changed} slots)`);
+			}
+			// Collapse state keys reference old groupings — reset so refreshed
+			// open runs don't render under stale expansions.
+			setExpandedGaps(new Set());
 			await mutate();
 		} catch (err) {
 			toast.error(err instanceof Error ? err.message : String(err));
@@ -302,10 +339,14 @@ export function BookingsAgenda() {
 	}, [filteredSlots]);
 
 	const metrics = useMemo(() => {
+		const now = Date.now();
 		const all = data?.slots ?? [];
+		const bookable = (s: AgendaSlot) =>
+			new Date(s.startTime).getTime() > now &&
+			new Date(s.event.endDate).getTime() > now;
 		const booked = all.filter((s) => s.status === "booked").length;
 		const blocked = all.filter((s) => s.status === "blocked").length;
-		const open = all.filter((s) => s.status === "open").length;
+		const open = all.filter((s) => s.status === "open" && bookable(s)).length;
 		return { total: all.length, booked, blocked, open };
 	}, [data?.slots]);
 
@@ -317,9 +358,7 @@ export function BookingsAgenda() {
 					<div>
 						<div className="flex items-center gap-2">
 							<CalendarDays className="size-4 text-primary" />
-							<h2 className="font-semibold text-lg tracking-tight">
-								Worship Agenda & Slot Management
-							</h2>
+							<h2 className="text-lg">Worship Agenda & Slot Management</h2>
 						</div>
 						<p className="mt-1 text-muted-foreground text-xs">
 							Manage worship slots, reassign booked hours, and block out hours
@@ -360,7 +399,7 @@ export function BookingsAgenda() {
 							<SelectTrigger className="w-full h-8 text-xs cursor-pointer">
 								<SelectValue placeholder="All Events" />
 							</SelectTrigger>
-							<SelectContent className="max-w-xs">
+							<SelectContent className="max-w-sm">
 								<SelectItem
 									value="all"
 									className="cursor-pointer text-xs font-medium"
@@ -373,7 +412,30 @@ export function BookingsAgenda() {
 										value={ev.id}
 										className="cursor-pointer text-xs"
 									>
-										<span className="truncate">{ev.title}</span>
+										<span className="flex min-w-0 items-center gap-2">
+											{eventTemporalState(ev) === "ongoing" ? (
+												<span className="relative flex size-2.5 shrink-0">
+													<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+													<span className="relative inline-flex size-2.5 rounded-full bg-purple-500" />
+												</span>
+											) : (
+												<span
+													aria-hidden
+													className={cn(
+														"size-2 shrink-0 rounded-full",
+														eventTemporalState(ev) === "past"
+															? "bg-zinc-400 dark:bg-zinc-600"
+															: TONE_BG[toneForEvent(ev.id)],
+													)}
+												/>
+											)}
+											<span className="truncate">{ev.title}</span>
+											<span className="shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground">
+												{format(new Date(ev.startDate), "d MMM")} –{" "}
+												{format(new Date(ev.endDate), "d MMM yyyy")} ·{" "}
+												{ev._count?.slots ?? 0} slots
+											</span>
+										</span>
 									</SelectItem>
 								))}
 							</SelectContent>
@@ -502,17 +564,23 @@ export function BookingsAgenda() {
 					const isTomorrow =
 						format(new Date(Date.now() + 86_400_000), "yyyy-MM-dd") === dayKey;
 
-					const dayBooked = daySlots.filter(
+					// Batch actions only target upcoming hours — past slots aren't
+					// manageable from the agenda, so they must never inflate counts
+					// or be silently included in an id list.
+					const futureSlots = daySlots.filter(
+						(s) => new Date(s.startTime).getTime() > Date.now(),
+					);
+					const dayBooked = futureSlots.filter(
 						(s) => s.status === "booked",
 					).length;
-					const dayBlocked = daySlots.filter(
+					const dayBlocked = futureSlots.filter(
 						(s) => s.status === "blocked",
 					).length;
-					const dayOpen = daySlots.filter((s) => s.status === "open").length;
-					const openSlotIds = daySlots
+					const dayOpen = futureSlots.filter((s) => s.status === "open").length;
+					const openSlotIds = futureSlots
 						.filter((s) => s.status === "open")
 						.map((s) => s.id);
-					const blockedSlotIds = daySlots
+					const blockedSlotIds = futureSlots
 						.filter((s) => s.status === "blocked")
 						.map((s) => s.id);
 
@@ -714,7 +782,14 @@ function AgendaRow({
 }) {
 	const tone = toneForEvent(slot.eventId);
 	const isBlocked = slot.status === "blocked";
-	const isOpen = slot.status === "open";
+	const temporal = slotTemporalState(slot);
+	// "Open" means live bookable inventory: future hour, event still running.
+	// Slots of ended events (and past hours) are history — never Open.
+	const isOpen =
+		slot.status === "open" &&
+		temporal !== "past" &&
+		new Date(slot.event.endDate).getTime() > Date.now();
+	const eventEnded = new Date(slot.event.endDate).getTime() <= Date.now();
 	const _isBooked = slot.status === "booked";
 	const booker = slot.assignedUser;
 	const displayName = booker?.profile?.displayName || booker?.name || "?";
@@ -726,7 +801,12 @@ function AgendaRow({
 		.toUpperCase();
 
 	return (
-		<li className="group grid grid-cols-[64px_1fr] gap-3 rounded-xl border border-border/60 bg-background/40 px-3 py-3 transition-colors hover:bg-background/80 sm:grid-cols-[80px_1fr]">
+		<li
+			className={cn(
+				"group grid grid-cols-[64px_1fr] gap-3 rounded-xl border border-border/60 bg-background/40 px-3 py-3 transition-colors hover:bg-background/80 sm:grid-cols-[80px_1fr]",
+				temporal === "past" && "opacity-50",
+			)}
+		>
 			<div className="font-mono text-[11px]">
 				<div className="font-medium text-foreground">
 					{format(new Date(slot.startTime), "HH:mm")}
@@ -736,16 +816,30 @@ function AgendaRow({
 				</div>
 			</div>
 			<div className="flex items-center gap-3 min-w-0">
-				<span
-					className={cn(
-						"h-12 w-1 shrink-0 rounded-full",
-						isBlocked
-							? "bg-zinc-400 dark:bg-zinc-600"
-							: isOpen
-								? "bg-emerald-400/50"
-								: TONE_BG[tone],
-					)}
-				/>
+				{/* Temporal status dot */}
+				{temporal === "ongoing" ? (
+					<span className="relative flex size-3 shrink-0">
+						<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+						<span className="relative inline-flex size-3 rounded-full bg-purple-500" />
+					</span>
+				) : temporal === "past" ? (
+					<span
+						aria-hidden="true"
+						className="size-2 shrink-0 rounded-full bg-amber-500"
+					/>
+				) : (
+					<span
+						aria-hidden="true"
+						className={cn(
+							"size-2 shrink-0 rounded-full",
+							isBlocked
+								? "bg-zinc-400 dark:bg-zinc-600"
+								: isOpen
+									? "bg-emerald-400"
+									: TONE_BG[tone],
+						)}
+					/>
+				)}
 				<div className="min-w-0 flex-1">
 					<div className="flex items-center gap-2">
 						<span
@@ -813,44 +907,46 @@ function AgendaRow({
 					</Avatar>
 				)}
 
-				<div className="flex shrink-0 items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
-					{/* Reassign / Assign Button */}
-					<Button
-						variant="ghost"
-						size="sm"
-						disabled={disabled}
-						onClick={onAssign}
-						className="cursor-pointer h-7 px-2 text-xs"
-					>
-						<PencilLine className="size-3 mr-1" />
-						{booker ? "Reassign" : "Assign"}
-					</Button>
+				{!eventEnded && (
+					<div className="flex shrink-0 items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
+						{/* Reassign / Assign Button */}
+						<Button
+							variant="ghost"
+							size="sm"
+							disabled={disabled}
+							onClick={onAssign}
+							className="cursor-pointer h-7 px-2 text-xs"
+						>
+							<PencilLine className="size-3 mr-1" />
+							{booker ? "Reassign" : "Assign"}
+						</Button>
 
-					{/* Block / Unblock Button */}
-					{isBlocked
-						? onUnblock && (
-								<Button
-									variant="ghost"
-									size="sm"
-									disabled={disabled}
-									onClick={onUnblock}
-									className="cursor-pointer h-7 px-2 text-xs text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10"
-								>
-									<Sparkles className="size-3 mr-1" /> Unblock
-								</Button>
-							)
-						: onBlock && (
-								<Button
-									variant="ghost"
-									size="sm"
-									disabled={disabled}
-									onClick={onBlock}
-									className="cursor-pointer h-7 px-2 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
-								>
-									<Ban className="size-3 mr-1" /> Block
-								</Button>
-							)}
-				</div>
+						{/* Block / Unblock Button */}
+						{isBlocked
+							? onUnblock && (
+									<Button
+										variant="ghost"
+										size="sm"
+										disabled={disabled}
+										onClick={onUnblock}
+										className="cursor-pointer h-7 px-2 text-xs text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10"
+									>
+										<Sparkles className="size-3 mr-1" /> Unblock
+									</Button>
+								)
+							: onBlock && (
+									<Button
+										variant="ghost"
+										size="sm"
+										disabled={disabled}
+										onClick={onBlock}
+										className="cursor-pointer h-7 px-2 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+									>
+										<Ban className="size-3 mr-1" /> Block
+									</Button>
+								)}
+					</div>
+				)}
 			</div>
 		</li>
 	);

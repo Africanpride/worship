@@ -4,6 +4,7 @@ import {
 	BadgeCheck,
 	Bell,
 	ChevronsUpDown,
+	Clock,
 	CreditCard,
 	Heart,
 	LayoutDashboard,
@@ -132,6 +133,12 @@ export function NavUser({
 								<Link href="/">
 									<LayoutDashboard className="mr-2 h-4 w-4" />
 									Back to Website
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild className="cursor-pointer">
+								<Link href="/schedule">
+									<Clock className="mr-2 h-4 w-4" />
+									Book a Slot
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem asChild className="cursor-pointer">

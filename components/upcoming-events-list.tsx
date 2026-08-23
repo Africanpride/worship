@@ -84,7 +84,7 @@ export default function UpcomingEventsList({
 										<MapPin className="size-3 text-amber-400/70" />
 										{event.location || "To Be Announced"}
 									</div>
-									<h3 className="text-2xl md:text-3xl font-bebas text-foreground tracking-tight group-hover:text-primary transition-colors">
+									<h3 className="text-2xl md:text-3xl font-bebas text-foreground group-hover:text-primary transition-colors">
 										{event.title}
 									</h3>
 									<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] md:text-xs font-opensans text-muted-foreground/80 font-medium">
@@ -110,7 +110,9 @@ export default function UpcomingEventsList({
 
 								{/* Action column */}
 								<div className="flex-shrink-0 mt-6 md:mt-0 flex items-center gap-3">
-									{!isPast && event.bookingOpen && (
+									{!isPast &&
+								event.bookingOpen &&
+								new Date(event.endDate).getTime() > Date.now() && (
 										<BookingDialog
 											eventId={event.id}
 											eventTitle={event.title}

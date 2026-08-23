@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { TypeToDeleteDialog } from "@/components/type-to-delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -73,6 +74,8 @@ const $fetch = createFetch({
 export function VideoManagement() {
 	const [videos, setVideos] = useState<Video[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [deleteTarget, setDeleteTarget] = useState<Video | null>(null);
+	const [deleting, setDeleting] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [editingVideo, setEditingVideo] = useState<Video | null>(null);
 
@@ -132,8 +135,6 @@ export function VideoManagement() {
 	};
 
 	const onDelete = async (id: string) => {
-		if (!confirm("Are you sure you want to delete this video?")) return;
-
 		try {
 			const { error } = await $fetch(`/videos?id=${id}`, {
 				method: "DELETE",
@@ -145,6 +146,10 @@ export function VideoManagement() {
 			toast.error("Failed to delete video");
 			console.error(error);
 		}
+	};
+
+	const requestDelete = (video: Video) => {
+		setDeleteTarget(video);
 	};
 
 	const handleEdit = (video: Video) => {
@@ -347,8 +352,8 @@ export function VideoManagement() {
 											<Button
 												variant="ghost"
 												size="icon"
-												className="text-destructive hover:text-destructive"
-												onClick={() => onDelete(video.id)}
+												className="text-destructive hover:text-destructive cursor-pointer"
+												onClick={() => requestDelete(video)}
 											>
 												<Trash2 className="h-4 w-4" />
 											</Button>
@@ -360,6 +365,21 @@ export function VideoManagement() {
 					</TableBody>
 				</Table>
 			</div>
+
+			<TypeToDeleteDialog
+				open={!!deleteTarget}
+				onOpenChange={(o) => !o && setDeleteTarget(null)}
+				itemName={deleteTarget?.title ?? ""}
+				confirmPhrase="Delete Video"
+				loading={deleting}
+				onConfirm={async () => {
+					if (!deleteTarget) return;
+					setDeleting(true);
+					await onDelete(deleteTarget.id);
+					setDeleting(false);
+					setDeleteTarget(null);
+				}}
+			/>
 		</div>
 	);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, LogOut, User } from "lucide-react";
+import { Clock, Heart, LayoutDashboard, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
@@ -136,12 +136,20 @@ const Navbar = () => {
 										{user.role === "admin" && (
 											<DropdownMenuItem asChild>
 												<Link href="/dashboard" className="cursor-pointer">
+													<LayoutDashboard className="mr-2 h-4 w-4" />
 													Dashboard
 												</Link>
 											</DropdownMenuItem>
 										)}
 										<DropdownMenuItem asChild>
+											<Link href="/schedule" className="cursor-pointer">
+												<Clock className="mr-2 h-4 w-4" />
+												Book a Slot
+											</Link>
+										</DropdownMenuItem>
+										<DropdownMenuItem asChild>
 											<Link href="/profile" className="cursor-pointer">
+												<User className="mr-2 h-4 w-4" />
 												Profile
 											</Link>
 										</DropdownMenuItem>

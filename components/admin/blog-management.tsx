@@ -230,7 +230,7 @@ export function BlogManagement() {
 		<div className="space-y-6">
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-3xl tracking-tight">Blog Management</h1>
+					<h1 className="text-3xl">Blog Management</h1>
 					<p className="text-muted-foreground mt-1">
 						Manage devotionals, teachings, and reflections for the altar.
 					</p>
@@ -244,7 +244,7 @@ export function BlogManagement() {
 				{/* Published */}
 				<div className="space-y-4">
 					<div className="flex items-center justify-between">
-						<h2 className="font-bold flex items-center">
+						<h2 className="flex items-center">
 							Published
 							<Badge variant="secondary" className="ml-2">
 								{published.length}
@@ -274,7 +274,7 @@ export function BlogManagement() {
 				{/* Drafts */}
 				<div className="space-y-4">
 					<div className="flex items-center justify-between">
-						<h2 className="font-bold flex items-center text-muted-foreground">
+						<h2 className="flex items-center text-muted-foreground">
 							Drafts
 							<Badge variant="outline" className="ml-2">
 								{drafts.length}

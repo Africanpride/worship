@@ -45,7 +45,7 @@ const FAQ = () => {
 			data-usal="fade-u duration-500"
 		>
 			<div className="max-w-2xl w-full">
-				<h2 className="font-semibold text-4xl  md:text-5xl text-center md:text-left">
+				<h2 className="text-4xl md:text-5xl text-center md:text-left">
 					Frequently Asked Questions
 				</h2>
 				<p className="mt-4 text-muted-foreground text-xl">

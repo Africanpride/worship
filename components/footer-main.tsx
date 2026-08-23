@@ -70,7 +70,7 @@ const FooterComponent = ({
 			)}
 		>
 			<div className="container space-y-3 text-center">
-				<h2 className="text-2xl   md:text-5xl lg:text-6xl">{heading}</h2>
+				<h2 className="text-2xl md:text-5xl lg:text-6xl">{heading}</h2>
 				<p className="mx-auto max-w-xl leading-snug text-balance text-muted-foreground">
 					{description}
 				</p>

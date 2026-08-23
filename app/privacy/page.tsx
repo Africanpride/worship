@@ -7,7 +7,7 @@ export default function Privacy() {
 				<h1 className="text-3xl mb-4">Privacy Policy</h1>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Introduction</h2>
+					<h2 className="text-2xl mb-2">Introduction</h2>
 					<p>
 						The Non-Stop Series is committed to protecting the privacy and
 						security of our members and visitors to our website. This Privacy
@@ -19,9 +19,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Information We Collect
-					</h2>
+					<h2 className="text-2xl mb-2">Information We Collect</h2>
 					<ul className="list-disc list-inside space-y-3 indent-[2%]">
 						<li>
 							<strong>Contact Information</strong>: Name, email address, phone
@@ -49,9 +47,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						How We Use Your Information
-					</h2>
+					<h2 className="text-2xl mb-2">How We Use Your Information</h2>
 					<ul className="list-disc list-inside space-y-3 indent-[2%]">
 						<li>
 							<strong>Membership Management</strong>: To process membership
@@ -82,9 +78,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						How We Share Your Information
-					</h2>
+					<h2 className="text-2xl mb-2">How We Share Your Information</h2>
 					<p>
 						We do not sell or rent your personal information to third parties.
 						We may share your information in the following circumstances:
@@ -110,7 +104,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Data Security</h2>
+					<h2 className="text-2xl mb-2">Data Security</h2>
 					<p>
 						We take the security of your personal information seriously. We
 						implement appropriate technical and organizational measures to
@@ -120,7 +114,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Your Rights</h2>
+					<h2 className="text-2xl mb-2">Your Rights</h2>
 					<p>
 						You have the following rights regarding your personal information:
 					</p>
@@ -154,9 +148,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Cookies and Tracking Technologies
-					</h2>
+					<h2 className="text-2xl mb-2">Cookies and Tracking Technologies</h2>
 					<p>
 						Our website uses cookies and similar tracking technologies to
 						enhance your experience. You can manage your cookie preferences
@@ -166,9 +158,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Changes to This Privacy Policy
-					</h2>
+					<h2 className="text-2xl mb-2">Changes to This Privacy Policy</h2>
 					<p>
 						We may update this Privacy Policy from time to time. We will notify
 						you of any significant changes by posting the new Privacy Policy on
@@ -178,7 +168,7 @@ export default function Privacy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
+					<h2 className="text-2xl mb-2">Contact Us</h2>
 					<p>
 						If you have any questions or concerns about this Privacy Policy or
 						our data practices, please contact us at:

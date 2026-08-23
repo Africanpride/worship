@@ -100,14 +100,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
 	return (
 		<Sidebar collapsible="icon" {...props}>
-			<SidebarHeader className="flex  justify-center h-16 border-b">
-				<div className="flex items-center gap-2 py-2">
-					<div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+			<SidebarHeader className="flex h-auto border-b justify-center px-2 group-data-[collapsible=icon]:justify-start">
+				<div className="flex min-w-0 gap-3">
+					<div className="flex shrink-0 aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
 						<TerminalIcon className="size-4" />
 					</div>
-					<div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden">
-						<span className="font-semibold">Worship Admin</span>
-						<span className="text-xs text-muted-foreground">v0.1.0</span>
+					<div className="flex min-w-0 flex-col gap-0.5 leading-none transition-all duration-300 group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:group-hover:flex">
+						<span className="truncate font-semibold">Worship Admin</span>
+						<span className="truncate text-xs text-muted-foreground">v0.1.0</span>
 					</div>
 				</div>
 			</SidebarHeader>

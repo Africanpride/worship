@@ -146,7 +146,7 @@ export default function AdminReflectionsPage() {
 	return (
 		<div className="space-y-6">
 			<div>
-				<h1 className="text-3xl  tracking-tight">Sacred Reflections</h1>
+				<h1 className="text-3xl">Sacred Reflections</h1>
 				<p className="text-muted-foreground mt-1">
 					Moderate and manage testimonies from the 25th Anniversary Altar.
 				</p>
@@ -156,7 +156,7 @@ export default function AdminReflectionsPage() {
 				{/* Pending Queue */}
 				<div className="space-y-4">
 					<div className="flex items-center justify-between">
-						<h2 className="font-bold flex items-center">
+						<h2 className="flex items-center">
 							Pending Review
 							<Badge variant="secondary" className="ml-2">
 								{pending.length}
@@ -188,7 +188,7 @@ export default function AdminReflectionsPage() {
 				{/* Approved Wall */}
 				<div className="space-y-4">
 					<div className="flex items-center justify-between">
-						<h2 className="font-bold flex items-center text-emerald-500">
+						<h2 className="flex items-center text-emerald-500">
 							Public Wall
 							<Badge className="ml-2 bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30 border-none">
 								{approved.length}
@@ -212,7 +212,7 @@ export default function AdminReflectionsPage() {
 				{/* Archived */}
 				<div className="space-y-4">
 					<div className="flex items-center justify-between">
-						<h2 className="font-bold flex items-center text-muted-foreground">
+						<h2 className="flex items-center text-muted-foreground">
 							Archived
 							<Badge variant="outline" className="ml-2">
 								{archived.length}

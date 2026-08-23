@@ -127,7 +127,7 @@ export default function ReflectionForm() {
 							<div className="h-16 w-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-2">
 								<Sparkles className="size-8" />
 							</div>
-							<h3 className="text-xl font-bold">Reflection Received!</h3>
+							<h3 className="text-xl">Reflection Received!</h3>
 							<p className="text-muted-foreground max-w-[400px]">
 								Thank you for sharing your experience. Our team will review your
 								reflection soon. Keep the fire burning!

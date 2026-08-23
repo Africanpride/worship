@@ -282,7 +282,7 @@ export function EventForm({
 
 								<div className="space-y-4">
 									<div className="flex items-center justify-between">
-										<h3 className="text-lg font-semibold">Ministers</h3>
+										<h3 className="text-lg">Ministers</h3>
 										<Button
 											type="button"
 											variant="outline"
@@ -359,7 +359,7 @@ export function EventForm({
 								</div>
 
 								<div className="space-y-4">
-									<h3 className="text-lg font-semibold">Sponsors</h3>
+									<h3 className="text-lg">Sponsors</h3>
 									<FormField
 										control={form.control}
 										name="sponsorIds"

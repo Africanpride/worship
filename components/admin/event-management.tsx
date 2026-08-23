@@ -19,6 +19,7 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { FileUpload } from "@/components/file-upload";
+import { TypeToDeleteDialog } from "@/components/type-to-delete-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -114,6 +115,8 @@ export function EventManagement() {
 	const [open, setOpen] = useState(false);
 	const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 	const [togglingBookings, setTogglingBookings] = useState<string | null>(null);
+	const [deleteTarget, setDeleteTarget] = useState<Event | null>(null);
+	const [deleting, setDeleting] = useState(false);
 
 	const form = useForm<EventFormValues>({
 		resolver: zodResolver(eventSchema),
@@ -192,8 +195,6 @@ export function EventManagement() {
 	};
 
 	const onDelete = async (id: string) => {
-		if (!confirm("Are you sure you want to delete this event?")) return;
-
 		try {
 			const { error } = await $fetch(`/events/${id}`, {
 				method: "DELETE",
@@ -205,6 +206,10 @@ export function EventManagement() {
 			toast.error("Failed to delete event");
 			console.error(error);
 		}
+	};
+
+	const requestDelete = (event: Event) => {
+		setDeleteTarget(event);
 	};
 
 	const toggleBookingOpen = async (event: Event, next: boolean) => {
@@ -437,7 +442,7 @@ export function EventManagement() {
 
 									<div className="pt-4 pb-2 border-t">
 										<div className="flex items-center justify-between mb-4">
-											<h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+											<h4 className="text-sm uppercase tracking-wider text-muted-foreground">
 												Ministers
 											</h4>
 											<Button
@@ -504,7 +509,7 @@ export function EventManagement() {
 									</div>
 
 									<div className="pt-4 pb-2 border-t">
-										<h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">
+										<h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-4">
 											Sponsors
 										</h4>
 										<div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-muted/30 p-4 rounded-xl">
@@ -696,8 +701,8 @@ export function EventManagement() {
 											<Button
 												variant="ghost"
 												size="icon"
-												className="text-destructive hover:text-destructive"
-												onClick={() => onDelete(event.id)}
+												className="text-destructive hover:text-destructive cursor-pointer"
+												onClick={() => requestDelete(event)}
 											>
 												<Trash2 className="h-4 w-4" />
 											</Button>
@@ -709,6 +714,23 @@ export function EventManagement() {
 					</TableBody>
 				</Table>
 			</div>
+
+			<TypeToDeleteDialog
+				open={!!deleteTarget}
+				onOpenChange={(o) => !o && setDeleteTarget(null)}
+				itemName={
+					deleteTarget ? `${deleteTarget.title} (/${deleteTarget.slug})` : ""
+				}
+				confirmPhrase="Delete Event"
+				loading={deleting}
+				onConfirm={async () => {
+					if (!deleteTarget) return;
+					setDeleting(true);
+					await onDelete(deleteTarget.id);
+					setDeleting(false);
+					setDeleteTarget(null);
+				}}
+			/>
 		</div>
 	);
 }

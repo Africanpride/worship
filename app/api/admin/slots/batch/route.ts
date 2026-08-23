@@ -62,34 +62,36 @@ export async function POST(req: NextRequest) {
 		}
 
 		// Action === "unblock"
-		// 1. Unblock slots that have no assigned user (become "open")
-		const unblockOpen = await prisma.eventSlot.updateMany({
-			where: {
-				id: { in: validSlotIds },
-				assignedUserId: null,
-			},
-			data: {
-				status: "open",
-				blockedByAdminId: null,
-			},
-		});
-
-		// 2. Unblock slots that already have an assigned user (revert to "booked")
-		const unblockBooked = await prisma.eventSlot.updateMany({
-			where: {
-				id: { in: validSlotIds },
-				assignedUserId: { not: null },
-			},
-			data: {
-				status: "booked",
-				blockedByAdminId: null,
-			},
-		});
+		const result = await prisma.$transaction([
+			// 1. Unblock slots that have no assigned user (become "open")
+			prisma.eventSlot.updateMany({
+				where: {
+					id: { in: validSlotIds },
+					assignedUserId: null,
+				},
+				data: {
+					status: "open",
+					blockedByAdminId: null,
+				},
+			}),
+			// 2. Unblock slots that already have an assigned user (revert to "booked")
+			prisma.eventSlot.updateMany({
+				where: {
+					id: { in: validSlotIds },
+					assignedUserId: { not: null },
+				},
+				data: {
+					status: "booked",
+					blockedByAdminId: null,
+				},
+			}),
+		]);
 
 		return NextResponse.json({
 			success: true,
 			action: "unblock",
-			count: unblockOpen.count + unblockBooked.count,
+			requested: validSlotIds.length,
+			count: result[0].count + result[1].count,
 		});
 	} catch (error) {
 		console.error("[ADMIN_SLOTS_BATCH]", error);

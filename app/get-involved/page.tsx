@@ -41,7 +41,7 @@ export default function Home() {
 									}}
 								>
 									<div className="space-y-4">
-										<h2 className="text-2xl font-semibold md:text-3xl lg:text-4xl flex items-center gap-3">
+										<h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center gap-3">
 											Get Involved
 											<span className="bg-primary/10 text-primary text-[10px] py-1 px-3 rounded-full border border-primary/20 font-bold tracking-widest uppercase">
 												Silver Jubilee

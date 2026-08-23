@@ -259,9 +259,7 @@ export default function DashboardPage() {
 									>
 										<div className="flex items-start justify-between">
 											<div className="space-y-1 pr-12">
-												<h4 className="font-bold leading-tight">
-													{event.title}
-												</h4>
+												<h4 className="leading-tight">{event.title}</h4>
 												<p className="text-xs text-muted-foreground flex items-center">
 													<Calendar className="mr-1 size-3" />
 													{format(new Date(event.startDate), "EEEE, MMM d")}

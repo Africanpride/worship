@@ -20,7 +20,7 @@ export default function CTASection() {
 								Silver Jubilee Edition
 							</span>
 						</h2>
-						{/* <h6 className='text-3xl font-bold md:text-4xl lg:text-5xl tracking-tight leading-tight'>
+						{/* <h6 className='text-3xl md:text-4xl lg:text-5xl leading-tight'>
               Join the <span className='text-primary'>Eternal Sound</span> of
               Heaven
             </h6> */}

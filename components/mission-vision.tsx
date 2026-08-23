@@ -12,7 +12,7 @@ export const MissionVision = () => {
 					<span className="text-amber-500 text-xs font-mono font-bold uppercase tracking-widest">
 						Recovering • Reviving • Restoring
 					</span>
-					<h2 className="text-4xl md:text-5xl font-semibold">
+					<h2 className="text-4xl md:text-5xl">
 						The Vision of The Non-Stop Series
 					</h2>
 					<p className="text-lg text-muted-foreground italic">
@@ -27,9 +27,7 @@ export const MissionVision = () => {
 						data-usal="fade-u duration-500"
 						className="bg-background rounded-2xl p-8 border border-border/60 shadow-xs space-y-4"
 					>
-						<h3 className="text-2xl font-semibold text-foreground">
-							Our Foundation
-						</h3>
+						<h3 className="text-2xl text-foreground">Our Foundation</h3>
 						<p className="text-muted-foreground leading-relaxed">
 							The vision of the Non-Stop Series is rooted in the understanding
 							that worship is central to God's eternal purpose. Jesus taught His
@@ -47,7 +45,7 @@ export const MissionVision = () => {
 						data-usal="fade-u duration-600"
 						className="bg-background rounded-2xl p-8 border border-border/60 shadow-xs space-y-4"
 					>
-						<h3 className="text-2xl font-semibold text-foreground">
+						<h3 className="text-2xl text-foreground">
 							The Tabernacle of David
 						</h3>
 						<p className="text-muted-foreground leading-relaxed">
@@ -68,7 +66,7 @@ export const MissionVision = () => {
 				{/* Recover, Revive, Restore Cards */}
 				<div className="grid sm:grid-cols-3 gap-6">
 					<div className="p-6 rounded-xl bg-background border border-border/40">
-						<h4 className="font-mono text-amber-500 text-sm uppercase tracking-wider font-bold mb-2">
+						<h4 className="font-mono text-amber-500 text-sm uppercase tracking-wider mb-2">
 							RECOVER
 						</h4>
 						<p className="text-sm text-muted-foreground">
@@ -77,7 +75,7 @@ export const MissionVision = () => {
 						</p>
 					</div>
 					<div className="p-6 rounded-xl bg-background border border-border/40">
-						<h4 className="font-mono text-amber-500 text-sm uppercase tracking-wider font-bold mb-2">
+						<h4 className="font-mono text-amber-500 text-sm uppercase tracking-wider mb-2">
 							REVIVE
 						</h4>
 						<p className="text-sm text-muted-foreground">
@@ -86,7 +84,7 @@ export const MissionVision = () => {
 						</p>
 					</div>
 					<div className="p-6 rounded-xl bg-background border border-border/40">
-						<h4 className="font-mono text-amber-500 text-sm uppercase tracking-wider font-bold mb-2">
+						<h4 className="font-mono text-amber-500 text-sm uppercase tracking-wider mb-2">
 							RESTORE
 						</h4>
 						<p className="text-sm text-muted-foreground">
@@ -102,7 +100,7 @@ export const MissionVision = () => {
 						<span className="text-amber-500 text-xs font-mono uppercase tracking-widest font-bold">
 							Prophetic Significance
 						</span>
-						<h3 className="text-3xl font-semibold">Why 144 Hours?</h3>
+						<h3 className="text-3xl">Why 144 Hours?</h3>
 					</div>
 					<p className="text-muted-foreground leading-relaxed">
 						The progression from 24 hours to 144 hours reflects a continual
@@ -111,7 +109,7 @@ export const MissionVision = () => {
 					</p>
 					<div className="grid md:grid-cols-2 gap-6 pt-2">
 						<div className="bg-muted/50 p-5 rounded-xl border border-border/30 space-y-2">
-							<h5 className="font-semibold text-foreground">
+							<h5 className="text-foreground">
 								Scriptural Priesthood Numerology
 							</h5>
 							<p className="text-sm text-muted-foreground">
@@ -123,9 +121,7 @@ export const MissionVision = () => {
 							</p>
 						</div>
 						<div className="bg-muted/50 p-5 rounded-xl border border-border/30 space-y-2">
-							<h5 className="font-semibold text-foreground">
-								Evening-to-Evening Cycle
-							</h5>
+							<h5 className="text-foreground">Evening-to-Evening Cycle</h5>
 							<p className="text-sm text-muted-foreground">
 								Following the Genesis creation pattern where God reckoned the
 								day from evening to evening, the convocation begins at 6:00 PM
@@ -138,7 +134,7 @@ export const MissionVision = () => {
 				{/* Global Altar & Simultaneous Expressions */}
 				<div className="grid md:grid-cols-2 gap-10">
 					<div className="space-y-4">
-						<h3 className="text-2xl font-semibold">A Global Altar</h3>
+						<h3 className="text-2xl">A Global Altar</h3>
 						<p className="text-muted-foreground leading-relaxed">
 							Participants and ministers from Ghana, Nigeria, South Africa,
 							Rwanda, Ethiopia, Benin, Namibia, Israel, Egypt, Ivory Coast,
@@ -148,7 +144,7 @@ export const MissionVision = () => {
 						</p>
 					</div>
 					<div className="space-y-4">
-						<h3 className="text-2xl font-semibold">Simultaneous Expressions</h3>
+						<h3 className="text-2xl">Simultaneous Expressions</h3>
 						<ul className="space-y-3 text-muted-foreground">
 							<li className="flex items-center gap-3">
 								<span className="h-2 w-2 rounded-full bg-amber-500"></span>

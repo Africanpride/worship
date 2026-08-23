@@ -284,7 +284,7 @@ export function LiveDashboard({
 												</span>
 											)}
 										</div>
-										<h2 className="text-xl md:text-2xl font-bold line-clamp-1">
+										<h2 className="text-xl md:text-2xl line-clamp-1">
 											{(activeEvent ?? nextEvent)!.title}
 										</h2>
 										{activeEvent ? (
@@ -390,7 +390,7 @@ export function LiveDashboard({
 
 								<div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mt-6">
 									<div>
-										<h1 className="text-3xl md:text-5xl font-bebas uppercase tracking-tight">
+										<h1 className="text-3xl md:text-5xl font-bebas uppercase">
 											{selectedVideo.title}
 										</h1>
 										<div className="flex items-center gap-3 mt-3">
@@ -512,7 +512,7 @@ export function LiveDashboard({
 					animate={eventsInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6, ease: "easeOut" }}
 				>
-					<h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+					<h2 className="text-4xl md:text-5xl text-foreground mb-4">
 						Upcoming Ministrations
 					</h2>
 					<p className="text-muted-foreground text-lg">
@@ -567,7 +567,7 @@ export function LiveDashboard({
 											</div>
 										</div>
 										<div className="p-6 md:p-8 flex flex-col flex-grow">
-											<h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary cursor-pointer  dark:group-hover:text-yellow-400 transition-colors">
+											<h3 className="text-xl md:text-2xl text-foreground mb-3 group-hover:text-primary cursor-pointer dark:group-hover:text-yellow-400 transition-colors">
 												{event.title}
 											</h3>
 											<p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6 line-clamp-3">

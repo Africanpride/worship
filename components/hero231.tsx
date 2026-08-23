@@ -236,7 +236,7 @@ const Hero231 = ({ className }: Hero231Props) => {
 						<span className="size-2.5 rounded-full bg-foreground" />
 						Flexible Plan customized for you
 					</Button>
-					<h1 className="font-calSans mt-12 text-5xl font-medium   text-foreground md:text-7xl">
+					<h1 className="font-calSans mt-12 text-5xl font-medium text-foreground md:text-7xl">
 						Blocks Built <br /> With Shadcn & Tailwind.
 					</h1>
 					<p className="mt-3 max-w-lg text-muted-foreground/80">

@@ -47,7 +47,7 @@ export default function PartnerPage() {
 									}}
 								>
 									<div className="space-y-4">
-										<h2 className="text-2xl font-semibold md:text-3xl lg:text-4xl flex items-center gap-3">
+										<h2 className="text-2xl md:text-3xl lg:text-4xl flex items-center gap-3">
 											Partner With Us
 											<span className="bg-amber-500/10 text-amber-500 text-[10px] py-1 px-3 rounded-full border border-amber-500/20 font-bold tracking-widest uppercase">
 												Silver Jubilee
@@ -353,7 +353,7 @@ export default function PartnerPage() {
 								key={item.title}
 								className="p-6 rounded-xl bg-muted/40 border border-border/50"
 							>
-								<h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+								<h3 className="text-lg mb-2">{item.title}</h3>
 								<p className="text-sm text-muted-foreground">{item.desc}</p>
 							</div>
 						))}
@@ -386,7 +386,7 @@ export default function PartnerPage() {
 								key={item.title}
 								className="p-6 rounded-xl bg-muted/40 border border-border/50 text-center"
 							>
-								<h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+								<h3 className="text-lg mb-2">{item.title}</h3>
 								<p className="text-sm text-muted-foreground">{item.desc}</p>
 							</div>
 						))}

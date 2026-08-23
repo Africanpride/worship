@@ -155,7 +155,7 @@ export function VolunteerManagement() {
 	return (
 		<div className="w-full space-y-8">
 			<div>
-				<h1 className="text-3xl tracking-tight">Volunteer Management</h1>
+				<h1 className="text-3xl">Volunteer Management</h1>
 				<p className="text-muted-foreground">
 					Coordinate and manage our dedicated volunteers across all departments.
 				</p>
@@ -340,9 +340,7 @@ export function VolunteerManagement() {
 							<div className="pt-16 pb-6 px-6 space-y-6">
 								<div className="flex justify-between items-start">
 									<div className="space-y-1">
-										<h2 className="text-2xl font-bold tracking-tight">
-											{selectedVolunteer.name}
-										</h2>
+										<h2 className="text-2xl">{selectedVolunteer.name}</h2>
 										<div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
 											<Mail className="size-3.5 text-primary" />
 											{selectedVolunteer.email}
@@ -366,7 +364,7 @@ export function VolunteerManagement() {
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-2">
 									<div className="space-y-4">
 										<div className="space-y-2">
-											<h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+											<h3 className="text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-2">
 												<Users className="size-3.5" />
 												Dedicated Departments
 											</h3>
@@ -386,7 +384,7 @@ export function VolunteerManagement() {
 										</div>
 
 										<div className="space-y-2">
-											<h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+											<h3 className="text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-2">
 												<Info className="size-3.5" />
 												Professional Background
 											</h3>
@@ -413,7 +411,7 @@ export function VolunteerManagement() {
 
 									<div className="space-y-4">
 										<div className="space-y-2">
-											<h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+											<h3 className="text-xs uppercase tracking-wider text-muted-foreground">
 												About the Volunteer
 											</h3>
 											<p className="text-sm leading-relaxed text-muted-foreground bg-muted/30 p-3 rounded-lg border italic">

@@ -11,9 +11,7 @@ export default function DMCAPolicy() {
 				</h1>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Digital Millennium Copyright Act
-					</h2>
+					<h2 className="text-2xl mb-2">Digital Millennium Copyright Act</h2>
 					<p>
 						The Non-Stop Series respects the intellectual property rights of
 						others and expects its users to do the same. In accordance with the
@@ -25,9 +23,7 @@ export default function DMCAPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Reporting Copyright Infringement
-					</h2>
+					<h2 className="text-2xl mb-2">Reporting Copyright Infringement</h2>
 					<p>
 						If you are a copyright owner, or are authorized to act on behalf of
 						one, or authorized to act under any exclusive right under copyright,
@@ -43,7 +39,7 @@ export default function DMCAPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
+					<h2 className="text-2xl mb-2">
 						DMCA Notice of Alleged Infringement ("Notice")
 					</h2>
 					<ul className="list-decimal list-inside space-y-3 indent-[2%]">
@@ -89,9 +85,7 @@ export default function DMCAPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Counter-Notice Procedure
-					</h2>
+					<h2 className="text-2xl mb-2">Counter-Notice Procedure</h2>
 					<p>
 						If you receive a notification that material you posted on the Site
 						has been removed due to a claim of copyright infringement, you may
@@ -123,9 +117,7 @@ export default function DMCAPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Designated Copyright Agent
-					</h2>
+					<h2 className="text-2xl mb-2">Designated Copyright Agent</h2>
 					<p>
 						Deliver this Notice, with all items completed, to our Designated
 						Copyright Agent:
@@ -144,9 +136,7 @@ export default function DMCAPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Repeat Infringer Policy
-					</h2>
+					<h2 className="text-2xl mb-2">Repeat Infringer Policy</h2>
 					<p>
 						The Non-Stop Series reserves the right to terminate users who are
 						found to be repeat infringers.

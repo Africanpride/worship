@@ -45,7 +45,7 @@ export function BlogPageClient({ posts }: { posts: Post[] }) {
 									}}
 								>
 									<div className="space-y-4">
-										<h1 className="text-2xl font-semibold md:text-3xl lg:text-4xl">
+										<h1 className="text-2xl md:text-3xl lg:text-4xl">
 											Blog &amp; Devotionals
 										</h1>
 										<p className="text-muted-foreground text-xl font-semibold md:text-3xl">

@@ -11,7 +11,7 @@ export default function TermsOfService() {
 				</h1>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Introduction</h2>
+					<h2 className="text-2xl mb-2">Introduction</h2>
 					<p>
 						Welcome to the The Non-Stop Series website. By accessing or using
 						our website and services, you agree to comply with and be bound by
@@ -22,7 +22,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Use of the Website</h2>
+					<h2 className="text-2xl mb-2">Use of the Website</h2>
 					<ul className="list-disc list-inside space-y-3 indent-[2%]">
 						<li>
 							<strong>Eligibility</strong>: You must be at least 18 years old to
@@ -47,7 +47,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Intellectual Property</h2>
+					<h2 className="text-2xl mb-2">Intellectual Property</h2>
 					<p>
 						All content on the The Non-Stop Series website, including text,
 						graphics, logos, and images, is the property of The Non-Stop Series
@@ -59,7 +59,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">User Contributions</h2>
+					<h2 className="text-2xl mb-2">User Contributions</h2>
 					<p>
 						The Non-Stop Series may allow users to submit content, such as
 						comments and posts. By submitting content, you grant The Strategic
@@ -71,7 +71,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
+					<h2 className="text-2xl mb-2">
 						Disclaimers and Limitation of Liability
 					</h2>
 					<ul className="list-disc list-inside space-y-3 indent-[2%]">
@@ -91,7 +91,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Governing Law</h2>
+					<h2 className="text-2xl mb-2">Governing Law</h2>
 					<p>
 						These Terms of Service are governed by and construed in accordance
 						with the laws of Ghana. Any disputes arising from or related to
@@ -101,9 +101,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Changes to Terms of Service
-					</h2>
+					<h2 className="text-2xl mb-2">Changes to Terms of Service</h2>
 					<p>
 						The Non-Stop Series reserves the right to update or modify these
 						Terms of Service at any time without prior notice. Your continued
@@ -113,7 +111,7 @@ export default function TermsOfService() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
+					<h2 className="text-2xl mb-2">Contact Us</h2>
 					<p>
 						If you have any questions or concerns about these Terms of Service,
 						please contact us at:

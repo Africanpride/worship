@@ -124,7 +124,7 @@ export function BookingSettingsForm() {
 	return (
 		<Card className="p-6">
 			<CardHeader>
-				<CardTitle>Bookings and Slots</CardTitle>
+				<CardTitle className="text-base text-lg"><h2>Bookings and Slots</h2></CardTitle>
 				<CardDescription>
 					Control how singers book worship hours on your events.
 				</CardDescription>

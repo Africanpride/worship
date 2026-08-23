@@ -9,7 +9,7 @@ export default function CookiesPolicy() {
 				<h1 className="text-3xl mb-4">Cookies Policy</h1>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Introduction</h2>
+					<h2 className="text-2xl mb-2">Introduction</h2>
 					<p>
 						This Cookies Policy explains how The Non-Stop Series ("we", "us", or
 						"our") uses cookies and similar technologies when you visit our
@@ -20,7 +20,7 @@ export default function CookiesPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">What Are Cookies?</h2>
+					<h2 className="text-2xl mb-2">What Are Cookies?</h2>
 					<p>
 						Cookies are small data files that are placed on your computer or
 						mobile device when you visit a website. Cookies are widely used by
@@ -30,7 +30,7 @@ export default function CookiesPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">How We Use Cookies</h2>
+					<h2 className="text-2xl mb-2">How We Use Cookies</h2>
 					<p className="mb-2">
 						We use first-party and third-party cookies for several reasons. Some
 						cookies are required for technical reasons in order for our website
@@ -63,9 +63,7 @@ export default function CookiesPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Third-Party Technologies
-					</h2>
+					<h2 className="text-2xl mb-2">Third-Party Technologies</h2>
 					<p>
 						In addition to our own cookies, we may also use various third-party
 						cookies to report usage statistics, deliver video streams
@@ -77,9 +75,7 @@ export default function CookiesPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Your Choices Regarding Cookies
-					</h2>
+					<h2 className="text-2xl mb-2">Your Choices Regarding Cookies</h2>
 					<p>
 						You have the right to decide whether to accept or reject cookies.
 						You can set or amend your web browser controls to accept or refuse
@@ -94,9 +90,7 @@ export default function CookiesPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">
-						Updates to This Policy
-					</h2>
+					<h2 className="text-2xl mb-2">Updates to This Policy</h2>
 					<p>
 						We may update this Cookies Policy from time to time in order to
 						reflect, for example, changes to the cookies we use or for other
@@ -107,7 +101,7 @@ export default function CookiesPolicy() {
 				</section>
 
 				<section className="">
-					<h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
+					<h2 className="text-2xl mb-2">Contact Us</h2>
 					<p>
 						If you have any questions about our use of cookies or other
 						technologies, please contact us at:

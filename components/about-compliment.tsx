@@ -129,7 +129,7 @@ const AboutCompliment = ({
 					className="mb-14 flex flex-col gap-5 lg:w-4/5 "
 					data-usal="fade-u split-delay-10"
 				>
-					<h1 className="text-5xl font-semibold  lg:text-6xl">{title}</h1>
+					<h1 className="text-5xl lg:text-6xl">{title}</h1>
 					<p className="text-xl text-muted-foreground md:text-xl">
 						{description}
 					</p>

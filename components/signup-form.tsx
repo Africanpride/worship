@@ -126,7 +126,7 @@ export function SignupForm({
 					<form className="p-6 md:p-8" onSubmit={handleSubmit}>
 						<FieldGroup>
 							<div className="flex flex-col items-center gap-2 text-center">
-								<h1 className="text-2xl tracking-tight">Join the Experience</h1>
+								<h1 className="text-2xl">Join the Experience</h1>
 								<p className="text-muted-foreground text-balance">
 									Start your journey into Non-Stop Worship
 								</p>

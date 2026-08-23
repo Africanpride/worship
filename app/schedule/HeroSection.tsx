@@ -175,7 +175,8 @@ export default function HeroSection({ nextEvent }: HeroSectionProps) {
 									Register Now
 								</a>
 							)}
-							{nextEvent.bookingOpen && (
+							{nextEvent.bookingOpen &&
+								new Date(nextEvent.endDate).getTime() > Date.now() && (
 								<BookingDialog
 									eventId={nextEvent.id}
 									eventTitle={nextEvent.title}

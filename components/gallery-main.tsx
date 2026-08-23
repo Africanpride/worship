@@ -173,7 +173,7 @@ const GalleryMain = ({ className }: GalleryMainProps) => {
 	return (
 		<section className={cn("py-16 ", className)}>
 			<div className="relative container">
-				<h1 className="text-4xl tracking-tight lg:mb-6 uppercase font-bebas">
+				<h1 className="text-4xl lg:mb-6 uppercase font-bebas">
 					A Quarter-Century of Glory
 				</h1>
 				<p className="mb-12 max-w-4xl text-lg text-muted-foreground lg:text-xl">

@@ -39,7 +39,7 @@ export default function ScriptureReadingPage() {
 									}}
 								>
 									<div className="space-y-4">
-										<h1 className="text-2xl font-semibold md:text-3xl lg:text-4xl">
+										<h1 className="text-2xl md:text-3xl lg:text-4xl">
 											Scripture Reading
 										</h1>
 										<p className="text-muted-foreground text-xl font-semibold md:text-3xl">
@@ -384,7 +384,7 @@ export default function ScriptureReadingPage() {
 								key={item.title}
 								className="p-6 rounded-xl bg-muted/40 border border-border/50"
 							>
-								<h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+								<h3 className="text-lg mb-2">{item.title}</h3>
 								<p className="text-sm text-muted-foreground">{item.desc}</p>
 							</div>
 						))}

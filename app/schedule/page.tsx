@@ -22,9 +22,7 @@ export const metadata: Metadata = {
 export default async function SchedulePage() {
 	const now = new Date();
 
-	type Event = Awaited<
-		ReturnType<typeof prisma.event.findMany>
-	>[number];
+	type Event = Awaited<ReturnType<typeof prisma.event.findMany>>[number];
 
 	let upcomingEvents: Event[];
 	let pastEvents: Event[];

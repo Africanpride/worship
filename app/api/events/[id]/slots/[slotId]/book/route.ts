@@ -43,11 +43,17 @@ export async function POST(
 
 		const event = await prisma.event.findUnique({
 			where: { id: eventId },
-			select: { bookingOpen: true },
+			select: { bookingOpen: true, startDate: true, endDate: true },
 		});
 		if (!event?.bookingOpen) {
 			return NextResponse.json(
 				{ error: "Bookings for this event haven't opened yet." },
+				{ status: 403 },
+			);
+		}
+		if (event.endDate.getTime() <= Date.now()) {
+			return NextResponse.json(
+				{ error: "This event has ended." },
 				{ status: 403 },
 			);
 		}

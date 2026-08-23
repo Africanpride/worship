@@ -239,6 +239,34 @@ export function BookingDialog({
 						</DialogDescription>
 					</DialogHeader>
 
+					{/* Admin-only visibility mode banner */}
+					{isAdmin && data?.visibility && (
+						<div
+							className={cn(
+								"px-4 py-1.5 text-[11px] border-b flex items-center justify-between font-mono",
+								data.visibility === "admin_only"
+									? "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20"
+									: data.visibility === "full_public"
+										? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20"
+										: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20",
+							)}
+						>
+							<span>
+								Admin Mode · Public visibility:{" "}
+								<strong className="uppercase">
+									{data.visibility.replace("_", " ")}
+								</strong>
+							</span>
+							<span className="text-[10px] text-muted-foreground">
+								{data.visibility === "admin_only"
+									? "(public sees admin-managed notice)"
+									: data.visibility === "full_public"
+										? "(names visible to public)"
+										: "(names hidden from public)"}
+							</span>
+						</div>
+					)}
+
 					<div className="flex items-center justify-between gap-2 border-b bg-muted/30 px-4 py-2">
 						<div className="flex items-center gap-1.5 min-w-0 text-xs text-muted-foreground">
 							<CalendarDays className="size-3.5 shrink-0" />
@@ -435,6 +463,7 @@ function SlotButton({
 	const start = new Date(slot.startTime);
 	const isPast = start.getTime() <= Date.now();
 	const available = slot.status === "open" && !isPast;
+	const hasName = Boolean(slot.assignedUserName && !isMine);
 
 	return (
 		<button
@@ -443,23 +472,35 @@ function SlotButton({
 			onClick={onSelect}
 			title={
 				slot.assignedUserName
-					? `Assigned to ${slot.assignedUserName}`
-					: undefined
+					? `Booked by ${slot.assignedUserName}`
+					: slot.status === "blocked"
+						? "Blocked by admin"
+						: isPast
+							? "Past hour"
+							: "Available to book"
 			}
 			className={cn(
-				"flex items-center justify-center gap-1.5 rounded-md border px-2 py-2 text-sm transition-colors select-none",
+				"flex flex-col items-center justify-center gap-0.5 rounded-md border px-2 py-1.5 text-sm transition-colors select-none min-h-[44px]",
 				available && "border-border hover:bg-muted/50 cursor-pointer",
 				!available &&
-					"cursor-not-allowed border-transparent bg-muted/30 text-muted-foreground/40 line-through",
+					"cursor-not-allowed border-transparent bg-muted/30 text-muted-foreground/40",
+				!available && !hasName && "line-through",
 				isMine && "border-primary/50 text-primary not-italic no-underline",
 			)}
 		>
-			<Clock className="size-3 shrink-0" />
-			<span className="font-mono text-xs tabular-nums whitespace-nowrap">
-				{format(start, "h:mm aa")}
-			</span>
-			{isMine && (
-				<Badge className="ml-1 text-[10px] px-1.5 py-0 shrink-0">You</Badge>
+			<div className="flex items-center justify-center gap-1.5">
+				<Clock className="size-3 shrink-0" />
+				<span className="font-mono text-xs tabular-nums whitespace-nowrap">
+					{format(start, "h:mm aa")}
+				</span>
+				{isMine && (
+					<Badge className="ml-1 text-[10px] px-1.5 py-0 shrink-0">You</Badge>
+				)}
+			</div>
+			{hasName && (
+				<span className="truncate text-[10px] font-medium max-w-full text-muted-foreground/80">
+					{slot.assignedUserName}
+				</span>
 			)}
 		</button>
 	);

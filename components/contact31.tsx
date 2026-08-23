@@ -111,9 +111,7 @@ const Contact31 = ({
 
 					<div className="p-8 md:p-12 lg:p-16">
 						<div className="mb-8">
-							<h1 className="mb-4 text-3xl font-medium   md:text-4xl">
-								{title}
-							</h1>
+							<h1 className="mb-4 text-3xl font-medium md:text-4xl">{title}</h1>
 							<p className="text-muted-foreground">{description}</p>
 						</div>
 

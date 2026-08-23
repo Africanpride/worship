@@ -59,7 +59,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
 					{/* Info */}
 					<div className="flex-1 min-w-0 space-y-2 pt-1 md:pt-2">
 						<div className="flex flex-wrap items-center gap-2">
-							<h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
+							<h1 className="text-2xl text-foreground sm:text-3xl">
 								{user.name}
 							</h1>
 							<div className="flex flex-wrap gap-2">
