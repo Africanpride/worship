@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { resend } from "@/lib/email/resend";
 import SlotReassignedEmail from "@/lib/email/SlotReassigned";
+import { getRequestId, log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // POST /api/admin/slots/:slotId/assign
@@ -113,6 +114,17 @@ export async function POST(
 			return NextResponse.json({ error: "Slot not found" }, { status: 404 });
 		}
 
+		log.info(
+			"slots",
+			targetUser ? "Slot assigned by admin" : "Slot assignment cleared",
+			{
+				detail: `Slot ${slotId} · previous=${result.previousUserId ?? "none"} → new=${targetUser?.id ?? "none"} · by ${session.user.id}`,
+				requestId: getRequestId() ?? undefined,
+				userId: session.user.id,
+				meta: { slotId, reason },
+			},
+		);
+
 		// Notify anyone who lost the slot (previous assignee), per approved scope:
 		// fires on reassignment AND on clearing. Email failure never fails the request.
 		if (result.previousUserId && result.previousUserId !== targetUser?.id) {
@@ -146,7 +158,9 @@ export async function POST(
 					});
 				}
 			} catch (error) {
-				console.error("[ADMIN_SLOT_ASSIGN_EMAIL]", error);
+				log.error("email", "Reassignment notification email failed", {
+					detail: error instanceof Error ? error.message : String(error),
+				});
 			}
 		}
 
@@ -158,7 +172,9 @@ export async function POST(
 		});
 		return NextResponse.json(updated);
 	} catch (error) {
-		console.error("[ADMIN_SLOT_ASSIGN]", error);
+		log.error("slots", "Slot assignment failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

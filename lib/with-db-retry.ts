@@ -1,3 +1,5 @@
+import { log } from "@/lib/logger";
+
 const TRANSIENT_DB_ERROR =
 	/interrupted|timed out|timeout|connection|econnreset|enotfound|network|shard|topology/i;
 
@@ -16,14 +18,19 @@ export async function withDbRetry<T>(
 			return await fn();
 		} catch (error) {
 			lastError = error;
-			const message =
-				error instanceof Error ? error.message : String(error);
+			const message = error instanceof Error ? error.message : String(error);
 			if (!TRANSIENT_DB_ERROR.test(message) || attempt === attempts - 1) {
+				log.error("db", "Database query failed after retries", {
+					detail: message,
+					meta: { attempt: attempt + 1, of: attempts },
+				});
 				throw error;
 			}
-			await new Promise((resolve) =>
-				setTimeout(resolve, 250 * 2 ** attempt),
-			);
+			log.warn("db", "Transient database error — retrying", {
+				detail: message,
+				meta: { attempt: attempt + 1, of: attempts },
+			});
+			await new Promise((resolve) => setTimeout(resolve, 250 * 2 ** attempt));
 		}
 	}
 	throw lastError;

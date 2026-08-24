@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { syncEventSlots } from "@/lib/slots";
 
@@ -104,7 +105,9 @@ export async function PATCH(
 			try {
 				await syncEventSlots(id);
 			} catch (error) {
-				console.error("[EVENT_PATCH_SLOT_REGENERATION]", error);
+				log.error("events", "Slot regeneration after date change failed", {
+					detail: error instanceof Error ? error.message : String(error),
+				});
 			}
 		}
 
@@ -118,7 +121,9 @@ export async function PATCH(
 
 		return NextResponse.json(updatedEvent);
 	} catch (error) {
-		console.error("[EVENT_PATCH]", error);
+		log.error("events", "Event update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return new NextResponse("Internal Error", { status: 500 });
 	}
 }
@@ -150,7 +155,9 @@ export async function DELETE(
 
 		return NextResponse.json(event);
 	} catch (error) {
-		console.error("[EVENT_DELETE]", error);
+		log.error("events", "Event deletion failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return new NextResponse("Internal Error", { status: 500 });
 	}
 }

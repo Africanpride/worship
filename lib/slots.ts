@@ -73,9 +73,7 @@ export async function syncEventSlots(eventId: string): Promise<{
 		},
 	});
 
-	const existingStarts = new Set(
-		existing.map((s) => s.startTime.getTime()),
-	);
+	const existingStarts = new Set(existing.map((s) => s.startTime.getTime()));
 	const missing = buildSlotRanges(event.startDate, event.endDate).filter(
 		(range) => !existingStarts.has(range.startTime.getTime()),
 	);
@@ -93,9 +91,7 @@ export async function syncEventSlots(eventId: string): Promise<{
 	const inWindow = (s: { startTime: Date; endTime: Date }) =>
 		s.startTime >= event.startDate && s.endTime <= event.endDate;
 
-	const stranded = existing.filter(
-		(s) => !inWindow(s) && s.status !== "open",
-	);
+	const stranded = existing.filter((s) => !inWindow(s) && s.status !== "open");
 	const prunableIds = existing
 		.filter((s) => !inWindow(s) && s.status === "open")
 		.map((s) => s.id);

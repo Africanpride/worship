@@ -14,6 +14,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
+import { ExportBookingsDialog } from "@/components/admin/export-bookings-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -404,6 +405,15 @@ export function BookingsAgenda() {
 								Hide past events
 							</label>
 						)}
+						<ExportBookingsDialog
+							filters={{
+								eventId: selectedEventId,
+								timeframe,
+								statusFilter,
+								hidePastEvents,
+								searchQuery,
+							}}
+						/>
 					</div>
 				</div>
 

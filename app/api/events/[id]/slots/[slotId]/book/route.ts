@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { getRequestId, log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import {
 	checkBookingRules,
@@ -111,18 +112,31 @@ export async function POST(
 		});
 
 		if (!booked) {
+			log.warn("slots", "Booking conflict — slot taken concurrently", {
+				detail: `Slot ${slotId} on event ${eventId}`,
+				requestId: getRequestId() ?? undefined,
+				userId: session.user.id,
+			});
 			return NextResponse.json(
 				{ error: "Someone just took this slot. Pick another one." },
 				{ status: 409 },
 			);
 		}
 
+		log.info("slots", "Slot booked", {
+			detail: `Slot ${slotId} · ${new Date(slot.startTime).toISOString()}`,
+			userId: session.user.id,
+			meta: { eventId, slotId },
+		});
+
 		const updated = await prisma.eventSlot.findUnique({
 			where: { id: slotId },
 		});
 		return NextResponse.json(updated);
 	} catch (error) {
-		console.error("[SLOT_BOOK]", error);
+		log.error("slots", "Slot booking failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -194,7 +208,9 @@ export async function DELETE(
 		});
 		return NextResponse.json(updated);
 	} catch (error) {
-		console.error("[SLOT_CANCEL]", error);
+		log.error("slots", "Slot cancellation failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

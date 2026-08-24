@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
@@ -19,7 +20,9 @@ export async function GET() {
 			settings || { videoId: "bDk_nNbccnc", startTime: 108 },
 		);
 	} catch (error) {
-		console.error("[ADMIN_HERO_GET]", error);
+		log.error("system", "Hero settings fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return new NextResponse("Internal Error", { status: 500 });
 	}
 }
@@ -62,7 +65,9 @@ export async function POST(req: Request) {
 
 		return NextResponse.json(settings);
 	} catch (error: any) {
-		console.error("[ADMIN_HERO_POST]", error);
+		log.error("system", "Hero settings update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{
 				error: "Internal Error",

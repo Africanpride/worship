@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
@@ -24,7 +25,9 @@ export async function GET(req: NextRequest) {
 
 		return NextResponse.json(users);
 	} catch (error) {
-		console.error("[USERS_GET]", error);
+		log.error("auth", "Users fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -64,7 +67,9 @@ export async function PATCH(req: NextRequest) {
 
 		return NextResponse.json(user);
 	} catch (error) {
-		console.error("[USERS_PATCH]", error);
+		log.error("auth", "User update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -97,7 +102,9 @@ export async function DELETE(req: NextRequest) {
 
 		return NextResponse.json({ message: "User deleted successfully" });
 	} catch (error) {
-		console.error("[USERS_DELETE]", error);
+		log.error("auth", "User deletion failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

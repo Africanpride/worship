@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // GET /api/profile — fetch the current user's profile
@@ -24,7 +25,9 @@ export async function GET() {
 
 		return NextResponse.json(profile);
 	} catch (error) {
-		console.error("[PROFILE_GET]", error);
+		log.error("auth", "Profile fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -120,7 +123,9 @@ export async function PATCH(req: NextRequest) {
 
 		return NextResponse.json(profile);
 	} catch (error) {
-		console.error("[PROFILE_PATCH]", error);
+		log.error("auth", "Profile update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -145,7 +150,9 @@ export async function DELETE() {
 
 		return NextResponse.json({ message: "Profile deleted successfully" });
 	} catch (error) {
-		console.error("[PROFILE_DELETE]", error);
+		log.error("auth", "Profile deletion failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

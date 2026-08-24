@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // GET public approved reflections
@@ -25,7 +26,9 @@ export async function GET(req: NextRequest) {
 
 		return NextResponse.json(reflections);
 	} catch (error) {
-		console.error("[REFLECTIONS_GET]", error);
+		log.error("system", "Reflections fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -63,7 +66,9 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json(reflection);
 	} catch (error) {
-		console.error("[REFLECTIONS_POST]", error);
+		log.error("system", "Reflection submission failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

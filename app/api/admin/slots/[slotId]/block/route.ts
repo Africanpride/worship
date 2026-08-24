@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // POST /api/admin/slots/:slotId/block
@@ -41,7 +42,9 @@ export async function POST(
 
 		return NextResponse.json(updated);
 	} catch (error) {
-		console.error("[ADMIN_SLOT_BLOCK]", error);
+		log.error("slots", "Slot block failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -93,7 +96,9 @@ export async function DELETE(
 
 		return NextResponse.json(updated);
 	} catch (error) {
-		console.error("[ADMIN_SLOT_UNBLOCK]", error);
+		log.error("slots", "Slot unblock failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
@@ -10,7 +11,9 @@ export async function GET(req: NextRequest) {
 		});
 		return NextResponse.json(videos);
 	} catch (error) {
-		console.error("Error fetching videos:", error);
+		log.error("system", "Videos fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Failed to fetch videos" },
 			{ status: 500 },
@@ -48,7 +51,9 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json(video);
 	} catch (error) {
-		console.error("Error creating video:", error);
+		log.error("system", "Video creation failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Failed to create video" },
 			{ status: 500 },
@@ -84,7 +89,9 @@ export async function PATCH(req: NextRequest) {
 
 		return NextResponse.json(video);
 	} catch (error) {
-		console.error("Error updating video:", error);
+		log.error("system", "Video update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Failed to update video" },
 			{ status: 500 },
@@ -115,7 +122,9 @@ export async function DELETE(req: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error("Error deleting video:", error);
+		log.error("system", "Video deletion failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Failed to delete video" },
 			{ status: 500 },

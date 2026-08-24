@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { admin, multiSession } from "better-auth/plugins";
+import { log } from "@/lib/logger";
 import { resend } from "./email/resend";
 import { reactResetPasswordEmail } from "./email/rest-password";
 import VerifyEmail from "./email/VerifyEmail";
@@ -74,9 +75,14 @@ export const auth = betterAuth({
 						verifyLink: url,
 					}),
 				});
-				console.log("Verification email sent successfully");
+				log.info("email", "Verification email sent", {
+					meta: { to: user.email, template: "VerifyEmail" },
+				});
 			} catch (error) {
-				console.error("Failed to send verification email:", error);
+				log.error("email", "Verification email failed", {
+					detail: error instanceof Error ? error.message : String(error),
+					meta: { to: user.email, template: "VerifyEmail" },
+				});
 			}
 		},
 	},
@@ -96,9 +102,14 @@ export const auth = betterAuth({
 						resetLink: url,
 					}),
 				});
-				console.log("Password reset email sent successfully");
+				log.info("email", "Password reset email sent", {
+					meta: { to: user.email, template: "ResetPassword" },
+				});
 			} catch (error) {
-				console.error("Failed to send reset password email:", error);
+				log.error("email", "Password reset email failed", {
+					detail: error instanceof Error ? error.message : String(error),
+					meta: { to: user.email, template: "ResetPassword" },
+				});
 			}
 		},
 	},

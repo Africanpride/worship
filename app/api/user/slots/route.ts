@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // GET /api/user/slots
@@ -39,7 +40,9 @@ export async function GET(_req: NextRequest) {
 
 		return NextResponse.json(slots);
 	} catch (error) {
-		console.error("[USER_SLOTS_GET]", error);
+		log.error("slots", "User slots fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

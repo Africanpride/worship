@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { syncEventSlots } from "@/lib/slots";
 
@@ -39,7 +40,9 @@ export async function POST(
 		if (error instanceof Error && error.message === "EVENT_NOT_FOUND") {
 			return NextResponse.json({ error: "Event not found" }, { status: 404 });
 		}
-		console.error("[ADMIN_SLOTS_REGENERATE]", error);
+		log.error("events", "Slot regeneration failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

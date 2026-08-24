@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
@@ -9,7 +10,9 @@ export async function GET() {
 			settings || { videoId: "bDk_nNbccnc", startTime: 108 },
 		);
 	} catch (error) {
-		console.error("[HERO_SETTINGS_GET]", error);
+		log.error("system", "Hero settings fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		// Fallback defaults on error
 		return NextResponse.json({ videoId: "bDk_nNbccnc", startTime: 108 });
 	}

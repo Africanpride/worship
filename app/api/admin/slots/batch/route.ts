@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // POST /api/admin/slots/batch
@@ -94,7 +95,9 @@ export async function POST(req: NextRequest) {
 			count: result[0].count + result[1].count,
 		});
 	} catch (error) {
-		console.error("[ADMIN_SLOTS_BATCH]", error);
+		log.error("slots", "Batch slot action failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

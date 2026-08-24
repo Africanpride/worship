@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import {
 	getBookingSettings,
@@ -78,7 +79,9 @@ export async function GET(
 			slots: redacted,
 		});
 	} catch (error) {
-		console.error("[EVENT_SLOTS_GET]", error);
+		log.error("slots", "Event slots fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

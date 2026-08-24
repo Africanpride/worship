@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { withDbRetry } from "@/lib/with-db-retry";
 
@@ -30,7 +31,9 @@ export async function GET() {
 
 		return NextResponse.json({ isLive: !!liveEvent });
 	} catch (error) {
-		console.error("[LIVE_CHECK_GET]", error);
+		log.error("system", "Live status check failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json({ isLive: false });
 	}
 }

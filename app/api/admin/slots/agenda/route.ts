@@ -1,7 +1,9 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
+import { withDbRetry } from "@/lib/with-db-retry";
 
 // GET /api/admin/slots/agenda?days=30&eventId=...&status=all
 // Admin command-center view: worship hours across events, with booker identities
@@ -47,45 +49,49 @@ export async function GET(req: NextRequest) {
 		}
 
 		const [slots, events] = await Promise.all([
-			prisma.eventSlot.findMany({
-				where: whereClause,
-				orderBy: { startTime: "asc" },
-				include: {
-					event: {
-						select: {
-							id: true,
-							title: true,
-							location: true,
-							startDate: true,
-							endDate: true,
-							bookingOpen: true,
+			withDbRetry(() =>
+				prisma.eventSlot.findMany({
+					where: whereClause,
+					orderBy: { startTime: "asc" },
+					include: {
+						event: {
+							select: {
+								id: true,
+								title: true,
+								location: true,
+								startDate: true,
+								endDate: true,
+								bookingOpen: true,
+							},
+						},
+						assignedUser: {
+							select: {
+								id: true,
+								name: true,
+								email: true,
+								image: true,
+								profile: { select: { displayName: true } },
+							},
 						},
 					},
-					assignedUser: {
-						select: {
-							id: true,
-							name: true,
-							email: true,
-							image: true,
-							profile: { select: { displayName: true } },
+				}),
+			),
+			withDbRetry(() =>
+				prisma.event.findMany({
+					orderBy: { startDate: "asc" },
+					select: {
+						id: true,
+						title: true,
+						startDate: true,
+						endDate: true,
+						bookingOpen: true,
+						location: true,
+						_count: {
+							select: { slots: true },
 						},
 					},
-				},
-			}),
-			prisma.event.findMany({
-				orderBy: { startDate: "asc" },
-				select: {
-					id: true,
-					title: true,
-					startDate: true,
-					endDate: true,
-					bookingOpen: true,
-					location: true,
-					_count: {
-						select: { slots: true },
-					},
-				},
-			}),
+				}),
+			),
 		]);
 
 		return NextResponse.json({
@@ -96,7 +102,9 @@ export async function GET(req: NextRequest) {
 			events,
 		});
 	} catch (error) {
-		console.error("[ADMIN_SLOTS_AGENDA]", error);
+		log.error("slots", "Agenda query failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

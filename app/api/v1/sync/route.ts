@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -81,7 +82,9 @@ export async function GET(req: NextRequest) {
 			serverTime: now.toISOString(),
 		});
 	} catch (error) {
-		console.error("Error in live status API:", error);
+		log.error("system", "Live sync failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Failed to fetch live status" },
 			{ status: 500 },

@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
@@ -64,7 +65,9 @@ export async function GET(req: NextRequest) {
 			heroSettings,
 		});
 	} catch (error) {
-		console.error("[STATS_GET]", error);
+		log.error("system", "Dashboard stats fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

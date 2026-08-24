@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { syncEventSlots } from "@/lib/slots";
 
@@ -17,7 +18,9 @@ export async function GET() {
 		});
 		return NextResponse.json(events);
 	} catch (error) {
-		console.error("[EVENTS_GET]", error);
+		log.error("events", "Events fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return new NextResponse("Internal Error", { status: 500 });
 	}
 }
@@ -87,12 +90,16 @@ export async function POST(req: Request) {
 		try {
 			await syncEventSlots(event.id);
 		} catch (error) {
-			console.error("[EVENTS_POST_SLOT_GENERATION]", error);
+			log.error("events", "Slot generation after event creation failed", {
+				detail: error instanceof Error ? error.message : String(error),
+			});
 		}
 
 		return NextResponse.json(event);
 	} catch (error) {
-		console.error("[EVENTS_POST]", error);
+		log.error("events", "Event creation failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return new NextResponse("Internal Error", { status: 500 });
 	}
 }

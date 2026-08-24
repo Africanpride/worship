@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { getBookingSettings, normalizeVisibility } from "@/lib/slots";
 
@@ -19,7 +20,9 @@ export async function GET(_req: NextRequest) {
 		const settings = await getBookingSettings();
 		return NextResponse.json(settings);
 	} catch (error) {
-		console.error("[BOOKING_SETTINGS_GET]", error);
+		log.error("settings", "Booking settings fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -86,7 +89,9 @@ export async function PUT(req: NextRequest) {
 
 		return NextResponse.json(updated);
 	} catch (error) {
-		console.error("[BOOKING_SETTINGS_PUT]", error);
+		log.error("settings", "Booking settings update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

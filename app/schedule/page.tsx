@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { withDbRetry } from "@/lib/with-db-retry";
 export const dynamic = "force-dynamic";
@@ -42,7 +43,9 @@ export default async function SchedulePage() {
 			),
 		]);
 	} catch (error) {
-		console.error("[SCHEDULE_DB]", error);
+		log.error("db", "Schedule query failed after retries", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return (
 			<main className="w-full py-16 text-center">
 				<h1 className="text-4xl font-bebas mb-4">Silver Jubilee Schedule</h1>

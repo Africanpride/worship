@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { log } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
 	try {
@@ -72,7 +73,9 @@ export async function POST(req: NextRequest) {
 			message: "Email sent successfully",
 		});
 	} catch (error) {
-		console.error("[CONTACT_API_ERROR]", error);
+		log.error("system", "Contact form submission failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Failed to send message" },
 			{ status: 500 },

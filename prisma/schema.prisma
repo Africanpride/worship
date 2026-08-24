@@ -265,3 +265,22 @@ model BookingSettings {
 
   @@map("booking_settings")
 }
+
+model AppLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  ts        DateTime @default(now())
+  level     String // error | warn | info | debug
+  source    String // auth | slots | events | settings | email | db | system
+  message   String
+  detail    String?
+  requestId String?
+  userId    String?  @db.ObjectId
+  meta      Json?
+
+  // No @@index([ts]) on purpose: scripts/create-log-ttl.ts installs a TTL
+  // variant of {ts:1}; a second plain index would conflict on every push.
+  @@index([level])
+  @@index([source])
+  @@index([requestId])
+  @@map("app_logs")
+}

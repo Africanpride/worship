@@ -38,8 +38,15 @@ export function NavMain({
 					if (!item.items || item.items.length === 0) {
 						return (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton tooltip={item.title} asChild className="transition-all duration-300">
-									<a href={item.url} className="cursor-pointer flex items-center gap-2">
+								<SidebarMenuButton
+									tooltip={item.title}
+									asChild
+									className="transition-all duration-300"
+								>
+									<a
+										href={item.url}
+										className="cursor-pointer flex items-center gap-2"
+									>
 										<span className="shrink-0">{item.icon}</span>
 										<span className="transition-all duration-300 group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:overflow-hidden group-data-[collapsible=icon]:group-hover:w-auto group-data-[collapsible=icon]:group-hover:opacity-100 group-data-[collapsible=icon]:group-hover:overflow-visible whitespace-nowrap">
 											{item.title}
@@ -59,7 +66,10 @@ export function NavMain({
 						>
 							<SidebarMenuItem>
 								<CollapsibleTrigger asChild>
-									<SidebarMenuButton tooltip={item.title} className="transition-all duration-300">
+									<SidebarMenuButton
+										tooltip={item.title}
+										className="transition-all duration-300"
+									>
 										<span className="shrink-0">{item.icon}</span>
 										<span className="transition-all duration-300 group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:overflow-hidden group-data-[collapsible=icon]:group-hover:w-auto group-data-[collapsible=icon]:group-hover:opacity-100 group-data-[collapsible=icon]:group-hover:overflow-visible whitespace-nowrap">
 											{item.title}

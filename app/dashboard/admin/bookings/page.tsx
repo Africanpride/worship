@@ -9,7 +9,9 @@ export default function BookingSettingsPage() {
 			<div className="flex items-center justify-between mb-8">
 				<div>
 					<h1 className="text-3xl">Bookings &amp; Slots</h1>
-					<p className="text-muted-foreground">Manage booking slots and scheduling settings.</p>
+					<p className="text-muted-foreground">
+						Manage booking slots and scheduling settings.
+					</p>
 				</div>
 			</div>
 			<div className="grid items-start gap-6 lg:grid-cols-3">

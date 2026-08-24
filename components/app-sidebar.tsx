@@ -56,6 +56,12 @@ const defaultData = {
 			adminOnly: true,
 		},
 		{
+			title: "Application Logs",
+			url: "/dashboard/admin/logs",
+			icon: <TerminalIcon />,
+			adminOnly: true,
+		},
+		{
 			title: "Volunteer Management",
 			url: "/dashboard/admin/volunteers",
 			icon: <Heart />,
@@ -107,7 +113,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					</div>
 					<div className="flex min-w-0 flex-col gap-0.5 leading-none transition-all duration-300 group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:group-hover:flex">
 						<span className="truncate font-semibold">Worship Admin</span>
-						<span className="truncate text-xs text-muted-foreground">v0.1.0</span>
+						<span className="truncate text-xs text-muted-foreground">
+							v0.1.0
+						</span>
 					</div>
 				</div>
 			</SidebarHeader>

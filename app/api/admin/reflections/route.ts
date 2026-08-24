@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 // GET admin list of all reflections
@@ -35,7 +36,9 @@ export async function GET(req: NextRequest) {
 
 		return NextResponse.json(reflections);
 	} catch (error) {
-		console.error("[ADMIN_REFLECTIONS_GET]", error);
+		log.error("system", "Reflections fetch failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -75,7 +78,9 @@ export async function PATCH(req: NextRequest) {
 
 		return NextResponse.json(reflection);
 	} catch (error) {
-		console.error("[ADMIN_REFLECTIONS_PATCH]", error);
+		log.error("system", "Reflection update failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
@@ -110,7 +115,9 @@ export async function DELETE(req: NextRequest) {
 
 		return NextResponse.json({ message: "Reflection deleted successfully" });
 	} catch (error) {
-		console.error("[ADMIN_REFLECTIONS_DELETE]", error);
+		log.error("system", "Reflection deletion failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

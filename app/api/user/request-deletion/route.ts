@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 export async function POST() {
@@ -20,7 +21,9 @@ export async function POST() {
 
 		return NextResponse.json({ message: "Deletion request submitted" });
 	} catch (error) {
-		console.error("[REQUEST_DELETION_POST]", error);
+		log.error("auth", "Account deletion request failed", {
+			detail: error instanceof Error ? error.message : String(error),
+		});
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },
