@@ -55,7 +55,7 @@ async function write(
 	context: LogContext = {},
 ): Promise<void> {
 	try {
-		if (level === "debug" && process.env.NODE_ENV === "production") return;
+		// if (level === "debug" && process.env.NODE_ENV === "production") return;
 
 		await prisma.appLog.create({
 			data: {

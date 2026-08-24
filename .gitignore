@@ -62,4 +62,4 @@ skills/
 skills-lock.json
 
 # tooling logs
-logs/
+/logs/
