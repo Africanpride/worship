@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { resend } from "@/lib/email/resend";
 import SlotReassignedEmail from "@/lib/email/SlotReassigned";
+import { sendEmailWithRetry } from "@/lib/email-send";
 import { getRequestId, log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
@@ -115,6 +116,46 @@ export async function POST(
 			return NextResponse.json({ error: "Slot not found" }, { status: 404 });
 		}
 
+		// In-app notifications for both sides of the change (best-effort).
+		try {
+			const ev = await prisma.event.findFirst({
+				where: { slots: { some: { id: slotId } } },
+				select: { title: true },
+			});
+			const trackLabel =
+				result.slot.track === "bible-reading" ? "Bible Reading" : "Worship";
+			const when = `${new Date(result.slot.startTime).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}`;
+			const notifications: Array<{
+				userId: string;
+				title: string;
+				body: string;
+				link: string;
+			}> = [];
+			if (targetUser) {
+				notifications.push({
+					userId: targetUser.id,
+					title: `You've been assigned a ${trackLabel.toLowerCase()} hour`,
+					body: `${when} — ${ev?.title ?? "The NonStop Series"}.`,
+					link: "/dashboard/events",
+				});
+			}
+			if (result.previousUserId && result.previousUserId !== targetUser?.id) {
+				notifications.push({
+					userId: result.previousUserId,
+					title: `Your ${trackLabel.toLowerCase()} slot was reassigned`,
+					body: `${when} — ${ev?.title ?? "The NonStop Series"}. Pick another open hour if you'd like.`,
+					link: "/schedule",
+				});
+			}
+			if (notifications.length > 0) {
+				await prisma.notification.createMany({ data: notifications });
+			}
+		} catch (error) {
+			log.warn("slots", "Failed to create slot notifications", {
+				detail: error instanceof Error ? error.message : String(error),
+			});
+		}
+
 		log.info(
 			"slots",
 			targetUser ? "Slot assigned by admin" : "Slot assignment cleared",
@@ -154,7 +195,7 @@ export async function POST(
 							trackLabel,
 						}),
 					);
-					await resend.emails.send({
+					await sendEmailWithRetry({
 						from: "no-reply@thenonstop.org",
 						to: previousUser.email,
 						subject: `Your ${trackLabel.toLowerCase()} slot was reassigned — ${event?.title ?? "The NonStop Series"}`,

@@ -17,6 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import { ExportBookingsDialog } from "@/components/admin/export-bookings-dialog";
+import { SlotHistoryDialog } from "@/components/admin/slot-history-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 interface AgendaSlot {
@@ -615,9 +617,15 @@ export function BookingsAgenda({
 			{/* Slot Agenda Content */}
 			<div className="p-4 sm:p-5">
 				{isLoading && (
-					<div className="py-12 text-center text-muted-foreground text-sm space-y-2">
-						<Hourglass className="size-6 animate-spin mx-auto text-primary" />
-						<p>Loading worship agenda & slots…</p>
+					<div
+						className="space-y-2.5"
+						aria-busy="true"
+						aria-label="Loading agenda"
+					>
+						<Skeleton className="h-5 w-56" />
+						{[0, 1, 2, 3, 4, 5].map((i) => (
+							<Skeleton key={i} className="h-[68px] w-full rounded-xl" />
+						))}
 					</div>
 				)}
 
@@ -1010,6 +1018,8 @@ function AgendaRow({
 							<PencilLine className="size-3 mr-1" />
 							{booker ? "Reassign" : "Assign"}
 						</Button>
+
+						<SlotHistoryDialog slotId={slot.id} />
 
 						{/* Block / Unblock Button */}
 						{isBlocked

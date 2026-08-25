@@ -15,6 +15,7 @@ import {
 import type * as React from "react";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
+import { SidebarNotifications } from "@/components/sidebar-notifications";
 import {
 	Sidebar,
 	SidebarContent,
@@ -130,6 +131,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavMain items={filteredNavMain} />
 			</SidebarContent>
 			<SidebarFooter>
+				<SidebarNotifications />
 				<NavUser user={userData} />
 			</SidebarFooter>
 			<SidebarRail />

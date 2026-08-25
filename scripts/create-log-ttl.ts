@@ -28,7 +28,10 @@ async function main() {
 		console.log(
 			"[create-log-ttl] Replacing Prisma's non-TTL ts index with TTL variant…",
 		);
-		await prisma.$runCommandRaw({ dropIndexes: "app_logs", index: "app_logs_ts_idx" });
+		await prisma.$runCommandRaw({
+			dropIndexes: "app_logs",
+			index: "app_logs_ts_idx",
+		});
 		await prisma.$runCommandRaw({
 			createIndexes: "app_logs",
 			indexes: [

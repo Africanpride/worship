@@ -1,6 +1,7 @@
 import { toNextJsHandler } from "better-auth/next-js";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 const handler = toNextJsHandler(auth);
 
@@ -8,6 +9,22 @@ const handler = toNextJsHandler(auth);
 // network timeouts → invalid_code) land in the Application Logs console.
 async function instrumented(req: Request): Promise<Response> {
 	const url = new URL(req.url);
+
+	// Throttle credential/OAuth initiation endpoints per IP.
+	if (url.pathname.endsWith("/sign-in/social")) {
+		const limited = rateLimit(
+			`social-signin:${clientIp(new Headers(req.headers))}`,
+			10,
+			60_000,
+		);
+		if (!limited.ok) {
+			return Response.json(
+				{ error: "Too many attempts. Please wait a minute." },
+				{ status: 429 },
+			);
+		}
+	}
+
 	const isOAuthCallback = url.pathname.includes("/callback/");
 	if (!isOAuthCallback) {
 		return req.method === "POST" ? handler.POST(req) : handler.GET(req);

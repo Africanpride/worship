@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/app/providers";
@@ -111,6 +112,7 @@ export default function RootLayout({
 				className={`${opensans.variable} ${bebas.variable} text-base antialiased`}
 			>
 				<ThemeProvider>
+					<Analytics />
 					<NavbarWrapper />
 					<PageTransition>
 						{children}

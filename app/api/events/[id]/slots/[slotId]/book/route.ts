@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getRequestId, log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 import {
 	checkBookingRules,
 	getBookingSettings,
@@ -25,6 +26,21 @@ export async function POST(
 		}
 		if (session.user.banned) {
 			return NextResponse.json({ error: "Account suspended" }, { status: 403 });
+		}
+
+		const limited = rateLimit(
+			`booking:${clientIp(await headers())}`,
+			20,
+			60_000,
+		);
+		if (!limited.ok) {
+			return NextResponse.json(
+				{ error: "Too many requests. Please slow down." },
+				{
+					status: 429,
+					headers: { "Retry-After": String(limited.retryAfterSeconds) },
+				},
+			);
 		}
 
 		const { id: eventId, slotId } = await params;

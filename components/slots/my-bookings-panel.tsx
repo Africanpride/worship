@@ -2,13 +2,14 @@
 
 import { betterFetch } from "@better-fetch/fetch";
 import { format } from "date-fns";
-import { CalendarClock, MapPin } from "lucide-react";
+import { CalendarClock, CalendarPlus, MapPin } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 interface MySlot {
@@ -72,12 +73,26 @@ export function MyBookingsPanel() {
 					<CalendarClock className="size-4" /> My Worship Slots
 				</CardTitle>
 				{!isLoading && (
-					<Badge variant="secondary">{upcoming.length} upcoming</Badge>
+					<div className="flex items-center gap-2">
+						{upcoming.length > 0 && (
+							<a
+								href="/api/user/slots/ics"
+								className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+								title="Add all upcoming slots to your calendar"
+							>
+								<CalendarPlus className="size-3.5" /> Calendar
+							</a>
+						)}
+						<Badge variant="secondary">{upcoming.length} upcoming</Badge>
+					</div>
 				)}
 			</CardHeader>
 			<CardContent>
 				{isLoading && (
-					<p className="text-sm text-muted-foreground">Loading your slots…</p>
+					<div className="space-y-2" aria-busy="true">
+						<Skeleton className="h-[76px] w-full rounded-lg" />
+						<Skeleton className="h-[76px] w-full rounded-lg" />
+					</div>
 				)}
 				{!isLoading && upcoming.length === 0 && past.length === 0 && (
 					<p className="text-sm text-muted-foreground">

@@ -27,11 +27,12 @@ model User {
   banExpires      DateTime?
   pendingDeletion Boolean?  @default(false)
 
-  sessions    Session[]
-  accounts    Account[]
-  profile     Profile?
-  reflections Reflection[]
-  slots       EventSlot[]
+  sessions      Session[]
+  accounts      Account[]
+  profile       Profile?
+  reflections   Reflection[]
+  slots         EventSlot[]
+  notifications Notification[]
 
   @@map("user")
 }
@@ -268,6 +269,20 @@ model BookingSettings {
   updatedAt                 DateTime @updatedAt
 
   @@map("booking_settings")
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, read])
+  @@map("notifications")
 }
 
 model AppLog {

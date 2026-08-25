@@ -1,9 +1,24 @@
 import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { log } from "@/lib/logger";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
 	try {
+		const limited = rateLimit(
+			`contact:${clientIp(req.headers)}`,
+			5,
+			15 * 60_000,
+		);
+		if (!limited.ok) {
+			return NextResponse.json(
+				{
+					error: `Too many messages. Try again in ${limited.retryAfterSeconds}s.`,
+				},
+				{ status: 429 },
+			);
+		}
+
 		const body = await req.json();
 		const { name, email, group, message, turnstileToken } = body;
 

@@ -7,6 +7,7 @@ import { log } from "@/lib/logger";
 import { resend } from "./email/resend";
 import { reactResetPasswordEmail } from "./email/rest-password";
 import VerifyEmail from "./email/VerifyEmail";
+import { sendEmailWithRetry } from "./email-send";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
@@ -66,7 +67,7 @@ export const auth = betterAuth({
 		requireEmailVerification: true,
 		async sendVerificationEmail({ user, url }) {
 			try {
-				const res = await resend.emails.send({
+				await sendEmailWithRetry({
 					from: "no-reply@thenonstop.org",
 					to: user.email,
 					subject: "Verify your email address",
@@ -93,7 +94,7 @@ export const auth = betterAuth({
 		minPasswordLength: 8,
 		async sendResetPassword({ user, url }) {
 			try {
-				const res = await resend.emails.send({
+				await sendEmailWithRetry({
 					from: "no-reply@thenonstop.org",
 					to: user.email,
 					subject: "Reset your TheNonStop password",
