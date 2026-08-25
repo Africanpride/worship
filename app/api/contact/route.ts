@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { log } from "@/lib/logger";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { requestIp, verifyTurnstile } from "@/lib/turnstile";
 
 export async function POST(req: NextRequest) {
 	try {
@@ -22,20 +23,19 @@ export async function POST(req: NextRequest) {
 		const body = await req.json();
 		const { name, email, group, message, turnstileToken } = body;
 
-		// 1. Verify Turnstile Token
-		const verifyUrl =
-			"https://challenges.cloudflare.com/turnstile/v0/siteverify";
-		const verifyResponse = await fetch(verifyUrl, {
-			method: "POST",
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: `secret=${process.env.TURNSTILE_SECRET_KEY}&response=${turnstileToken}`,
+		// 1. Verify Turnstile token (canonical siteverify + action + hostname)
+		const verification = await verifyTurnstile(turnstileToken, {
+			action: "contact",
+			remoteip: requestIp(req.headers),
 		});
-
-		const verifyData = await verifyResponse.json();
-		if (!verifyData.success) {
+		if (!verification.ok) {
+			log.warn("system", "Contact form Turnstile verification failed", {
+				detail: verification.reason ?? "unknown",
+				meta: { ip: clientIp(req.headers) },
+			});
 			return NextResponse.json(
 				{ error: "Security check failed" },
-				{ status: 400 },
+				{ status: 403 },
 			);
 		}
 

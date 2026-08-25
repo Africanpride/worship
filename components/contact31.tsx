@@ -225,6 +225,7 @@ const Contact31 = ({
 								<div className="flex justify-center -mb-2 mt-2">
 									<Turnstile
 										siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+										action="contact"
 										onSuccess={(token) => setTurnstileToken(token)}
 									/>
 								</div>

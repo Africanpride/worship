@@ -3,8 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Turnstile } from "nextjs-turnstile";
-import { useState } from "react";
+import { Turnstile, type TurnstileRef } from "nextjs-turnstile";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { ThemeToggleFooter } from "@/components/theme-toggle-foofter";
 import { Button } from "@/components/ui/button";
@@ -41,6 +41,7 @@ export function SignupForm({
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 	const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+	const turnstileRef = useRef<TurnstileRef>(null);
 
 	const handleSocialSignIn = async (provider: "google") => {
 		try {
@@ -87,6 +88,19 @@ export function SignupForm({
 		setLoading(true);
 
 		try {
+			const verifyRes = await fetch("/api/security/turnstile", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ token: turnstileToken, action: "signup" }),
+			});
+			const verifyJson = await verifyRes.json();
+			if (!verifyRes.ok || !verifyJson.verified) {
+				toast.error("Security check failed. Please retry the verification.");
+				turnstileRef.current?.reset();
+				setTurnstileToken(null);
+				return;
+			}
+
 			const result = await signUp.email({
 				email,
 				password,
@@ -227,6 +241,8 @@ export function SignupForm({
 							<div className="flex justify-center my-2 w-full">
 								<Turnstile
 									siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+									action="signup"
+									ref={turnstileRef}
 									onSuccess={(token) => setTurnstileToken(token)}
 									size="flexible"
 								/>

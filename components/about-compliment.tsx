@@ -262,7 +262,7 @@ const AboutCompliment = ({
 					className="relative overflow-hidden rounded-xl bg-muted p-7 md:p-16"
 					data-usal="fade-u duration-500"
 				>
-					<div className="flex flex-col gap-4 text-center md:text-left mb-8 border-b border-border/40 pb-8">
+					<div className="flex flex-col gap-4  mb-8 border-b border-border/40 pb-8">
 						<span className="text-amber-500 font-mono text-xs uppercase tracking-widest font-bold">
 							144 Hours • Multiple Nations • One Altar • One King
 						</span>
@@ -279,7 +279,7 @@ const AboutCompliment = ({
 							our generation.
 						</p>
 					</div>
-					<div className="flex flex-col gap-4 text-center md:text-left">
+					<div className="flex flex-col gap-4 ">
 						<h3 className="text-2xl font-medium md:text-3xl">
 							{achievementsTitle}
 						</h3>
@@ -342,10 +342,7 @@ const AboutCompliment = ({
 								},
 								idx: any,
 							) => (
-								<div
-									className="flex flex-col gap-2 text-center md:text-left"
-									key={item.label + idx}
-								>
+								<div className="flex flex-col gap-2 " key={item.label + idx}>
 									<span className="font-mono text-4xl font-semibold md:text-5xl">
 										{item.value}
 									</span>
