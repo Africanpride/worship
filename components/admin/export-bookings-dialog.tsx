@@ -21,6 +21,7 @@ interface ExportBookingsDialogProps {
 		eventId: string;
 		timeframe: string;
 		statusFilter: string;
+		track?: string;
 		hidePastEvents: boolean;
 		searchQuery: string;
 	};
@@ -58,6 +59,9 @@ export function ExportBookingsDialog({ filters }: ExportBookingsDialogProps) {
 			params.set("eventId", filters.eventId);
 			params.set("timeframe", filters.timeframe);
 			params.set("status", filters.statusFilter);
+			if (filters.track && filters.track !== "all") {
+				params.set("track", filters.track);
+			}
 			params.set("hidePast", filters.hidePastEvents ? "true" : "false");
 			if (filters.searchQuery.trim()) {
 				params.set("q", filters.searchQuery.trim());

@@ -3,6 +3,19 @@ import { prisma } from "@/lib/prisma";
 
 export const SLOT_DURATION_MS = 60 * 60 * 1000;
 
+/** Parallel ministry tracks sharing each event's window. */
+export const TRACKS = ["worship", "bible-reading"] as const;
+export type SlotTrack = (typeof TRACKS)[number];
+
+export function normalizeTrack(value: unknown): SlotTrack {
+	return TRACKS.includes(value as SlotTrack) ? (value as SlotTrack) : "worship";
+}
+
+export const TRACK_LABELS: Record<SlotTrack, string> = {
+	worship: "Worship",
+	"bible-reading": "Bible Reading",
+};
+
 export type SlotVisibilityMode =
 	| "full_public"
 	| "availability_only"
@@ -70,26 +83,38 @@ export async function syncEventSlots(eventId: string): Promise<{
 			status: true,
 			startTime: true,
 			endTime: true,
+			track: true,
 		},
 	});
 
-	const existingStarts = new Set(existing.map((s) => s.startTime.getTime()));
-	const missing = buildSlotRanges(event.startDate, event.endDate).filter(
-		(range) => !existingStarts.has(range.startTime.getTime()),
-	);
-
-	if (missing.length > 0) {
-		await prisma.eventSlot.createMany({
-			data: missing.map((range) => ({
-				eventId,
-				startTime: range.startTime,
-				endTime: range.endTime,
-			})),
-		});
-	}
-
+	const ranges = buildSlotRanges(event.startDate, event.endDate);
 	const inWindow = (s: { startTime: Date; endTime: Date }) =>
 		s.startTime >= event.startDate && s.endTime <= event.endDate;
+
+	// Union-generate per track: every track gets its own full set of hourly
+	// slots across the window (worship and Bible Reading run in parallel).
+	let created = 0;
+	for (const track of TRACKS) {
+		const taken = new Set(
+			existing
+				.filter((s) => s.track === track)
+				.map((s) => s.startTime.getTime()),
+		);
+		const missing = ranges.filter(
+			(range) => !taken.has(range.startTime.getTime()),
+		);
+		if (missing.length > 0) {
+			await prisma.eventSlot.createMany({
+				data: missing.map((range) => ({
+					eventId,
+					startTime: range.startTime,
+					endTime: range.endTime,
+					track,
+				})),
+			});
+			created += missing.length;
+		}
+	}
 
 	const stranded = existing.filter((s) => !inWindow(s) && s.status !== "open");
 	const prunableIds = existing
@@ -104,7 +129,7 @@ export async function syncEventSlots(eventId: string): Promise<{
 		pruned = result.count;
 	}
 
-	return { created: missing.length, pruned, stranded: stranded.length };
+	return { created, pruned, stranded: stranded.length };
 }
 
 export async function getBookingSettings(): Promise<BookingSettings> {

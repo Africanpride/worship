@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
 
 		const { searchParams } = new URL(req.url);
 		const eventId = searchParams.get("eventId") || undefined;
+		const trackParam = searchParams.get("track");
 		const timeframe =
 			searchParams.get("timeframe") || searchParams.get("days") || "all";
 		const status = searchParams.get("status") || "all";
@@ -29,6 +30,10 @@ export async function GET(req: NextRequest) {
 
 		if (eventId && eventId !== "all") {
 			whereClause.eventId = eventId;
+		}
+
+		if (trackParam && ["worship", "bible-reading"].includes(trackParam)) {
+			whereClause.track = trackParam;
 		}
 
 		if (status && status !== "all") {

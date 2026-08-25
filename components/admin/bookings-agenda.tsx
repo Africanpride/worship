@@ -43,6 +43,7 @@ interface AgendaSlot {
 	startTime: string;
 	endTime: string;
 	status: string;
+	track?: "worship" | "bible-reading";
 	assignedUser?: {
 		id: string;
 		name: string;
@@ -214,15 +215,26 @@ function eventTemporalState(ev: EventSummary): "past" | "ongoing" | "upcoming" {
 	return "upcoming";
 }
 
-export function BookingsAgenda() {
+export function BookingsAgenda({
+	initialTrack,
+}: {
+	/** Preset from the page URL (e.g. ?track=bible-reading). */
+	initialTrack?: "worship" | "bible-reading" | "all";
+}) {
 	const [targetSlot, setTargetSlot] = useState<AgendaSlot | null>(null);
 	const [expandedGaps, setExpandedGaps] = useState<Set<string>>(new Set());
 	const [selectedEventId, setSelectedEventId] = useState<string>("all");
+	const [trackFilter, setTrackFilter] = useState<string>(initialTrack ?? "all");
 	const [timeframe, setTimeframe] = useState<string>("all");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [hidePastEvents, setHidePastEvents] = useState(true);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
+
+	useEffect(() => {
+		// Re-sync when the preset changes via sidebar navigation.
+		setTrackFilter(initialTrack ?? "all");
+	}, [initialTrack]);
 
 	const apiUrl = useMemo(() => {
 		const params = new URLSearchParams();
@@ -235,9 +247,12 @@ export function BookingsAgenda() {
 		if (statusFilter && statusFilter !== "all") {
 			params.set("status", statusFilter);
 		}
+		if (trackFilter && trackFilter !== "all") {
+			params.set("track", trackFilter);
+		}
 		const query = params.toString();
 		return `/api/admin/slots/agenda${query ? `?${query}` : ""}`;
-	}, [selectedEventId, timeframe, statusFilter]);
+	}, [selectedEventId, timeframe, statusFilter, trackFilter]);
 
 	const { data, error, isLoading, mutate } = useSWR<AgendaResponse>(
 		apiUrl,
@@ -410,6 +425,7 @@ export function BookingsAgenda() {
 								eventId: selectedEventId,
 								timeframe,
 								statusFilter,
+								track: trackFilter,
 								hidePastEvents,
 								searchQuery,
 							}}
@@ -418,7 +434,7 @@ export function BookingsAgenda() {
 				</div>
 
 				{/* Filter & Control Bar */}
-				<div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-border/50">
+				<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-3 border-t border-border/50">
 					{/* Event Selector */}
 					<div className="space-y-1">
 						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
@@ -511,6 +527,38 @@ export function BookingsAgenda() {
 								</SelectItem>
 								<SelectItem value="90d" className="cursor-pointer text-xs">
 									Next 90 Days
+								</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+
+					{/* Track Selector */}
+					<div className="space-y-1">
+						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+							Track
+						</span>
+						<Select
+							value={trackFilter}
+							onValueChange={(val) => {
+								setTrackFilter(val);
+								setExpandedGaps(new Set());
+							}}
+						>
+							<SelectTrigger className="w-full h-8 text-xs cursor-pointer">
+								<SelectValue placeholder="All Tracks" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all" className="cursor-pointer text-xs">
+									All Tracks
+								</SelectItem>
+								<SelectItem value="worship" className="cursor-pointer text-xs">
+									Worship
+								</SelectItem>
+								<SelectItem
+									value="bible-reading"
+									className="cursor-pointer text-xs"
+								>
+									Bible Reading
 								</SelectItem>
 							</SelectContent>
 						</Select>
@@ -706,6 +754,7 @@ export function BookingsAgenda() {
 												.map((slot) => (
 													<AgendaRow
 														key={slot.id}
+														showTrackTag={trackFilter === "all"}
 														slot={slot}
 														disabled={isPerformingAction}
 														onAssign={() => setTargetSlot(slot)}
@@ -766,6 +815,7 @@ export function BookingsAgenda() {
 									return (
 										<AgendaRow
 											key={row.slot.id}
+											showTrackTag={trackFilter === "all"}
 											slot={row.slot}
 											disabled={isPerformingAction}
 											onAssign={() => setTargetSlot(row.slot)}
@@ -809,12 +859,14 @@ export function BookingsAgenda() {
 function AgendaRow({
 	slot,
 	disabled = false,
+	showTrackTag = false,
 	onAssign,
 	onBlock,
 	onUnblock,
 }: {
 	slot: AgendaSlot;
 	disabled?: boolean;
+	showTrackTag?: boolean;
 	onAssign: () => void;
 	onBlock?: () => void;
 	onUnblock?: () => void;
@@ -889,6 +941,19 @@ function AgendaRow({
 						>
 							{slot.event.title}
 						</span>
+						{showTrackTag && (
+							<Badge
+								variant="outline"
+								className={cn(
+									"text-[10px] px-1.5 py-0 shrink-0",
+									slot.track === "bible-reading"
+										? "border-sky-500/30 text-sky-600"
+										: "border-primary/30 text-primary",
+								)}
+							>
+								{slot.track === "bible-reading" ? "Bible Reading" : "Worship"}
+							</Badge>
+						)}
 						{isBlocked && (
 							<Badge
 								variant="secondary"
