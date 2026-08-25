@@ -86,9 +86,12 @@ export async function POST(
 			);
 		}
 
+		// Multi-slot rules are per track: a worship booking never consumes
+		// a Bible Reading slot (the two run in parallel).
 		const currentBookedCount = await prisma.eventSlot.count({
 			where: {
 				eventId,
+				track: slot.track,
 				status: "booked",
 				assignedUserId: session.user.id,
 			},

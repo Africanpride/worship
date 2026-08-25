@@ -17,6 +17,7 @@ interface MySlot {
 	startTime: string;
 	endTime: string;
 	status: string;
+	track?: "worship" | "bible-reading";
 	event: { id: string; title: string; slug: string; location?: string | null };
 }
 
@@ -95,8 +96,16 @@ export function MyBookingsPanel() {
 								className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border p-3"
 							>
 								<div className="min-w-0">
-									<p className="font-medium text-sm truncate">
-										{slot.event.title}
+									<p className="flex items-center gap-1.5 font-medium text-sm">
+										<span className="truncate">{slot.event.title}</span>
+										{slot.track === "bible-reading" && (
+											<Badge
+												variant="outline"
+												className="shrink-0 text-[10px] px-1.5 py-0"
+											>
+												Bible Reading
+											</Badge>
+										)}
 									</p>
 									<p className="text-xs text-muted-foreground tabular-nums">
 										{format(

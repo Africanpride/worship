@@ -14,7 +14,7 @@ import {
 // Lists slots for an event. Non-admins get a list redacted per
 // BookingSettings.slotVisibility; admins always see everything.
 export async function GET(
-	_req: NextRequest,
+	req: NextRequest,
 	{ params }: { params: Promise<{ id: string }> },
 ) {
 	try {
@@ -39,9 +39,16 @@ export async function GET(
 		const settings = await getBookingSettings();
 		const visibility = normalizeVisibility(settings.slotVisibility);
 
+		const trackParam = new URL(req.url).searchParams.get("track");
+		const track =
+			trackParam && ["worship", "bible-reading"].includes(trackParam)
+				? trackParam
+				: undefined;
+
 		const slots = await prisma.eventSlot.findMany({
 			where: {
 				eventId: id,
+				...(track ? { track } : {}),
 				// Never surface slots outside the event's current window (guards
 				// against leftovers from an older window before a re-sync runs).
 				startTime: { lt: event.endDate },

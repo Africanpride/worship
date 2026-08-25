@@ -31,7 +31,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import type { RedactedSlot, SlotVisibilityMode } from "@/lib/slots";
+import type { RedactedSlot, SlotTrack, SlotVisibilityMode } from "@/lib/slots";
+import { TRACK_LABELS, TRACKS } from "@/lib/slots";
 import { useCurrentSession } from "@/lib/use-current-session";
 import { cn } from "@/lib/utils";
 
@@ -75,9 +76,10 @@ export function BookingDialog({
 	// spill past the dialog edge — only visible once an event has multiple
 	// day-slides. Defer mounting until the animation settles.
 	const [carouselReady, setCarouselReady] = useState(false);
+	const [track, setTrack] = useState<SlotTrack>("worship");
 
 	const { data, error, isLoading, mutate } = useSWR<SlotsResponse>(
-		open ? `/api/events/${eventId}/slots` : null,
+		open ? `/api/events/${eventId}/slots?track=${track}` : null,
 		fetcher,
 		{ refreshInterval: 30_000 },
 	);
@@ -231,8 +233,8 @@ export function BookingDialog({
 				</DialogTrigger>
 				<DialogContent className="max-w-[calc(100%-1rem)] sm:max-w-lg md:max-w-2xl p-0 gap-0 overflow-hidden">
 					<DialogHeader className="border-b px-5 py-3.5 pr-14 space-y-0.5">
-						<DialogTitle className="font-medium text-sm">
-							Book a Worship Slot
+						<DialogTitle>
+							Book a {track === "worship" ? "Worship" : "Bible Reading"}
 						</DialogTitle>
 						<DialogDescription className="text-muted-foreground text-xs truncate">
 							{eventTitle}
@@ -266,6 +268,25 @@ export function BookingDialog({
 							</span>
 						</div>
 					)}
+
+					{/* Track toggle — worship and Bible Reading run in parallel */}
+					<div className="grid grid-cols-2 gap-1 border-b bg-muted/20 p-2">
+						{TRACKS.map((t) => (
+							<button
+								key={t}
+								type="button"
+								onClick={() => setTrack(t)}
+								className={cn(
+									"cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+									track === t
+										? "bg-primary text-primary-foreground"
+										: "text-muted-foreground hover:bg-muted",
+								)}
+							>
+								{TRACK_LABELS[t]}
+							</button>
+						))}
+					</div>
 
 					<div className="flex items-center justify-between gap-2 border-b bg-muted/30 px-4 py-2">
 						<div className="flex items-center gap-1.5 min-w-0 text-xs text-muted-foreground">

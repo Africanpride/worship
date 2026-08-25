@@ -66,7 +66,7 @@ export async function POST(
 		}
 
 		type AssignResult = {
-			slot: { id: string; startTime: Date; endTime: Date };
+			slot: { id: string; startTime: Date; endTime: Date; track: string };
 			previousUserId: string | null;
 		};
 
@@ -104,6 +104,7 @@ export async function POST(
 						id: slot.id,
 						startTime: slot.startTime,
 						endTime: slot.endTime,
+						track: slot.track,
 					},
 					previousUserId: slot.assignedUserId,
 				};
@@ -141,6 +142,8 @@ export async function POST(
 				]);
 
 				if (previousUser?.email) {
+					const trackLabel =
+						result.slot.track === "bible-reading" ? "Bible Reading" : "Worship";
 					const html = await render(
 						SlotReassignedEmail({
 							name: previousUser.name,
@@ -148,12 +151,13 @@ export async function POST(
 							startTime: result.slot.startTime,
 							endTime: result.slot.endTime,
 							reassignedToName: targetUser?.name ?? null,
+							trackLabel,
 						}),
 					);
 					await resend.emails.send({
 						from: "no-reply@thenonstop.org",
 						to: previousUser.email,
-						subject: `Your worship slot was reassigned — ${event?.title ?? "The NonStop Series"}`,
+						subject: `Your ${trackLabel.toLowerCase()} slot was reassigned — ${event?.title ?? "The NonStop Series"}`,
 						html,
 					});
 				}

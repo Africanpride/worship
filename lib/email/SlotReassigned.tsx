@@ -16,6 +16,7 @@ interface SlotReassignedEmailProps {
 	eventTitle: string;
 	startTime: Date;
 	endTime: Date;
+	trackLabel?: string | null;
 	reassignedToName?: string | null;
 	scheduleLink?: string;
 }
@@ -25,6 +26,7 @@ export const SlotReassignedEmail = ({
 	eventTitle,
 	startTime,
 	endTime,
+	trackLabel = null,
 	reassignedToName = null,
 	scheduleLink = "https://thenonstop.org/schedule",
 }: SlotReassignedEmailProps) => {
@@ -64,6 +66,13 @@ export const SlotReassignedEmail = ({
 
 						<Text className="text-sm leading-6">
 							<strong>Event:</strong> {eventTitle}
+							<br />
+							{trackLabel && (
+								<>
+									<strong>Track:</strong> {trackLabel}
+									<br />
+								</>
+							)}
 							<br />
 							<strong>Slot:</strong> {slotLabel}
 						</Text>

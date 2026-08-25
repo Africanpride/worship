@@ -2,6 +2,7 @@
 
 import {
 	BookOpen,
+	BookOpenText,
 	Calendar,
 	Clock,
 	Heart,
@@ -50,9 +51,15 @@ const defaultData = {
 			adminOnly: true,
 		},
 		{
-			title: "Bookings and Slots",
+			title: "Worship Slots",
 			url: "/dashboard/admin/bookings",
 			icon: <Clock />,
+			adminOnly: true,
+		},
+		{
+			title: "Bible Reading Slots",
+			url: "/dashboard/admin/bookings?track=bible-reading",
+			icon: <BookOpenText />,
 			adminOnly: true,
 		},
 		{

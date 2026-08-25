@@ -3,10 +3,12 @@
 import { format } from "date-fns";
 import {
 	Ban,
+	BookOpenText,
 	CalendarDays,
 	Clock,
 	Hourglass,
 	MapPin,
+	Music,
 	PencilLine,
 	Search,
 	Sparkles,
@@ -43,6 +45,7 @@ interface AgendaSlot {
 	startTime: string;
 	endTime: string;
 	status: string;
+	track?: "worship" | "bible-reading";
 	assignedUser?: {
 		id: string;
 		name: string;
@@ -214,15 +217,29 @@ function eventTemporalState(ev: EventSummary): "past" | "ongoing" | "upcoming" {
 	return "upcoming";
 }
 
-export function BookingsAgenda() {
+export function BookingsAgenda({
+	initialTrack,
+}: {
+	/** Preset from the page URL (e.g. ?track=bible-reading). */
+	initialTrack?: "worship" | "bible-reading" | "all";
+}) {
 	const [targetSlot, setTargetSlot] = useState<AgendaSlot | null>(null);
 	const [expandedGaps, setExpandedGaps] = useState<Set<string>>(new Set());
 	const [selectedEventId, setSelectedEventId] = useState<string>("all");
+	// Track is pinned by the page (sidebar entry); no mixed view.
+	const [trackFilter, setTrackFilter] = useState<string>(
+		initialTrack ?? "worship",
+	);
 	const [timeframe, setTimeframe] = useState<string>("all");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [hidePastEvents, setHidePastEvents] = useState(true);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
+
+	useEffect(() => {
+		// Re-sync when the preset changes via sidebar navigation.
+		setTrackFilter(initialTrack ?? "worship");
+	}, [initialTrack]);
 
 	const apiUrl = useMemo(() => {
 		const params = new URLSearchParams();
@@ -235,9 +252,10 @@ export function BookingsAgenda() {
 		if (statusFilter && statusFilter !== "all") {
 			params.set("status", statusFilter);
 		}
+		params.set("track", trackFilter);
 		const query = params.toString();
 		return `/api/admin/slots/agenda${query ? `?${query}` : ""}`;
-	}, [selectedEventId, timeframe, statusFilter]);
+	}, [selectedEventId, timeframe, statusFilter, trackFilter]);
 
 	const { data, error, isLoading, mutate } = useSWR<AgendaResponse>(
 		apiUrl,
@@ -365,19 +383,36 @@ export function BookingsAgenda() {
 		return { total: all.length, booked, blocked, open };
 	}, [visibleSlots]);
 
+	// Header copy follows the active track so the Bible Reading entry never
+	// presents itself as the worship console.
+	const headerCopy =
+		trackFilter === "bible-reading"
+			? {
+					title: "Bible Reading Slot Management",
+					sub: "Manage Bible reading hours — reassign booked readers, block out hours across events.",
+				}
+			: trackFilter === "worship"
+				? {
+						title: "Worship Slot Management",
+						sub: "Manage worship hours — reassign booked singers, block out hours across events.",
+					}
+				: {
+						title: "Worship Agenda & Slot Management",
+						sub: "Manage worship and Bible reading slots — reassign booked hours and block out hours across events.",
+					};
+
 	return (
 		<div className="rounded-xl border bg-card shadow-sm">
 			{/* Top Header with title & stats */}
 			<div className="border-b px-5 py-4">
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-					<div>
+					<div className="max-w-xs">
 						<div className="flex items-center gap-2">
 							<CalendarDays className="size-4 text-primary" />
-							<h2 className="text-lg">Worship Agenda & Slot Management</h2>
+							<h2 className="text-lg">{headerCopy.title}</h2>
 						</div>
-						<p className="mt-1 text-muted-foreground text-xs">
-							Manage worship slots, reassign booked hours, and block out hours
-							across events.
+						<p className="mt-1 text-muted-foreground text-xs  ">
+							{headerCopy.sub}
 						</p>
 					</div>
 
@@ -410,6 +445,7 @@ export function BookingsAgenda() {
 								eventId: selectedEventId,
 								timeframe,
 								statusFilter,
+								track: trackFilter,
 								hidePastEvents,
 								searchQuery,
 							}}
@@ -418,7 +454,7 @@ export function BookingsAgenda() {
 				</div>
 
 				{/* Filter & Control Bar */}
-				<div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-border/50">
+				<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-3 border-t border-border/50">
 					{/* Event Selector */}
 					<div className="space-y-1">
 						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
@@ -514,6 +550,21 @@ export function BookingsAgenda() {
 								</SelectItem>
 							</SelectContent>
 						</Select>
+					</div>
+
+					{/* Track indicator — pinned per page, not a filter */}
+					<div className="space-y-1">
+						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+							Track
+						</span>
+						<div className="flex h-8 w-full items-center gap-1.5 rounded-md border bg-muted/30 px-2.5 text-xs">
+							{trackFilter === "bible-reading" ? (
+								<BookOpenText className="size-3.5 text-sky-600" />
+							) : (
+								<Music className="size-3.5 text-primary" />
+							)}
+							{trackFilter === "bible-reading" ? "Bible Reading" : "Worship"}
+						</div>
 					</div>
 
 					{/* Status Selector */}

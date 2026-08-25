@@ -37,6 +37,11 @@ export async function GET(req: NextRequest) {
 			const eventId = searchParams.get("eventId");
 			if (eventId && eventId !== "all") where.eventId = eventId;
 
+			const track = searchParams.get("track");
+			if (track && ["worship", "bible-reading"].includes(track)) {
+				where.track = track;
+			}
+
 			if (searchParams.get("hidePast") !== "false") {
 				const now = new Date();
 				const events = await prisma.event.findMany({
@@ -112,6 +117,7 @@ export async function GET(req: NextRequest) {
 			event: string;
 			location: string;
 			status: string;
+			track: string;
 			singer: string;
 			email: string;
 			rawStatus: string;
@@ -139,6 +145,7 @@ export async function GET(req: NextRequest) {
 					: slot.status === "blocked"
 						? "Blocked"
 						: "Booked",
+			track: slot.track === "bible-reading" ? "Bible Reading" : "Worship",
 			singer:
 				slot.assignedUser?.profile?.displayName ??
 				slot.assignedUser?.name ??
@@ -160,6 +167,7 @@ export async function GET(req: NextRequest) {
 				{ header: "Event", key: "event", width: 34 },
 				{ header: "Location", key: "location", width: 28 },
 				{ header: "Status", key: "status", width: 11 },
+				{ header: "Track", key: "track", width: 14 },
 				{ header: "Singer", key: "singer", width: 24 },
 				{ header: "Email", key: "email", width: 30 },
 			];
@@ -180,7 +188,7 @@ export async function GET(req: NextRequest) {
 				};
 			}
 
-			sheet.autoFilter = "A1:H1";
+			sheet.autoFilter = "A1:I1";
 
 			const buffer = await workbook.xlsx.writeBuffer();
 			return new NextResponse(Buffer.from(buffer), {
@@ -243,6 +251,7 @@ export async function GET(req: NextRequest) {
 			["colEvent", "Event"],
 			["colLoc", "Location"],
 			["colStatus", "Status"],
+			["colStatus", "Track"],
 			["colSinger", "Singer"],
 			["colEmail", "Email"],
 		];
@@ -298,6 +307,9 @@ export async function GET(req: NextRequest) {
 								]}
 							>
 								{row.status}
+							</Text>
+							<Text style={[styles.colSinger, styles.cellMuted]}>
+								{row.track}
 							</Text>
 							<Text style={[styles.colSinger, styles.cell]}>{row.singer}</Text>
 							<Text style={[styles.colEmail, styles.cellMuted]}>
