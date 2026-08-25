@@ -29,11 +29,12 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import type { ProfileRecord, ProfileUser } from "../types";
 import ReflectionForm from "./reflection-form";
 
 interface ProfileContentProps {
-	user: any;
-	profile: any;
+	user: ProfileUser;
+	profile: ProfileRecord;
 }
 
 const VOLUNTEER_AREAS = [

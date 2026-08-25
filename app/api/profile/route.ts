@@ -77,7 +77,7 @@ export async function PATCH(req: NextRequest) {
 			`${newFirstName} ${newLastName}`.trim() || session.user.name;
 
 		// Build update payload
-		const updateData: Record<string, any> = {};
+		const updateData: Record<string, string> = {};
 		if (firstName !== undefined) updateData.firstName = firstName;
 		if (lastName !== undefined) updateData.lastName = lastName;
 		if (phone !== undefined) updateData.phone = phone;

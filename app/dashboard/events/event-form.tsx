@@ -56,11 +56,28 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+interface SponsorOption {
+	id: string;
+	name: string;
+}
+
+interface EventFormEvent {
+	id?: string;
+	title: string;
+	startDate: string | Date;
+	endDate: string | Date;
+	poster?: string | null;
+	description?: string | null;
+	status: string;
+	ministers?: Array<{ name: string; role?: string; image?: string }>;
+	sponsorIds?: string[];
+}
+
 interface EventFormProps {
 	isOpen: boolean;
 	onClose: () => void;
 	onSuccess: () => void;
-	event?: any;
+	event?: EventFormEvent;
 }
 
 export function EventForm({
@@ -69,7 +86,7 @@ export function EventForm({
 	onSuccess,
 	event,
 }: EventFormProps) {
-	const [sponsors, setSponsors] = useState<any[]>([]);
+	const [sponsors, setSponsors] = useState<SponsorOption[]>([]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const form = useForm<FormValues>({
@@ -92,7 +109,7 @@ export function EventForm({
 	useEffect(() => {
 		const fetchSponsors = async () => {
 			try {
-				const { data } = await betterFetch<any[]>("/api/sponsors");
+				const { data } = await betterFetch<SponsorOption[]>("/api/sponsors");
 				setSponsors(data || []);
 			} catch (error) {
 				console.error("Failed to fetch sponsors:", error);

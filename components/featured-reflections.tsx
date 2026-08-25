@@ -27,7 +27,9 @@ async function getFeaturedReflections() {
 	}
 }
 
-const CreateCard = ({ card }: { card: any }) => (
+type FeaturedCard = Awaited<ReturnType<typeof getFeaturedReflections>>[number];
+
+const CreateCard = ({ card }: { card: FeaturedCard }) => (
 	<div className="p-4 rounded-2xl mx-4 bg-background/50 backdrop-blur-sm border border-border/50  shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-[300px] shrink-0 relative overflow-hidden group">
 		{/* Subtle gradient overlay on hover */}
 		<div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 via-transparent to-amber-500/0 group-hover:from-amber-500/5 group-hover:to-amber-500/10 transition-colors duration-500 rounded-2xl" />

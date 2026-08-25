@@ -250,7 +250,7 @@ export function EventManagement() {
 			poster: event.poster || "",
 			description: event.description || "",
 			location: event.location || "Logos-Rhema Foundation, La, Accra",
-			status: event.status as any,
+			status: event.status as "draft" | "published" | "cancelled",
 			ministers: event.ministers.map((m) => ({
 				name: m.name,
 				role: m.role || "",

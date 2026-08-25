@@ -1,9 +1,10 @@
 import ProfileContent from "./components/profile-content";
 import ProfileHeader from "./components/profile-header";
+import type { ProfileRecord, ProfileUser } from "./types";
 
 interface ProfilePageProps {
-	user: any;
-	profile: any;
+	user: ProfileUser;
+	profile: ProfileRecord;
 }
 
 export default function ProfilePage({ user, profile }: ProfilePageProps) {

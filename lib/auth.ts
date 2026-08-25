@@ -32,7 +32,7 @@ export const auth = betterAuth({
 		databaseHooks: {
 			user: {
 				create: {
-					before: async (user: any) => {
+					before: async (user: Record<string, unknown>) => {
 						return {
 							data: {
 								...user,
@@ -40,7 +40,7 @@ export const auth = betterAuth({
 							},
 						};
 					},
-					after: async (user: any) => {
+					after: async () => {
 						//
 					},
 				},

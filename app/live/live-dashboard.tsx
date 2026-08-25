@@ -8,7 +8,7 @@ import { VideoPlayer } from "@/components/video-player";
 
 type VideoType = "VOD" | "LIVE";
 
-interface Video {
+export interface Video {
 	id: string;
 	title: string;
 	url: string;
@@ -17,14 +17,20 @@ interface Video {
 	createdAt: Date;
 }
 
-interface Minister {
+export interface Minister {
 	id: string;
 	name: string;
 	role: string | null;
 	image: string | null;
 }
 
-interface Event {
+export interface Sponsor {
+	id: string;
+	name: string;
+	logo: string | null;
+}
+
+export interface Event {
 	id: string;
 	title: string;
 	slug: string;
@@ -33,7 +39,7 @@ interface Event {
 	poster: string | null;
 	description: string | null;
 	ministers: Minister[];
-	sponsors: any[];
+	sponsors: Sponsor[];
 }
 
 interface LiveStatusResponse {

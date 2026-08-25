@@ -5,10 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import type { ProfileRecord, ProfileUser } from "../types";
 
 interface ProfileHeaderProps {
-	user: any;
-	profile: any;
+	user: ProfileUser;
+	profile: ProfileRecord;
 }
 
 export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {

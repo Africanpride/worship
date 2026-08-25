@@ -21,8 +21,21 @@ interface HistoryEntry {
 	createdAt: string;
 	previousUserId: string | null;
 	newUserId: string | null;
+	previousUserName?: string | null;
+	newUserName?: string | null;
 	reason?: string | null;
 	changedBy: string;
+}
+
+interface HistoryResponse {
+	slot: { track: string; startTime: string; endTime: string } | null;
+	history: HistoryEntry[];
+}
+
+function actionLabel(h: HistoryEntry): string {
+	if (h.previousUserId && h.newUserId) return "Reassigned";
+	if (h.newUserId) return "Assigned";
+	return "Assignment cleared";
 }
 
 async function fetcher<T>(url: string): Promise<T> {
@@ -33,9 +46,10 @@ async function fetcher<T>(url: string): Promise<T> {
 
 export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 	const [open, setOpen] = useState(false);
-	const { data, isLoading, error } = useSWR<{
-		history: HistoryEntry[];
-	}>(open ? `/api/admin/slots/${slotId}/history` : null, fetcher);
+	const { data, isLoading, error } = useSWR<HistoryResponse>(
+		open ? `/api/admin/slots/${slotId}/history` : null,
+		fetcher,
+	);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -54,7 +68,12 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 						Slot audit trail
 					</DialogTitle>
 					<DialogDescription className="text-muted-foreground text-xs">
-						Every admin-driven change to this hour, newest first.
+						{data?.slot
+							? `${data.slot.track === "bible-reading" ? "Bible Reading" : "Worship"} · ${format(
+									new Date(data.slot.startTime),
+									"EEE d MMM · HH:mm",
+								)}–${format(new Date(data.slot.endTime), "HH:mm")} · newest first.`
+							: "Every admin-driven change to this hour, newest first."}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -96,15 +115,18 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 									</Badge>
 								</div>
 								<p className="mt-0.5 text-sm">
-									{h.previousUserId && h.newUserId
-										? "Reassigned"
-										: h.newUserId
-											? "Assigned"
-											: "Assignment cleared"}
-									<span className="text-muted-foreground"> · </span>
-									<span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-										{h.reason ?? "admin_override"}
-									</span>
+									{actionLabel(h)}
+									{(h.previousUserName || h.newUserName) && (
+										<span className="text-muted-foreground">
+											{" · "}
+											{h.previousUserName ?? "—"}
+											<span className="mx-1">→</span>
+											{h.newUserName ?? "—"}
+										</span>
+									)}
+								</p>
+								<p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+									{h.reason ?? "admin_override"}
 								</p>
 							</li>
 						))}

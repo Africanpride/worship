@@ -71,11 +71,13 @@ export async function POST(req: Request) {
 				location: locationValue,
 				status: status || "published",
 				ministers: {
-					create: ministers?.map((m: any) => ({
-						name: m.name,
-						role: m.role,
-						image: m.image,
-					})),
+					create: ministers?.map(
+						(m: { name: string; role?: string; image?: string }) => ({
+							name: m.name,
+							role: m.role,
+							image: m.image,
+						}),
+					),
 				},
 				sponsorIds: sponsorIds || [],
 			},

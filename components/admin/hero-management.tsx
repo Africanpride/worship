@@ -61,7 +61,12 @@ export function HeroManagement() {
 	const fetchHeroSettings = async () => {
 		try {
 			setLoading(true);
-			const { data, error } = await $fetch<any>("/hero");
+			const { data, error } = await $fetch<{
+				videoSource: "youtube" | "mux" | "local";
+				videoId: string;
+				videoUrl: string;
+				startTime: number;
+			}>("/hero");
 			if (error) throw error;
 			if (data) {
 				form.reset({
@@ -92,7 +97,7 @@ export function HeroManagement() {
 			if (error) throw error;
 			toast.success("Hero settings updated successfully");
 			fetchHeroSettings();
-		} catch (error: any) {
+		} catch (error) {
 			toast.error("Failed to update hero settings");
 			console.error("Hero settings update failed:", error);
 		}

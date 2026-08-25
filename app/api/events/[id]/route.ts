@@ -84,12 +84,14 @@ export async function PATCH(
 
 			if (ministers.length > 0) {
 				await prisma.minister.createMany({
-					data: ministers.map((m: any) => ({
-						name: m.name,
-						role: m.role,
-						image: m.image,
-						eventId: id,
-					})),
+					data: ministers.map(
+						(m: { name: string; role?: string; image?: string }) => ({
+							name: m.name,
+							role: m.role,
+							image: m.image,
+							eventId: id,
+						}),
+					),
 				});
 			}
 		}

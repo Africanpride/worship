@@ -56,9 +56,9 @@ BookingsAgenda, MyBookingsPanel, LogsConsole.
 
 ## Phase 3 — P2 Polish & hygiene
 
-### 3.1 Analytics ✅ — `@vercel/analytics` injected in root layout (privacy-friendly).
-### 3.2 Duplicate event data ⏸ — needs a human decision on titles; not code.
-### 3.3 Legacy `any` sweep ⏸ — time-boxed follow-up on older admin components.
+### 3.1 Analytics ✅ — `@vercel/analytics/next` + `/speed-insights/next` in root layout.
+### 3.2 Duplicate event data 🔄 — RESOLVED as series editions: the four 24h events are Mar/May/Aug/Nov 2026 editions, not mistakes. Suggested titles: "…— March Edition" etc. Rename via Event Management when wording is chosen.
+### 3.3 Legacy `any` sweep ✅ — all app-code `any`s typed (routes, dashboard pages, profile suite, hero/event forms). Remaining 9 are third-party globals (`YT`) and React internal unions (`JSXElementConstructor<any>`) — accepted.
 ### 3.4 Backups ⏸ — infra decision: Atlas M10 + continuous backup when budget allows.
 ### 3.5 Timezone policy ⏸ — documented default (browser-local) until diaspora need is real.
 

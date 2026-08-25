@@ -64,15 +64,17 @@ export async function POST(req: Request) {
 		}
 
 		return NextResponse.json(settings);
-	} catch (error: any) {
-		log.error("system", "Hero settings update failed", {
-			detail: error instanceof Error ? error.message : String(error),
-		});
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		log.error("system", "Hero settings update failed", { detail: message });
 		return NextResponse.json(
 			{
 				error: "Internal Error",
-				message: error.message,
-				stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+				message,
+				stack:
+					process.env.NODE_ENV === "development" && error instanceof Error
+						? error.stack
+						: undefined,
 			},
 			{ status: 500 },
 		);

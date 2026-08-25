@@ -17,16 +17,29 @@ import {
 } from "@/components/ui/table";
 import { EventForm } from "./event-form";
 
+interface DashboardEvent {
+	id: string;
+	title: string;
+	slug: string;
+	startDate: string;
+	endDate: string;
+	status: string;
+	poster?: string | null;
+	location?: string | null;
+	bookingOpen?: boolean;
+}
+
 export default function EventsPage() {
-	const [events, setEvents] = useState<any[]>([]);
+	const [events, setEvents] = useState<DashboardEvent[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isFormOpen, setIsFormOpen] = useState(false);
-	const [editingEvent, setEditingEvent] = useState<any>(null);
+	const [editingEvent, setEditingEvent] = useState<DashboardEvent | null>(null);
 
 	const fetchEvents = async () => {
 		try {
 			setIsLoading(true);
-			const { data, error } = await betterFetch<any[]>("/api/events");
+			const { data, error } =
+				await betterFetch<DashboardEvent[]>("/api/events");
 			if (error) throw error;
 			setEvents(data || []);
 		} catch (error) {
@@ -41,7 +54,7 @@ export default function EventsPage() {
 		fetchEvents();
 	}, []);
 
-	const handleEdit = (event: any) => {
+	const handleEdit = (event: DashboardEvent) => {
 		setEditingEvent(event);
 		setIsFormOpen(true);
 	};
@@ -144,7 +157,7 @@ export default function EventsPage() {
 				isOpen={isFormOpen}
 				onClose={() => setIsFormOpen(false)}
 				onSuccess={fetchEvents}
-				event={editingEvent}
+				event={editingEvent ?? undefined}
 			/>
 		</div>
 	);

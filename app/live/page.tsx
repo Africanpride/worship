@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import type { Event as LiveEvent, Video as LiveVideo } from "./live-dashboard";
 import { LiveDashboard } from "./live-dashboard";
 
 export const metadata: Metadata = {
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic"; // Ensure fresh data on load
 
 export default async function LivePage() {
-	let videos: any[] = [];
-	let events: any[] = [];
+	let videos: LiveVideo[] = [];
+	let events: LiveEvent[] = [];
 
 	try {
 		// Fetch all videos, ordering newest first

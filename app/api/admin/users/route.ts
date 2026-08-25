@@ -52,7 +52,7 @@ export async function PATCH(req: NextRequest) {
 			return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
 		}
 
-		const updateData: any = {};
+		const updateData: Record<string, string | boolean> = {};
 		if (role !== undefined) updateData.role = role;
 		if (banned !== undefined) updateData.banned = banned;
 		if (pendingDeletion !== undefined)

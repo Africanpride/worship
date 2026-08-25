@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/a11y/useButtonType: <explanation> */
 "use client";
 
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";

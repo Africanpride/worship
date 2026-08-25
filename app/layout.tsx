@@ -1,4 +1,5 @@
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/app/providers";
@@ -10,7 +11,7 @@ import { bebas, opensans } from "@/config/fonts";
 import "./globals.css";
 
 const BASE_URL = "https://thenonstop.org";
-const OG_IMAGE = `${BASE_URL}/non-stop-logo.webp`;
+const OG_IMAGE = `${BASE_URL}/non-stop-logo.jpg`;
 
 export const metadata: Metadata = {
 	metadataBase: new URL(BASE_URL),
@@ -113,6 +114,7 @@ export default function RootLayout({
 			>
 				<ThemeProvider>
 					<Analytics />
+					<SpeedInsights />
 					<NavbarWrapper />
 					<PageTransition>
 						{children}

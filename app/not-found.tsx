@@ -34,7 +34,7 @@ export default function NotFound() {
 
 				<div className="pt-12 flex justify-center">
 					<Image
-						src="/non-stop-logo.webp"
+						src="/non-stop-logo.jpg"
 						alt="The Non-Stop Series"
 						width={160}
 						height={48}

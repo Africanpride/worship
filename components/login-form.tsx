@@ -174,7 +174,7 @@ export function LoginForm({
 					</form>
 					<div className="bg-muted relative hidden md:block">
 						<Image
-							src="/non-stop-logo.webp"
+							src="/non-stop-logo.jpg"
 							alt="Image"
 							fill
 							sizes="50vw"

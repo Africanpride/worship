@@ -1005,6 +1005,8 @@ function AgendaRow({
 					</Avatar>
 				)}
 
+				<SlotHistoryDialog slotId={slot.id} />
+
 				{!eventEnded && (
 					<div className="flex shrink-0 items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
 						{/* Reassign / Assign Button */}

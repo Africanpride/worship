@@ -67,7 +67,7 @@ export async function PATCH(req: NextRequest) {
 			);
 		}
 
-		const updateData: any = {};
+		const updateData: Record<string, string | boolean> = {};
 		if (status !== undefined) updateData.status = status;
 		if (featured !== undefined) updateData.featured = featured;
 
