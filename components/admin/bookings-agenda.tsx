@@ -3,10 +3,12 @@
 import { format } from "date-fns";
 import {
 	Ban,
+	BookOpenText,
 	CalendarDays,
 	Clock,
 	Hourglass,
 	MapPin,
+	Music,
 	PencilLine,
 	Search,
 	Sparkles,
@@ -224,7 +226,10 @@ export function BookingsAgenda({
 	const [targetSlot, setTargetSlot] = useState<AgendaSlot | null>(null);
 	const [expandedGaps, setExpandedGaps] = useState<Set<string>>(new Set());
 	const [selectedEventId, setSelectedEventId] = useState<string>("all");
-	const [trackFilter, setTrackFilter] = useState<string>(initialTrack ?? "all");
+	// Track is pinned by the page (sidebar entry); no mixed view.
+	const [trackFilter, setTrackFilter] = useState<string>(
+		initialTrack ?? "worship",
+	);
 	const [timeframe, setTimeframe] = useState<string>("all");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [searchQuery, setSearchQuery] = useState<string>("");
@@ -233,7 +238,7 @@ export function BookingsAgenda({
 
 	useEffect(() => {
 		// Re-sync when the preset changes via sidebar navigation.
-		setTrackFilter(initialTrack ?? "all");
+		setTrackFilter(initialTrack ?? "worship");
 	}, [initialTrack]);
 
 	const apiUrl = useMemo(() => {
@@ -247,9 +252,7 @@ export function BookingsAgenda({
 		if (statusFilter && statusFilter !== "all") {
 			params.set("status", statusFilter);
 		}
-		if (trackFilter && trackFilter !== "all") {
-			params.set("track", trackFilter);
-		}
+		params.set("track", trackFilter);
 		const query = params.toString();
 		return `/api/admin/slots/agenda${query ? `?${query}` : ""}`;
 	}, [selectedEventId, timeframe, statusFilter, trackFilter]);
@@ -380,19 +383,36 @@ export function BookingsAgenda({
 		return { total: all.length, booked, blocked, open };
 	}, [visibleSlots]);
 
+	// Header copy follows the active track so the Bible Reading entry never
+	// presents itself as the worship console.
+	const headerCopy =
+		trackFilter === "bible-reading"
+			? {
+					title: "Bible Reading Slot Management",
+					sub: "Manage Bible reading hours — reassign booked readers, block out hours across events.",
+				}
+			: trackFilter === "worship"
+				? {
+						title: "Worship Slot Management",
+						sub: "Manage worship hours — reassign booked singers, block out hours across events.",
+					}
+				: {
+						title: "Worship Agenda & Slot Management",
+						sub: "Manage worship and Bible reading slots — reassign booked hours and block out hours across events.",
+					};
+
 	return (
 		<div className="rounded-xl border bg-card shadow-sm">
 			{/* Top Header with title & stats */}
 			<div className="border-b px-5 py-4">
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-					<div>
+					<div className="max-w-xs">
 						<div className="flex items-center gap-2">
 							<CalendarDays className="size-4 text-primary" />
-							<h2 className="text-lg">Worship Agenda & Slot Management</h2>
+							<h2 className="text-lg">{headerCopy.title}</h2>
 						</div>
-						<p className="mt-1 text-muted-foreground text-xs">
-							Manage worship slots, reassign booked hours, and block out hours
-							across events.
+						<p className="mt-1 text-muted-foreground text-xs  ">
+							{headerCopy.sub}
 						</p>
 					</div>
 
@@ -532,36 +552,19 @@ export function BookingsAgenda({
 						</Select>
 					</div>
 
-					{/* Track Selector */}
+					{/* Track indicator — pinned per page, not a filter */}
 					<div className="space-y-1">
 						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
 							Track
 						</span>
-						<Select
-							value={trackFilter}
-							onValueChange={(val) => {
-								setTrackFilter(val);
-								setExpandedGaps(new Set());
-							}}
-						>
-							<SelectTrigger className="w-full h-8 text-xs cursor-pointer">
-								<SelectValue placeholder="All Tracks" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="all" className="cursor-pointer text-xs">
-									All Tracks
-								</SelectItem>
-								<SelectItem value="worship" className="cursor-pointer text-xs">
-									Worship
-								</SelectItem>
-								<SelectItem
-									value="bible-reading"
-									className="cursor-pointer text-xs"
-								>
-									Bible Reading
-								</SelectItem>
-							</SelectContent>
-						</Select>
+						<div className="flex h-8 w-full items-center gap-1.5 rounded-md border bg-muted/30 px-2.5 text-xs">
+							{trackFilter === "bible-reading" ? (
+								<BookOpenText className="size-3.5 text-sky-600" />
+							) : (
+								<Music className="size-3.5 text-primary" />
+							)}
+							{trackFilter === "bible-reading" ? "Bible Reading" : "Worship"}
+						</div>
 					</div>
 
 					{/* Status Selector */}
@@ -754,7 +757,6 @@ export function BookingsAgenda({
 												.map((slot) => (
 													<AgendaRow
 														key={slot.id}
-														showTrackTag={trackFilter === "all"}
 														slot={slot}
 														disabled={isPerformingAction}
 														onAssign={() => setTargetSlot(slot)}
@@ -815,7 +817,6 @@ export function BookingsAgenda({
 									return (
 										<AgendaRow
 											key={row.slot.id}
-											showTrackTag={trackFilter === "all"}
 											slot={row.slot}
 											disabled={isPerformingAction}
 											onAssign={() => setTargetSlot(row.slot)}
@@ -859,14 +860,12 @@ export function BookingsAgenda({
 function AgendaRow({
 	slot,
 	disabled = false,
-	showTrackTag = false,
 	onAssign,
 	onBlock,
 	onUnblock,
 }: {
 	slot: AgendaSlot;
 	disabled?: boolean;
-	showTrackTag?: boolean;
 	onAssign: () => void;
 	onBlock?: () => void;
 	onUnblock?: () => void;
@@ -941,19 +940,6 @@ function AgendaRow({
 						>
 							{slot.event.title}
 						</span>
-						{showTrackTag && (
-							<Badge
-								variant="outline"
-								className={cn(
-									"text-[10px] px-1.5 py-0 shrink-0",
-									slot.track === "bible-reading"
-										? "border-sky-500/30 text-sky-600"
-										: "border-primary/30 text-primary",
-								)}
-							>
-								{slot.track === "bible-reading" ? "Bible Reading" : "Worship"}
-							</Badge>
-						)}
 						{isBlocked && (
 							<Badge
 								variant="secondary"

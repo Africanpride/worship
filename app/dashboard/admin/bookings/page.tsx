@@ -9,12 +9,8 @@ export default async function BookingSettingsPage({
 	searchParams: Promise<{ track?: string }>;
 }) {
 	const { track } = await searchParams;
-	const initialTrack =
-		track === "bible-reading"
-			? "bible-reading"
-			: track === "worship"
-				? "worship"
-				: "all";
+	// Each sidebar entry pins its own track — no mixed view.
+	const initialTrack = track === "bible-reading" ? "bible-reading" : "worship";
 
 	return (
 		<div className="flex-1 space-y-4 p-8 pt-6">

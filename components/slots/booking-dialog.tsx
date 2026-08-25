@@ -233,8 +233,8 @@ export function BookingDialog({
 				</DialogTrigger>
 				<DialogContent className="max-w-[calc(100%-1rem)] sm:max-w-lg md:max-w-2xl p-0 gap-0 overflow-hidden">
 					<DialogHeader className="border-b px-5 py-3.5 pr-14 space-y-0.5">
-						<DialogTitle className="font-medium text-sm">
-							Book a Worship Slot
+						<DialogTitle>
+							Book a {track === "worship" ? "Worship" : "Bible Reading"}
 						</DialogTitle>
 						<DialogDescription className="text-muted-foreground text-xs truncate">
 							{eventTitle}
