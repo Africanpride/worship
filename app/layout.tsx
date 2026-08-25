@@ -3,6 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/app/providers";
+import { CookieConsent } from "@/components/consent/cookie-consent";
 import FooterWrapper from "@/components/FooterWrapper";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import { PartnerFAB } from "@/components/PartnerFAB";
@@ -115,6 +116,7 @@ export default function RootLayout({
 				<ThemeProvider>
 					<Analytics />
 					<SpeedInsights />
+					<CookieConsent />
 					<NavbarWrapper />
 					<PageTransition>
 						{children}

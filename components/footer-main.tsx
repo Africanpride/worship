@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { openConsentDialog } from "@/lib/consent";
 import { cn } from "@/lib/utils";
 import { ThemeToggleFooter } from "./theme-toggle-foofter";
 
@@ -123,12 +124,22 @@ const FooterComponent = ({
 				<ul className="flex flex-wrap items-center justify-center gap-6">
 					{legal.map((item) => (
 						<li key={item.name}>
-							<Link
-								href={item.href}
-								className="text-sm text-muted-foreground transition-opacity hover:opacity-75 cursor-pointer"
-							>
-								{item.name}
-							</Link>
+							{item.name === "Cookies Policy" ? (
+								<button
+									type="button"
+									onClick={() => openConsentDialog()}
+									className="text-sm text-muted-foreground transition-opacity hover:opacity-75 cursor-pointer"
+								>
+									Cookie Preferences
+								</button>
+							) : (
+								<Link
+									href={item.href}
+									className="text-sm text-muted-foreground transition-opacity hover:opacity-75 cursor-pointer"
+								>
+									{item.name}
+								</Link>
+							)}
 						</li>
 					))}
 				</ul>
