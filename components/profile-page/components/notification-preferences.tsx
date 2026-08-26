@@ -169,7 +169,11 @@ export function NotificationPreferences() {
 
 					<div className="rounded-lg border p-3 space-y-2 bg-muted/30">
 						<Label>Phone for SMS</Label>
-						<PhoneInput value={phone} onChange={(v) => setPhone(String(v ?? ""))} defaultCountry="US" />
+						<PhoneInput
+							value={phone}
+							onChange={(e) => setPhone((e.target as HTMLInputElement).value ?? "")}
+							defaultCountry="US"
+						/>
 						<div className="flex gap-2">
 							<Button size="sm" onClick={requestOtp} disabled={phoneLoading} className="cursor-pointer">
 								{phoneLoading ? "Sending…" : phoneSent ? "Resend code" : "Send code"}
