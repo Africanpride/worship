@@ -124,15 +124,27 @@ export async function notify(
 		}
 	}
 
-	// Push/SMS are wired in Phase 2 — no-op here but keep channel decisions
 	if (channels.includes("push")) {
-		log.debug("system", "push channel requested but not yet wired (Phase 2)", {
-			meta: { userId },
-		});
+		try {
+			const { sendPushToUser } = await import("@/lib/notify/push");
+			await sendPushToUser(userId, { title: input.title, body: input.body, url: input.link });
+		} catch (error) {
+			log.warn("system", "notify push failed", {
+				detail: error instanceof Error ? error.message : String(error),
+				meta: { userId },
+			});
+		}
 	}
 	if (channels.includes("sms")) {
-		log.debug("system", "sms channel requested but not yet wired (Phase 2)", {
-			meta: { userId },
-		});
+		try {
+			const { sendSmsToUser } = await import("@/lib/notify/sms");
+			const smsBody = input.body ? `${input.title}: ${input.body}` : input.title;
+			await sendSmsToUser(userId, smsBody);
+		} catch (error) {
+			log.warn("system", "notify sms failed", {
+				detail: error instanceof Error ? error.message : String(error),
+				meta: { userId },
+			});
+		}
 	}
 }

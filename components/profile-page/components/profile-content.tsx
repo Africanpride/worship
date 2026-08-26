@@ -35,6 +35,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProfileRecord, ProfileUser } from "../types";
+import { NotificationPreferences } from "./notification-preferences";
 import ReflectionForm from "./reflection-form";
 
 interface ProfileContentProps {
@@ -643,71 +644,7 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 
 			{/* Notification Settings */}
 			<TabsContent value="notifications" className="space-y-6">
-				<Card className="p-2 py-4  md:p-4 w-full">
-					<CardHeader>
-						<CardTitle>Notification Preferences</CardTitle>
-						<CardDescription>
-							Choose what notifications you want to receive.
-						</CardDescription>
-					</CardHeader>
-					<CardContent className="space-y-6">
-						<div className="space-y-4">
-							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-								<div className="space-y-1">
-									<Label className="text-base">Email Notifications</Label>
-									<p className="text-muted-foreground text-sm">
-										Receive notifications via email
-									</p>
-								</div>
-								<Switch defaultChecked className="self-start sm:self-center" />
-							</div>
-							<Separator />
-							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-								<div className="space-y-1">
-									<Label className="text-base">Push Notifications</Label>
-									<p className="text-muted-foreground text-sm">
-										Receive push notifications in your browser
-									</p>
-								</div>
-								<Switch className="self-start sm:self-center" />
-							</div>
-							<Separator />
-							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-								<div className="space-y-1">
-									<Label className="text-base">Marketing Emails</Label>
-									<p className="text-muted-foreground text-sm">
-										Receive emails about new features and updates
-									</p>
-								</div>
-								<Switch defaultChecked className="self-start sm:self-center" />
-							</div>
-							<Separator />
-							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-								<div className="space-y-1">
-									<Label className="text-base">Weekly Summary</Label>
-									<p className="text-muted-foreground text-sm">
-										Get a weekly summary of your activity
-									</p>
-								</div>
-								<Switch defaultChecked className="self-start sm:self-center" />
-							</div>
-							<Separator />
-							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-								<div className="space-y-1">
-									<Label className="text-base">Security Alerts</Label>
-									<p className="text-muted-foreground text-sm">
-										Important security notifications (always enabled)
-									</p>
-								</div>
-								<Switch
-									checked
-									disabled
-									className="self-start sm:self-center"
-								/>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
+				<NotificationPreferences />
 			</TabsContent>
 		</Tabs>
 	);
