@@ -60,24 +60,44 @@ export function usePush() {
 				} catch {}
 			}
 
+			// Verbose diagnostic before subscribe (Phase 1 evidence)
+			console.log("[push] diag", {
+				isSecureContext,
+				protocol: location.protocol,
+				hostname: location.hostname,
+				permission: Notification.permission,
+				supported,
+				vapidLen: vapidPublicKey.length,
+				vapidPrefix: vapidPublicKey.slice(0, 8),
+				regScope: reg.scope,
+				regActive: reg.active?.state ?? null,
+				regWaiting: !!reg.waiting,
+			});
+			const decoded = urlBase64ToUint8Array(vapidPublicKey);
+			console.log("[push] applicationServerKey decoded len", decoded.length, decoded.length === 65 ? "OK" : "FAIL");
+			if (!isSecureContext) throw new Error("Not a secure context — push requires HTTPS or localhost");
+
 			let sub: PushSubscription;
 			try {
 				sub = await reg.pushManager.subscribe({
 					userVisibleOnly: true,
-					applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as unknown as ArrayBuffer,
+					applicationServerKey: decoded as unknown as ArrayBuffer,
 				});
 			} catch (err: unknown) {
 				const e = err as DOMException;
-				// Surface full diagnostic for Phase 1 evidence
 				console.error("[push] subscribe failed", {
 					name: e?.name,
 					message: e?.message,
+					stack: (e as Error)?.stack?.slice(0, 500),
 					vapidLen: vapidPublicKey.length,
 					vapidConfigured: !!vapidPublicKey,
 					permission: Notification.permission,
 					supported,
+					isSecureContext,
+					protocol: location.protocol,
+					decodedLen: decoded.length,
 				});
-				throw new Error(`${e?.name ?? "PushError"}: ${e?.message ?? String(err)} — check VAPID key + HTTPS + restart dev server`);
+				throw new Error(`${e?.name ?? "PushError"}: ${e?.message ?? String(err)} — isSecureContext:${isSecureContext} protocol:${location.protocol} decodedLen:${decoded.length}`);
 			}
 
 			const rawKey = sub.getKey("p256dh");
