@@ -4,6 +4,7 @@ import { CheckCircle2, Key, Loader2, Shield, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import useSWR from "swr";
 import { MyBookingsPanel } from "@/components/slots/my-bookings-panel";
 import {
 	AlertDialog,
@@ -25,6 +26,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
+import { InfoTip } from "@/components/ui/info-tip";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
@@ -64,6 +66,20 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
 	// Active tab syncs with the URL hash so refresh/deep-links keep context.
+	// Badge counts for the tab strip (shared SWR keys with the panels below).
+	const { data: mySlots } = useSWR<Array<{ startTime: string }>>(
+		"/api/user/slots",
+		(url: string) => fetch(url).then((r) => r.json()),
+	);
+	const { data: notifData } = useSWR<{ unreadCount: number }>(
+		"/api/user/notifications",
+		(url: string) => fetch(url).then((r) => r.json()),
+	);
+	const upcomingCount = (mySlots ?? []).filter(
+		(s) => new Date(s.startTime).getTime() > Date.now(),
+	).length;
+	const unreadCount = notifData?.unreadCount ?? 0;
+
 	const [activeTab, setActiveTab] = useState(() => {
 		const hash =
 			typeof window !== "undefined" ? window.location.hash.slice(1) : "";
@@ -168,48 +184,55 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 			}}
 			className="space-y-6"
 		>
-			<TabsList className="flex h-auto w-full items-center gap-1 overflow-x-auto rounded-xl bg-muted/40 p-1.5">
+			<TabsList className="flex h-auto w-full items-center gap-1 overflow-x-auto rounded-xl bg-muted/40 p-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				<TabsTrigger
 					value="personal"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					Personal
 				</TabsTrigger>
 				<TabsTrigger
 					value="schedule"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					My Schedule
-				</TabsTrigger>
+					<Badge
+						className="ml-2"
+						variant={upcomingCount > 0 ? "default" : "secondary"}
+					>
+						{upcomingCount}
+					</Badge>
+				</TabsTrigger>{" "}
 				<TabsTrigger
 					value="volunteering"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					Volunteering
 				</TabsTrigger>
 				<TabsTrigger
 					value="reflections"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					Reflections
 				</TabsTrigger>
 				<TabsTrigger
 					value="membership"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					Membership
 				</TabsTrigger>
 				<TabsTrigger
 					value="security"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					Security
 				</TabsTrigger>
 				<TabsTrigger
 					value="notifications"
-					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-4 py-2 text-xs sm:text-sm min-h-12"
 				>
 					Notifications
+					{unreadCount > 0 && <Badge className="ml-2">{unreadCount}</Badge>}
 				</TabsTrigger>
 			</TabsList>
 
@@ -249,7 +272,13 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 								<Input id="email" type="email" value={user.email} disabled />
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="phone">Phone</Label>
+								<Label htmlFor="phone" className="flex items-center gap-1">
+									Phone (To receive your Schedule info)
+									<InfoTip>
+										Used only for ministry coordination about your booked hours.
+										Never shown publicly.
+									</InfoTip>
+								</Label>
 								<PhoneInput
 									id="phone"
 									value={personalForm.phone || undefined}
@@ -279,7 +308,13 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 								/>
 							</div>
 							<div className="space-y-2 md:col-span-2">
-								<Label htmlFor="country">Country</Label>
+								<Label htmlFor="country" className="flex items-center gap-1">
+									Country
+									<InfoTip>
+										Helps us tailor events, chapters and volunteering
+										opportunities near you.
+									</InfoTip>
+								</Label>
 								<CountryDropdown
 									placeholder="Select your country"
 									defaultValue={personalForm.country || undefined}

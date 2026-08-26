@@ -2,7 +2,13 @@
 
 import { betterFetch } from "@better-fetch/fetch";
 import { format } from "date-fns";
-import { CalendarClock, CalendarPlus, MapPin } from "lucide-react";
+import {
+	CalendarClock,
+	CalendarPlus,
+	Link2,
+	MapPin,
+	RefreshCw,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -30,6 +36,10 @@ const fetcher = async (url: string) => {
 
 export function MyBookingsPanel() {
 	const [cancellingId, setCancellingId] = useState<string | null>(null);
+	const [calUrl, setCalUrl] = useState<string | null>(null);
+	const [calWebcal, setCalWebcal] = useState<string | null>(null);
+	const [calLoading, setCalLoading] = useState(false);
+	const [showCal, setShowCal] = useState(false);
 	const { data, isLoading, mutate } = useSWR<MySlot[]>(
 		"/api/user/slots",
 		fetcher,
@@ -66,6 +76,51 @@ export function MyBookingsPanel() {
 		}
 	}
 
+	async function handleSubscribe() {
+		setCalLoading(true);
+		try {
+			const res = await fetch("/api/user/calendar-token", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "create" }),
+			});
+			const json = await res.json();
+			if (!res.ok)
+				throw new Error(json?.error ?? "Failed to create calendar link");
+			setCalUrl(json.url);
+			setCalWebcal(json.webcalUrl);
+			setShowCal(true);
+		} catch (err) {
+			toast.error(err instanceof Error ? err.message : String(err));
+		} finally {
+			setCalLoading(false);
+		}
+	}
+
+	async function handleRotate() {
+		setCalLoading(true);
+		try {
+			const res = await fetch("/api/user/calendar-token", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "rotate" }),
+			});
+			const json = await res.json();
+			if (!res.ok) throw new Error(json?.error ?? "Rotate failed");
+			setCalUrl(json.url);
+			setCalWebcal(json.webcalUrl);
+			toast.success("Calendar link regenerated");
+		} catch (err) {
+			toast.error(err instanceof Error ? err.message : String(err));
+		} finally {
+			setCalLoading(false);
+		}
+	}
+
+	function copy(text: string) {
+		navigator.clipboard.writeText(text).then(() => toast.success("Copied"));
+	}
+
 	return (
 		<Card>
 			<CardHeader className="flex-row items-center justify-between">
@@ -75,13 +130,24 @@ export function MyBookingsPanel() {
 				{!isLoading && (
 					<div className="flex items-center gap-2">
 						{upcoming.length > 0 && (
-							<a
-								href="/api/user/slots/ics"
-								className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
-								title="Add all upcoming slots to your calendar"
-							>
-								<CalendarPlus className="size-3.5" /> Calendar
-							</a>
+							<>
+								<a
+									href="/api/user/slots/ics"
+									className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+									title="Add all upcoming slots to your calendar"
+								>
+									<CalendarPlus className="size-3.5" /> Download
+								</a>
+								<Button
+									variant="outline"
+									size="sm"
+									className="h-7 text-xs px-2 cursor-pointer"
+									onClick={handleSubscribe}
+									disabled={calLoading}
+								>
+									<Link2 className="size-3.5" /> Subscribe
+								</Button>
+							</>
 						)}
 						<Badge variant="secondary">{upcoming.length} upcoming</Badge>
 					</div>
@@ -165,6 +231,66 @@ export function MyBookingsPanel() {
 								</li>
 							))}
 						</ul>
+					</div>
+				)}
+				{showCal && calUrl && (
+					<div className="mt-4 rounded-lg border bg-muted/30 p-3 space-y-2">
+						<p className="text-xs font-medium">
+							Subscribe — live calendar feed
+						</p>
+						<p className="text-xs text-muted-foreground">
+							Add to Apple/Google Calendar. Updates automatically within ~1
+							hour.
+						</p>
+						<div className="flex items-center gap-2">
+							<input
+								readOnly
+								value={calWebcal ?? calUrl}
+								className="flex-1 rounded border bg-background px-2 py-1 text-xs"
+							/>
+							<Button
+								size="sm"
+								variant="outline"
+								className="cursor-pointer"
+								onClick={() => copy(calWebcal ?? calUrl)}
+							>
+								Copy webcal
+							</Button>
+						</div>
+						<div className="flex items-center gap-2">
+							<input
+								readOnly
+								value={calUrl}
+								className="flex-1 rounded border bg-background px-2 py-1 text-xs"
+							/>
+							<Button
+								size="sm"
+								variant="outline"
+								className="cursor-pointer"
+								onClick={() => copy(calUrl)}
+							>
+								Copy https
+							</Button>
+						</div>
+						<div className="flex gap-2">
+							<Button
+								size="sm"
+								variant="ghost"
+								className="cursor-pointer text-xs"
+								onClick={handleRotate}
+								disabled={calLoading}
+							>
+								<RefreshCw className="size-3.5" /> Regenerate
+							</Button>
+							<Button
+								size="sm"
+								variant="ghost"
+								className="cursor-pointer text-xs"
+								onClick={() => setShowCal(false)}
+							>
+								Dismiss
+							</Button>
+						</div>
 					</div>
 				)}
 			</CardContent>

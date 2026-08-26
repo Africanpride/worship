@@ -15,6 +15,7 @@ import {
 	FieldGroup,
 	FieldLabel,
 } from "@/components/ui/field";
+import { InfoTip } from "@/components/ui/info-tip";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -198,8 +199,15 @@ const Contact31 = ({
 									name="message"
 									render={({ field, fieldState }) => (
 										<Field data-invalid={fieldState.invalid}>
-											<FieldLabel htmlFor={field.name}>
+											<FieldLabel
+												htmlFor={field.name}
+												className="flex items-center gap-1"
+											>
 												Message <span className="text-destructive">*</span>
+												<InfoTip>
+													Share as much detail as you can — we typically reply
+													within 48 hours.
+												</InfoTip>
 											</FieldLabel>
 											<Textarea
 												{...field}

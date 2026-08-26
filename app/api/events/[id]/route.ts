@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
+import { notify } from "@/lib/notify";
 import { prisma } from "@/lib/prisma";
 import { syncEventSlots } from "@/lib/slots";
 
@@ -121,6 +122,25 @@ export async function PATCH(
 			},
 		});
 
+		// Fan-out: if schedule-impacting fields changed, notify booked holders (best-effort)
+		const scheduleChanged =
+			Boolean(title && title !== existingEvent.title) ||
+			Boolean(location !== undefined && location !== existingEvent.location) ||
+			Boolean(status && status !== existingEvent.status) ||
+			Boolean(
+				typeof bookingOpen === "boolean" &&
+					bookingOpen !== existingEvent.bookingOpen,
+			) ||
+			datesChanged;
+		if (scheduleChanged) {
+			slotNotifyFanOut(id, updatedEvent?.title ?? newTitle).catch((e) =>
+				log.warn("events", "event fan-out failed", {
+					detail: e instanceof Error ? e.message : String(e),
+					meta: { eventId: id },
+				}),
+			);
+		}
+
 		return NextResponse.json(updatedEvent);
 	} catch (error) {
 		log.error("events", "Event update failed", {
@@ -128,6 +148,28 @@ export async function PATCH(
 		});
 		return new NextResponse("Internal Error", { status: 500 });
 	}
+}
+
+async function slotNotifyFanOut(eventId: string, eventTitle: string) {
+	const slots = await prisma.eventSlot.findMany({
+		where: { eventId, status: "booked", assignedUserId: { not: null } },
+		select: { assignedUserId: true },
+	});
+	const uniqueUserIds = [
+		...new Set(slots.map((s) => s.assignedUserId).filter(Boolean) as string[]),
+	];
+	if (uniqueUserIds.length === 0) return;
+	await Promise.allSettled(
+		uniqueUserIds.map((userId) =>
+			notify(userId, {
+				title: `Update: ${eventTitle}`,
+				body: `Schedule for ${eventTitle} changed. Check your booked hours.`,
+				link: "/dashboard/events",
+				eventId,
+				channels: ["inapp", "email"],
+			}),
+		),
+	);
 }
 
 export async function DELETE(

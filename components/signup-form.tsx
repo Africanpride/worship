@@ -16,6 +16,7 @@ import {
 	FieldLabel,
 	FieldSeparator,
 } from "@/components/ui/field";
+import { InfoTip } from "@/components/ui/info-tip";
 import { Input } from "@/components/ui/input";
 import { signIn, signUp } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -185,7 +186,15 @@ export function SignupForm({
 							</Field>
 							<div className="grid grid-cols-2 gap-4">
 								<Field>
-									<FieldLabel htmlFor="password">Password</FieldLabel>
+									<span className="flex items-center gap-1">
+										<FieldLabel htmlFor="password" className="mb-0">
+											Password
+										</FieldLabel>
+										<InfoTip>
+											Minimum 8 characters. Use a passphrase you don&apos;t
+											reuse anywhere else.
+										</InfoTip>
+									</span>
 									<Input
 										id="password"
 										type="password"
