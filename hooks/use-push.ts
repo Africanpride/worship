@@ -33,40 +33,79 @@ export function usePush() {
 	}, []);
 
 	const subscribe = useCallback(async () => {
-		if (!supported) throw new Error("Push not supported");
-		if (!vapidPublicKey) throw new Error("VAPID_PUBLIC_KEY not configured");
+		if (!supported) throw new Error("Push not supported — use HTTPS or localhost");
+		if (!vapidPublicKey) throw new Error("VAPID_PUBLIC_KEY not configured (restart dev server after .env change)");
 		setLoading(true);
 		try {
 			const perm = await Notification.requestPermission();
 			setPermission(perm);
-			if (perm !== "granted") throw new Error("Permission denied");
+			if (perm !== "granted") throw new Error(`Permission ${perm} — allow notifications in browser settings`);
 
-			const reg = await navigator.serviceWorker.register("/sw.js");
+			// Ensure service worker is registered at root scope; update if already present
+			const reg = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
 			await navigator.serviceWorker.ready;
-			const sub = await reg.pushManager.subscribe({
-				userVisibleOnly: true,
-				applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as unknown as ArrayBuffer,
-			});
+			// Clear stale subscription from a previous VAPID key — common cause of "push service error"
+			const existing = await reg.pushManager.getSubscription();
+			if (existing) {
+				try {
+					await existing.unsubscribe();
+				} catch {}
+				// Also clear server copy best-effort
+				try {
+					await fetch("/api/user/push/unsubscribe", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ endpoint: existing.endpoint }),
+					});
+				} catch {}
+			}
+
+			let sub: PushSubscription;
+			try {
+				sub = await reg.pushManager.subscribe({
+					userVisibleOnly: true,
+					applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as unknown as ArrayBuffer,
+				});
+			} catch (err: unknown) {
+				const e = err as DOMException;
+				// Surface full diagnostic for Phase 1 evidence
+				console.error("[push] subscribe failed", {
+					name: e?.name,
+					message: e?.message,
+					vapidLen: vapidPublicKey.length,
+					vapidConfigured: !!vapidPublicKey,
+					permission: Notification.permission,
+					supported,
+				});
+				throw new Error(`${e?.name ?? "PushError"}: ${e?.message ?? String(err)} — check VAPID key + HTTPS + restart dev server`);
+			}
 
 			const rawKey = sub.getKey("p256dh");
 			const authKey = sub.getKey("auth");
-			if (!rawKey || !authKey) throw new Error("Missing subscription keys");
+			if (!rawKey || !authKey) throw new Error("Missing subscription keys (browser bug)");
 
-			const p256dh = btoa(String.fromCharCode(...new Uint8Array(rawKey)));
-			const auth = btoa(String.fromCharCode(...new Uint8Array(authKey)));
+			// Avoid spread on large buffers — use loop for btoa
+			const toB64 = (buf: ArrayBuffer) => {
+				const bytes = new Uint8Array(buf);
+				let binary = "";
+				for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+				return btoa(binary);
+			};
+			const p256dh = toB64(rawKey);
+			const auth = toB64(authKey);
 
 			const res = await fetch("/api/user/push/subscribe", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ endpoint: sub.endpoint, p256dh, auth }),
 			});
-			if (!res.ok) throw new Error((await res.json()).error ?? "Subscribe failed");
+			if (!res.ok) throw new Error((await res.json()).error ?? "Subscribe failed (server)");
 			setSubscribed(true);
 			return sub;
 		} finally {
 			setLoading(false);
 		}
-	}, [supported, vapidPublicKey]);
+	}, [supported, vapidPublicKey, permission]);
 
 	const unsubscribe = useCallback(async () => {
 		setLoading(true);
