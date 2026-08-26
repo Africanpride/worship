@@ -52,6 +52,7 @@ model Profile {
   avatarUrl      String?
   bannerUrl      String?
   location       String?
+  country        String? // ISO-3166 alpha-3 (selected via CountryDropdown)
   website        String?
   socialLinks    Json? // { twitter: "...", github: "...", linkedin: "..." }
   volunteerAreas String[]

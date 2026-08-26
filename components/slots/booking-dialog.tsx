@@ -186,6 +186,27 @@ export function BookingDialog({
 		};
 	}, [open, api]);
 
+	/**
+	 * Gate the confirm step on auth so unauthenticated visitors get a clear
+	 * instruction instead of a vague 401 from the API.
+	 */
+	const handleSelect = useCallback(
+		(slot: RedactedSlot) => {
+			if (!isAuthenticated) {
+				toast.info("Sign in to book this hour", {
+					description: "Create a free account or log in first.",
+					action: {
+						label: "Sign in",
+						onClick: () => window.location.assign("/login"),
+					},
+				});
+				return;
+			}
+			setPendingSlot(slot);
+		},
+		[isAuthenticated],
+	);
+
 	const scrollPrev = useCallback(() => api?.scrollPrev(), [api]);
 	const scrollNext = useCallback(() => api?.scrollNext(), [api]);
 
@@ -198,6 +219,9 @@ export function BookingDialog({
 				{ method: "POST" },
 			);
 			const json = await res.json();
+			if (res.status === 401) {
+				throw new Error("Your session expired — please sign in again.");
+			}
 			if (!res.ok) throw new Error(json?.error ?? "Booking failed");
 			toast.success("Slot booked", {
 				description: `${format(new Date(pendingSlot.startTime), "EEE d MMM, h:mm aa")} – ${format(
@@ -385,7 +409,7 @@ export function BookingDialog({
 															key={slot.id}
 															slot={slot}
 															isMine={mySlots.has(slot.id)}
-															onSelect={() => setPendingSlot(slot)}
+															onSelect={() => handleSelect(slot)}
 														/>
 													))}
 												</div>

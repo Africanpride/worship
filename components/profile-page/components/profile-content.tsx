@@ -4,6 +4,7 @@ import { CheckCircle2, Key, Loader2, Shield, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { MyBookingsPanel } from "@/components/slots/my-bookings-panel";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -23,8 +24,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -60,13 +63,30 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 	const [deleteConfirmText, setDeleteConfirmText] = useState("");
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+	// Active tab syncs with the URL hash so refresh/deep-links keep context.
+	const [activeTab, setActiveTab] = useState(() => {
+		const hash =
+			typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+		return [
+			"personal",
+			"schedule",
+			"volunteering",
+			"reflections",
+			"membership",
+			"security",
+			"notifications",
+		].includes(hash)
+			? hash
+			: "personal";
+	});
+
 	const [personalForm, setPersonalForm] = useState({
 		firstName: profile.firstName || "",
 		lastName: profile.lastName || "",
 		phone: profile.phone || "",
 		jobTitle: profile.jobTitle || "",
 		company: profile.company || "",
-		location: profile.location || "",
+		country: profile.country || "",
 		bio: profile.bio || "",
 	});
 
@@ -140,41 +160,54 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 	};
 
 	return (
-		<Tabs defaultValue="personal" className="space-y-6">
-			<TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto p-1.5 bg-muted/40 rounded-xl gap-1">
+		<Tabs
+			value={activeTab}
+			onValueChange={(v) => {
+				setActiveTab(v);
+				window.history.replaceState(null, "", `#${v}`);
+			}}
+			className="space-y-6"
+		>
+			<TabsList className="flex h-auto w-full items-center gap-1 overflow-x-auto rounded-xl bg-muted/40 p-1.5">
 				<TabsTrigger
 					value="personal"
-					className="rounded-lg py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
 				>
 					Personal
 				</TabsTrigger>
 				<TabsTrigger
+					value="schedule"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
+				>
+					My Schedule
+				</TabsTrigger>
+				<TabsTrigger
 					value="volunteering"
-					className="rounded-lg py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
 				>
 					Volunteering
 				</TabsTrigger>
 				<TabsTrigger
 					value="reflections"
-					className="rounded-lg py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
 				>
 					Reflections
 				</TabsTrigger>
 				<TabsTrigger
-					value="account"
-					className="rounded-lg py-2.5 text-xs sm:text-sm"
+					value="membership"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
 				>
-					Account
+					Membership
 				</TabsTrigger>
 				<TabsTrigger
 					value="security"
-					className="rounded-lg py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
 				>
 					Security
 				</TabsTrigger>
 				<TabsTrigger
 					value="notifications"
-					className="rounded-lg py-2.5 text-xs sm:text-sm"
+					className="shrink-0 rounded-lg px-3 py-2.5 text-xs sm:text-sm"
 				>
 					Notifications
 				</TabsTrigger>
@@ -217,9 +250,9 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 							</div>
 							<div className="space-y-2">
 								<Label htmlFor="phone">Phone</Label>
-								<Input
+								<PhoneInput
 									id="phone"
-									value={personalForm.phone}
+									value={personalForm.phone || undefined}
 									onChange={(e) =>
 										handlePersonalChange("phone", e.target.value)
 									}
@@ -246,12 +279,12 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 								/>
 							</div>
 							<div className="space-y-2 md:col-span-2">
-								<Label htmlFor="location">Address / Location</Label>
-								<Input
-									id="location"
-									value={personalForm.location}
-									onChange={(e) =>
-										handlePersonalChange("location", e.target.value)
+								<Label htmlFor="country">Country</Label>
+								<CountryDropdown
+									placeholder="Select your country"
+									defaultValue={personalForm.country || undefined}
+									onChange={(country) =>
+										handlePersonalChange("country", country?.alpha3 ?? "")
 									}
 								/>
 							</div>
@@ -288,6 +321,12 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 			</TabsContent>
 
 			{/* Volunteering Section */}
+			{/* My Schedule — booked worship & Bible Reading hours */}
+			<TabsContent value="schedule" className="space-y-6">
+				<MyBookingsPanel />
+			</TabsContent>
+
+			{/* Volunteering */}
 			<TabsContent value="volunteering" className="space-y-6">
 				<Card data-usal="fade-u" className="p-2 py-4  md:p-4 w-full py-8">
 					<CardHeader>
@@ -357,7 +396,7 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 			</TabsContent>
 
 			{/* Account Settings */}
-			<TabsContent value="account" className="space-y-6">
+			<TabsContent value="membership" className="space-y-6">
 				<Card className="p-2 py-4  md:p-4 w-full">
 					<CardHeader>
 						<CardTitle>Account Settings</CardTitle>

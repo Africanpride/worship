@@ -60,6 +60,7 @@ export async function PATCH(req: NextRequest) {
 			jobTitle,
 			company,
 			location,
+			country,
 			bio,
 			displayName,
 			username,
@@ -84,6 +85,16 @@ export async function PATCH(req: NextRequest) {
 		if (jobTitle !== undefined) updateData.jobTitle = jobTitle;
 		if (company !== undefined) updateData.company = company;
 		if (location !== undefined) updateData.location = location;
+		if (country !== undefined) {
+			const valid = country === "" || /^[A-Z]{3}$/.test(country);
+			if (!valid) {
+				return NextResponse.json(
+					{ error: "Invalid country code" },
+					{ status: 400 },
+				);
+			}
+			updateData.country = country;
+		}
 		if (bio !== undefined) updateData.bio = bio;
 
 		// Always sync displayName to computed name if names were provided,

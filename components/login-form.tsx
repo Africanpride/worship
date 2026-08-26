@@ -32,7 +32,7 @@ export function LoginForm({
 	const turnstileRef = useRef<TurnstileRef>(null);
 	const router = useRouter();
 
-	const handleSocialSignIn = async (provider: "google") => {
+	const handleSocialSignIn = async (provider: "google" | "microsoft") => {
 		if (loading) return;
 		setLoading(true);
 		try {
@@ -155,7 +155,7 @@ export function LoginForm({
 							<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
 								Or continue with
 							</FieldSeparator>
-							<Field className="grid grid-cols-1 gap-4">
+							<Field className="grid gap-2 sm:grid-cols-2">
 								<Button
 									variant="outline"
 									type="button"
@@ -170,6 +170,21 @@ export function LoginForm({
 										/>
 									</svg>
 									Login with Google
+								</Button>
+								<Button
+									variant="outline"
+									type="button"
+									className="w-full cursor-pointer"
+									disabled={loading}
+									onClick={() => handleSocialSignIn("microsoft")}
+								>
+									<svg viewBox="0 0 23 23" className="size-4">
+										<path fill="#f35325" d="M1 1h10v10H1z" />
+										<path fill="#81bc06" d="M12 1h10v10H12z" />
+										<path fill="#05a6f0" d="M1 12h10v10H1z" />
+										<path fill="#ffba08" d="M12 12h10v10H12z" />
+									</svg>
+									Login with Microsoft
 								</Button>
 							</Field>
 							<div className="flex justify-center my-2">
