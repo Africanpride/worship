@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
 				image: true,
 				createdAt: true,
 				role: true,
+				profile: { select: { avatarUrl: true } },
 			},
 		});
 

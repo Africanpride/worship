@@ -84,6 +84,8 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
       setFile(null);
       setPreview(null);
       mutate("/api/profile");
+      mutate("/api/admin/stats");
+      mutate("/api/admin/users");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : String(err));
@@ -106,6 +108,8 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
       setPreview(null);
       setFile(null);
       mutate("/api/profile");
+      mutate("/api/admin/stats");
+      mutate("/api/admin/users");
       router.refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : String(e));

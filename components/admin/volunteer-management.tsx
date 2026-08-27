@@ -68,6 +68,7 @@ interface User {
 		company?: string;
 		membershipPlan?: string;
 		displayName?: string;
+		avatarUrl?: string | null;
 	} | null;
 }
 
@@ -256,10 +257,7 @@ export function VolunteerManagement() {
 									<TableCell>
 										<div className="flex items-center gap-3">
 											<Avatar className="h-10 w-10 border shadow-sm">
-												<AvatarImage
-													src={volunteer.image || ""}
-													alt={volunteer.name}
-												/>
+												<AvatarImage src={(volunteer.profile?.avatarUrl as string) || volunteer.image || ""} alt={volunteer.name} />
 												<AvatarFallback className="bg-warning/10 text-warning-foreground text-xs font-bold">
 													{getInitials(volunteer.name)}
 												</AvatarFallback>
@@ -329,7 +327,7 @@ export function VolunteerManagement() {
 							<div className="relative h-32 bg-gradient-to-r from-primary/20 to-primary/5">
 								<div className="absolute -bottom-12 left-6">
 									<Avatar className="h-24 w-24 border-4 border-background shadow-xl">
-										<AvatarImage src={selectedVolunteer.image || ""} />
+										<AvatarImage src={(selectedVolunteer.profile?.avatarUrl as string) || selectedVolunteer.image || ""} />
 										<AvatarFallback className="bg-amber-500 text-white text-2xl font-bold">
 											{getInitials(selectedVolunteer.name)}
 										</AvatarFallback>

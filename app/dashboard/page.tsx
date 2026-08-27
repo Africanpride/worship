@@ -45,6 +45,7 @@ interface DashboardData {
 		name: string;
 		email: string;
 		image?: string | null;
+		profile?: { avatarUrl?: string | null } | null;
 		role?: string | null;
 		createdAt: string;
 	}>;
@@ -214,7 +215,7 @@ export default function DashboardPage() {
 								>
 									<div className="flex items-center gap-4">
 										<Avatar className="h-10 w-10 border border-muted/50">
-											<AvatarImage src={user.image ?? undefined} />
+										<AvatarImage src={(user.profile?.avatarUrl as string) || user.image || undefined} />
 											<AvatarFallback className="font-bold bg-muted">
 												{user.name?.[0].toUpperCase() || "U"}
 											</AvatarFallback>

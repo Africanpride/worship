@@ -23,6 +23,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar";
+import useSWR from "swr";
 import { useCurrentSession } from "@/lib/use-current-session";
 
 const defaultData = {
@@ -98,11 +99,11 @@ const defaultData = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { user } = useCurrentSession();
-
+	const { data: profile } = useSWR<{ avatarUrl?: string | null }>(user ? "/api/profile" : null, (url: string) => fetch(url).then((r) => (r.ok ? r.json() : null)));
 	const userData = {
 		name: user?.name || defaultData.user.name,
 		email: user?.email || defaultData.user.email,
-		avatar: user?.image || defaultData.user.avatar,
+		avatar: (profile?.avatarUrl as string) || user?.image || defaultData.user.avatar,
 	};
 
 	const filteredNavMain = defaultData.navMain.filter((item) => {

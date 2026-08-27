@@ -53,6 +53,7 @@ interface User {
 	createdAt: string;
 	profile?: {
 		volunteerAreas: string[];
+		avatarUrl?: string | null;
 	} | null;
 }
 
@@ -196,11 +197,7 @@ export function UserManagement() {
 									<TableCell className="font-medium">
 										<div className="flex items-center gap-3">
 											<Avatar className="h-9 w-9 border-2 border-background shadow-sm">
-												<AvatarImage
-													src={user.image || ""}
-													alt={user.name}
-													className="object-cover"
-												/>
+												<AvatarImage src={(user.profile?.avatarUrl as string) || user.image || ""} alt={user.name} className="object-cover" />
 												<AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
 													{getInitials(user.name)}
 												</AvatarFallback>

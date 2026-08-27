@@ -53,7 +53,7 @@ interface AgendaSlot {
 		name: string;
 		email: string;
 		image: string | null;
-		profile?: { displayName?: string | null } | null;
+		profile?: { displayName?: string | null; avatarUrl?: string | null } | null;
 	} | null;
 	event: {
 		id: string;
@@ -998,8 +998,8 @@ function AgendaRow({
 
 				{booker && (
 					<Avatar className="size-7 border-2 border-background shrink-0">
-						{booker.image && (
-							<AvatarImage src={booker.image} alt={displayName} />
+						{(booker.profile?.avatarUrl || booker.image) && (
+							<AvatarImage src={(booker.profile?.avatarUrl as string) || booker.image || ""} alt={displayName} />
 						)}
 						<AvatarFallback className="text-[9px]">{initials}</AvatarFallback>
 					</Avatar>
@@ -1168,7 +1168,7 @@ function ReassignDialog({
 								)}
 							>
 								<Avatar className="size-7">
-									{u.image && <AvatarImage src={u.image} alt={displayName} />}
+									{(u as unknown as { profile?: { avatarUrl?: string | null }; image?: string | null }).profile?.avatarUrl || u.image ? <AvatarImage src={(u as unknown as { profile?: { avatarUrl?: string | null }; image?: string | null }).profile?.avatarUrl || u.image || "" as string} alt={displayName} /> : null}
 									<AvatarFallback className="text-[9px]">
 										{initials}
 									</AvatarFallback>
