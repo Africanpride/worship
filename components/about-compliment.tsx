@@ -71,7 +71,7 @@ const AboutCompliment = ({
 		alt: "logo",
 		title: "Logos-Rhema Foundation",
 		description:
-			"For 22 years, the Logos-Rhema Foundation has spearheaded spiritual revival through the Non-Stop Series across Ghana and beyond.",
+			"For 25 years, the Logos-Rhema Foundation has spearheaded spiritual revival through the Non-Stop Series across Ghana and beyond.",
 		buttonText: "Our Mission",
 		buttonUrl: "/about/#mission",
 	},
@@ -104,7 +104,7 @@ const AboutCompliment = ({
 	achievementsTitle = "A Legacy of Sacred Worship",
 	achievementsDescription = "What began as a 24-hour sacrifice has grown into a 144-hour global movement, restoring the altar of praise and transforming countless lives.",
 	achievements = [
-		{ label: "Faithful Years ", value: "22+" },
+		{ label: "Faithful Years ", value: "25+" },
 		{ label: "Hours per Session", value: "144h" },
 		{ label: "Global Souls Met", value: "500k+" },
 		{ label: "Ministries United", value: "30+" },

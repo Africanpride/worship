@@ -127,7 +127,11 @@ export async function notify(
 	if (channels.includes("push")) {
 		try {
 			const { sendPushToUser } = await import("@/lib/notify/push");
-			await sendPushToUser(userId, { title: input.title, body: input.body, url: input.link });
+			await sendPushToUser(userId, {
+				title: input.title,
+				body: input.body,
+				url: input.link,
+			});
 		} catch (error) {
 			log.warn("system", "notify push failed", {
 				detail: error instanceof Error ? error.message : String(error),
@@ -138,7 +142,9 @@ export async function notify(
 	if (channels.includes("sms")) {
 		try {
 			const { sendSmsToUser } = await import("@/lib/notify/sms");
-			const smsBody = input.body ? `${input.title}: ${input.body}` : input.title;
+			const smsBody = input.body
+				? `${input.title}: ${input.body}`
+				: input.title;
 			await sendSmsToUser(userId, smsBody);
 		} catch (error) {
 			log.warn("system", "notify sms failed", {

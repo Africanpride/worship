@@ -4,17 +4,27 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { usePush } from "@/hooks/use-push";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-type Pref = { emailReminders: boolean; pushReminders: boolean; smsReminders: boolean };
+type Pref = {
+	emailReminders: boolean;
+	pushReminders: boolean;
+	smsReminders: boolean;
+};
 
 export function NotificationPreferences() {
 	const { data, mutate } = useSWR<Pref>("/api/user/preferences", fetcher);
@@ -28,7 +38,15 @@ export function NotificationPreferences() {
 	const [phoneSent, setPhoneSent] = useState(false);
 	const [phoneLoading, setPhoneLoading] = useState(false);
 
-	const { supported, permission, subscribed, loading: pushLoading, subscribe, unsubscribe, vapidConfigured } = usePush();
+	const {
+		supported,
+		permission,
+		subscribed,
+		loading: pushLoading,
+		subscribe,
+		unsubscribe,
+		vapidConfigured,
+	} = usePush();
 
 	useEffect(() => {
 		if (data) {
@@ -137,52 +155,103 @@ export function NotificationPreferences() {
 		<Card className="p-2 py-4 md:p-4 w-full">
 			<CardHeader>
 				<CardTitle>Notification Preferences</CardTitle>
-				<CardDescription>Reminders respect admin toggles + your opt-in.</CardDescription>
+				<CardDescription>
+					Reminders respect admin toggles + your opt-in.
+				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-6">
 				<div className="space-y-4">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-1">
 							<Label className="text-base">Email Reminders</Label>
-							<p className="text-muted-foreground text-sm">1440m + 60m before your hour</p>
+							<p className="text-muted-foreground text-sm">
+								1440m + 60m before your hour
+							</p>
 						</div>
-						<Switch checked={email} onCheckedChange={(v) => { setEmail(v); patch({ emailReminders: v }); }} className="self-start sm:self-center cursor-pointer" />
+						<Switch
+							checked={email}
+							onCheckedChange={(v) => {
+								setEmail(v);
+								patch({ emailReminders: v });
+							}}
+							className="self-start sm:self-center cursor-pointer"
+						/>
 					</div>
 					<Separator />
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-1">
 							<Label className="text-base">Push Notifications</Label>
 							<p className="text-muted-foreground text-sm">
-								{supported ? (vapidConfigured ? `Browser push ${subscribed ? "(subscribed)" : ""}` : "Server VAPID not configured") : "Not supported in this browser"}
+								{supported
+									? vapidConfigured
+										? `Browser push ${subscribed ? "(subscribed)" : ""}`
+										: "Server VAPID not configured"
+									: "Not supported in this browser"}
 							</p>
 						</div>
-						<Switch checked={push} onCheckedChange={handlePush} disabled={!supported || pushLoading} className="self-start sm:self-center cursor-pointer" />
+						<Switch
+							checked={push}
+							onCheckedChange={handlePush}
+							disabled={!supported || pushLoading}
+							className="self-start sm:self-center cursor-pointer"
+						/>
 					</div>
 					<Separator />
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-1">
 							<Label className="text-base">SMS Reminders</Label>
-							<p className="text-muted-foreground text-sm">30m before start (verified phone only)</p>
+							<p className="text-muted-foreground text-sm">
+								30m before start (verified phone only)
+							</p>
 						</div>
-						<Switch checked={sms} onCheckedChange={(v) => { setSms(v); patch({ smsReminders: v }); }} className="self-start sm:self-center cursor-pointer" />
+						<Switch
+							checked={sms}
+							onCheckedChange={(v) => {
+								setSms(v);
+								patch({ smsReminders: v });
+							}}
+							className="self-start sm:self-center cursor-pointer"
+						/>
 					</div>
 
 					<div className="rounded-lg border p-3 space-y-2 bg-muted/30">
 						<Label>Phone for SMS</Label>
 						<PhoneInput
 							value={phone}
-							onChange={(e) => setPhone((e.target as HTMLInputElement).value ?? "")}
+							onChange={(e) =>
+								setPhone((e.target as HTMLInputElement).value ?? "")
+							}
 							defaultCountry="US"
 						/>
 						<div className="flex gap-2">
-							<Button size="sm" onClick={requestOtp} disabled={phoneLoading} className="cursor-pointer">
-								{phoneLoading ? "Sending…" : phoneSent ? "Resend code" : "Send code"}
+							<Button
+								size="sm"
+								onClick={requestOtp}
+								disabled={phoneLoading}
+								className="cursor-pointer"
+							>
+								{phoneLoading
+									? "Sending…"
+									: phoneSent
+										? "Resend code"
+										: "Send code"}
 							</Button>
 						</div>
 						{phoneSent && (
 							<div className="flex gap-2 items-center">
-								<Input placeholder="6-digit code" value={code} onChange={(e) => setCode(e.target.value)} maxLength={6} className="max-w-[160px]" />
-								<Button size="sm" onClick={verifyOtp} disabled={phoneLoading || code.length !== 6} className="cursor-pointer">
+								<Input
+									placeholder="6-digit code"
+									value={code}
+									onChange={(e) => setCode(e.target.value)}
+									maxLength={6}
+									className="max-w-[160px]"
+								/>
+								<Button
+									size="sm"
+									onClick={verifyOtp}
+									disabled={phoneLoading || code.length !== 6}
+									className="cursor-pointer"
+								>
 									Verify
 								</Button>
 							</div>
@@ -193,7 +262,9 @@ export function NotificationPreferences() {
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-1">
 							<Label className="text-base">Marketing Emails</Label>
-							<p className="text-muted-foreground text-sm">New features and updates</p>
+							<p className="text-muted-foreground text-sm">
+								New features and updates
+							</p>
 						</div>
 						<Switch defaultChecked className="self-start sm:self-center" />
 					</div>
@@ -201,7 +272,9 @@ export function NotificationPreferences() {
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-1">
 							<Label className="text-base">Weekly Summary</Label>
-							<p className="text-muted-foreground text-sm">Weekly activity digest</p>
+							<p className="text-muted-foreground text-sm">
+								Weekly activity digest
+							</p>
 						</div>
 						<Switch defaultChecked className="self-start sm:self-center" />
 					</div>

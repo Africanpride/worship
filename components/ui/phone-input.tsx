@@ -52,8 +52,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 		},
 		ref,
 	) => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const [countryData, setCountryData] = useState<CountryData | undefined>();
+		const [_countryData, setCountryData] = useState<CountryData | undefined>();
 		const [displayFlag, setDisplayFlag] = useState<string>("");
 		const [hasInitialized, setHasInitialized] = useState(false);
 
@@ -88,10 +87,10 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 			if (!newValue.startsWith("+")) {
 				// Replace "00" at the start with "+" if present
 				if (newValue.startsWith("00")) {
-					newValue = "+" + newValue.slice(2);
+					newValue = `+${newValue.slice(2)}`;
 				} else {
 					// Otherwise just add "+" at the start
-					newValue = "+" + newValue;
+					newValue = `+${newValue}`;
 				}
 			}
 
@@ -110,7 +109,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 					parsed: parsed,
 				});
 
-				if (parsed && parsed.country) {
+				if (parsed?.country) {
 					// Update flag first
 					const countryCode = parsed.country;
 					console.log("Setting flag to:", countryCode.toLowerCase());
@@ -151,7 +150,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 		};
 
 		const inputClasses = cn(
-			"flex items-center gap-2 relative bg-transparent transition-colors text-base rounded-md border border-input pl-3 h-9 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed md:text-sm has-[input:focus]:outline-none has-[input:focus]:ring-1 has-[input:focus]:ring-ring [interpolate-size:allow-keywords]",
+			"flex items-center gap-2 relative bg-transparent transition-colors text-base rounded-lg border border-input px-2.5 h-8 disabled:opacity-50 disabled:cursor-not-allowed md:text-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 dark:bg-input/30 [interpolate-size:allow-keywords]",
 			inline && "rounded-l-none w-full",
 			className,
 		);
@@ -159,7 +158,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 		return (
 			<div className={inputClasses}>
 				{!inline && (
-					<div className="w-4 h-4 rounded-full shrink-0">
+					<div className="w-4 h-4 rounded-full shrink-0 flex items-center justify-center">
 						{displayFlag ? (
 							<CircleFlag countryCode={displayFlag} height={16} />
 						) : (
@@ -175,10 +174,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 					type="tel"
 					autoComplete="tel"
 					name="phone"
-					className={cn(
-						"flex w-full border-none bg-transparent text-base transition-colors placeholder:text-muted-foreground outline-none h-9 py-1 p-0 leading-none md:text-sm [interpolate-size:allow-keywords]",
-						className,
-					)}
+					className="flex w-full border-none bg-transparent text-base transition-colors placeholder:text-muted-foreground outline-none h-full py-0 p-0 leading-none md:text-sm [interpolate-size:allow-keywords]"
 					{...props}
 				/>
 			</div>

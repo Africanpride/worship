@@ -83,6 +83,7 @@ const CountryDropdownComponent = (
 	const [open, setOpen] = useState(false);
 	const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Only sync when defaultValue, options, or multiple change
 	useEffect(() => {
 		// Skip if no defaultValue
 		if (!defaultValue) {
@@ -139,9 +140,9 @@ const CountryDropdownComponent = (
 	);
 
 	const triggerClasses = cn(
-		"flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 hover:bg-secondary/80",
+		"flex h-8 w-full items-center justify-between whitespace-nowrap rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors placeholder:text-muted-foreground focus:outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30 [&>span]:line-clamp-1 hover:bg-secondary/80 cursor-pointer",
 		slim === true && "gap-1 w-min",
-		inline && "rounded-r-none border-r-0 gap-1 pr-1 w-min",
+		inline && "rounded-r-none border-r-0 gap-1 pr-1 ",
 		className,
 	);
 
@@ -190,7 +191,7 @@ const CountryDropdownComponent = (
 			<PopoverContent
 				collisionPadding={10}
 				side="bottom"
-				className="min-w-[--radix-popper-anchor-width] p-0"
+				className="w-(--radix-popover-trigger-width) p-0"
 			>
 				<Command className="w-full max-h-[200px] sm:max-h-[270px]">
 					<CommandList>
@@ -201,10 +202,10 @@ const CountryDropdownComponent = (
 						<CommandGroup>
 							{options
 								.filter((x) => x.name)
-								.map((option, key: number) => (
+								.map((option) => (
 									<CommandItem
-										className="flex items-center w-full gap-2"
-										key={key}
+										className="flex items-center w-full gap-2 cursor-pointer"
+										key={option.alpha3 || option.name}
 										onSelect={() => handleSelect(option)}
 									>
 										<div className="flex flex-grow space-x-2 overflow-hidden">

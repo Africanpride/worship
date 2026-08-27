@@ -17,13 +17,17 @@ function hashCode(code: string): string {
 // POST /api/user/phone/verify { phone, code }
 export async function POST(req: NextRequest) {
 	const session = await auth.api.getSession({ headers: await headers() });
-	if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+	if (!session)
+		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
 	const body: unknown = await req.json().catch(() => ({}));
 	const parsed = schema.safeParse(body);
 	if (!parsed.success) {
 		return NextResponse.json(
-			{ error: "Invalid payload", fieldErrors: parsed.error.flatten().fieldErrors },
+			{
+				error: "Invalid payload",
+				fieldErrors: parsed.error.flatten().fieldErrors,
+			},
 			{ status: 400 },
 		);
 	}
@@ -41,7 +45,10 @@ export async function POST(req: NextRequest) {
 	});
 
 	if (!verification) {
-		return NextResponse.json({ error: "Code expired or not found" }, { status: 400 });
+		return NextResponse.json(
+			{ error: "Code expired or not found" },
+			{ status: 400 },
+		);
 	}
 
 	if (verification.attempts >= 5) {

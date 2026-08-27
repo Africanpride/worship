@@ -18,15 +18,19 @@ function isAuthorized(req: NextRequest): boolean {
 	return auth === `Bearer ${cronSecret}`;
 }
 
-function channelForOffset(offset: number): Array<"inapp" | "email" | "push" | "sms"> {
+function channelForOffset(
+	offset: number,
+): Array<"inapp" | "email" | "push" | "sms"> {
 	if (offset >= 60 * 12) return ["inapp", "email"]; // 12h+ e.g. 1440
 	if (offset >= 30) return ["inapp", "email", "push"];
 	return ["sms"];
 }
 
 function humanOffset(offset: number): string {
-	if (offset >= 1440) return `${Math.round(offset / 1440)} day${offset === 1440 ? "" : "s"}`;
-	if (offset >= 60) return `${Math.round(offset / 60)} hour${offset === 60 ? "" : "s"}`;
+	if (offset >= 1440)
+		return `${Math.round(offset / 1440)} day${offset === 1440 ? "" : "s"}`;
+	if (offset >= 60)
+		return `${Math.round(offset / 60)} hour${offset === 60 ? "" : "s"}`;
 	return `${offset} minutes`;
 }
 
@@ -39,7 +43,9 @@ export async function POST(req: NextRequest) {
 	const now = new Date();
 	const windowEnd = new Date(now.getTime() + 65 * 60 * 1000); // 65m covers cron jitter
 	const windowStart = new Date(now.getTime() - 10 * 60 * 1000);
-	const horizon = new Date(now.getTime() + 24 * 60 * 60 * 1000 + 60 * 60 * 1000); // 25h horizon for 24h offset triggerAt
+	const horizon = new Date(
+		now.getTime() + 24 * 60 * 60 * 1000 + 60 * 60 * 1000,
+	); // 25h horizon for 24h offset triggerAt
 
 	try {
 		const admin = await prisma.adminNotificationSettings.findUnique({
@@ -70,7 +76,9 @@ export async function POST(req: NextRequest) {
 		for (const slot of slots) {
 			if (!slot.assignedUserId) continue;
 			for (const offset of sortedOffsets) {
-				const triggerAt = new Date(slot.startTime.getTime() - offset * 60 * 1000);
+				const triggerAt = new Date(
+					slot.startTime.getTime() - offset * 60 * 1000,
+				);
 				if (triggerAt < windowStart || triggerAt > windowEnd) continue;
 
 				checked += 1;
@@ -104,7 +112,8 @@ export async function POST(req: NextRequest) {
 							throw e;
 						}
 
-						const trackLabel = slot.track === "bible-reading" ? "Bible Reading" : "Worship";
+						const trackLabel =
+							slot.track === "bible-reading" ? "Bible Reading" : "Worship";
 						const when = slot.startTime.toLocaleString("en-GB", {
 							weekday: "short",
 							day: "numeric",
@@ -144,7 +153,13 @@ export async function POST(req: NextRequest) {
 			},
 		});
 
-		return NextResponse.json({ checked, sent, skippedDedup, slots: slots.length, offsets: sortedOffsets });
+		return NextResponse.json({
+			checked,
+			sent,
+			skippedDedup,
+			slots: slots.length,
+			offsets: sortedOffsets,
+		});
 	} catch (error) {
 		log.error("system", "cron reminders failed", {
 			detail: error instanceof Error ? error.message : String(error),

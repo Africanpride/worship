@@ -91,17 +91,23 @@ export function SidebarNotifications() {
 		const prev = data;
 		mutate(
 			{
-				unreadCount: id ? prev.unreadCount - (prev.notifications.find((n) => n.id === id && !n.read) ? 1 : 0) : 0,
+				unreadCount: id
+					? prev.unreadCount -
+						(prev.notifications.find((n) => n.id === id && !n.read) ? 1 : 0)
+					: 0,
 				notifications: id ? prev.notifications.filter((n) => n.id !== id) : [],
 			},
 			{ revalidate: false },
 		);
 		try {
-			const res = await fetch(id ? `/api/user/notifications?id=${id}` : "/api/user/notifications", {
-				method: "DELETE",
-				headers: { "Content-Type": "application/json" },
-				body: id ? JSON.stringify({ id }) : JSON.stringify({ all: true }),
-			});
+			const res = await fetch(
+				id ? `/api/user/notifications?id=${id}` : "/api/user/notifications",
+				{
+					method: "DELETE",
+					headers: { "Content-Type": "application/json" },
+					body: id ? JSON.stringify({ id }) : JSON.stringify({ all: true }),
+				},
+			);
 			if (!res.ok) throw new Error("Failed");
 			toast.success(id ? "Notification cleared" : "Tray cleared");
 			await mutate();
@@ -157,7 +163,9 @@ export function SidebarNotifications() {
 										onClick={() => markRead()}
 										className="h-6 cursor-pointer gap-1.5 px-1.5 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
 									>
-										<CheckCheck className={cn("size-3", pendingRead && "animate-pulse")} />
+										<CheckCheck
+											className={cn("size-3", pendingRead && "animate-pulse")}
+										/>
 										{pendingRead ? "Saving…" : "Mark all read"}
 									</Button>
 								)}
@@ -170,7 +178,9 @@ export function SidebarNotifications() {
 										className="h-6 cursor-pointer gap-1.5 px-1.5 text-[10px] uppercase tracking-wider text-destructive hover:text-destructive"
 										title="Clear all notifications"
 									>
-										<Trash2 className={cn("size-3", pendingClear && "animate-pulse")} />
+										<Trash2
+											className={cn("size-3", pendingClear && "animate-pulse")}
+										/>
 										{pendingClear ? "Clearing…" : "Clear"}
 									</Button>
 								)}
@@ -193,8 +203,21 @@ export function SidebarNotifications() {
 									)}
 								>
 									<div className="flex flex-col items-start gap-0.5 min-w-0 flex-1">
-										<span className={cn("text-xs", n.read ? "text-muted-foreground" : "font-medium text-foreground")}>{n.title}</span>
-										{n.body && <span className="line-clamp-2 text-[11px] text-muted-foreground">{n.body}</span>}
+										<span
+											className={cn(
+												"text-xs",
+												n.read
+													? "text-muted-foreground"
+													: "font-medium text-foreground",
+											)}
+										>
+											{n.title}
+										</span>
+										{n.body && (
+											<span className="line-clamp-2 text-[11px] text-muted-foreground">
+												{n.body}
+											</span>
+										)}
 									</div>
 									<button
 										onClick={(e) => {
