@@ -2,7 +2,7 @@ import "server-only";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
-type PushPayload = { title: string; body?: string; url?: string };
+type PushPayload = { title: string; body?: string; url?: string; icon?: string; badge?: string };
 
 function getVapidConfig(): { publicKey: string; privateKey: string; subject: string } | null {
 	const pub = process.env.VAPID_PUBLIC_KEY;
@@ -30,7 +30,13 @@ export async function sendPushToUser(
 
 	let sent = 0;
 	let failed = 0;
-	const data = JSON.stringify({ title: payload.title, body: payload.body, url: payload.url });
+	const data = JSON.stringify({
+		title: payload.title,
+		body: payload.body,
+		url: payload.url,
+		icon: payload.icon ?? "/logos/logo.png",
+		badge: payload.badge ?? "/logos/logo.png",
+	});
 
 	await Promise.allSettled(
 		subs.map(async (sub) => {

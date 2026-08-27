@@ -1,13 +1,13 @@
 self.addEventListener("push", (event) => {
-	let data = { title: "The NonStop", body: "", url: "/dashboard/events" };
+	let data = { title: "The NonStop", body: "", url: "/dashboard/events", icon: "/logos/logo.png", badge: "/logos/logo.png" };
 	try {
 		if (event.data) data = { ...data, ...event.data.json() };
 	} catch (_) {}
 	event.waitUntil(
 		self.registration.showNotification(data.title, {
 			body: data.body,
-			icon: "/favicon.ico",
-			badge: "/favicon.ico",
+			icon: data.icon || "/logos/logo.png",
+			badge: data.badge || "/logos/logo.png",
 			data: { url: data.url },
 		}),
 	);
