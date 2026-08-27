@@ -2,7 +2,7 @@ import "server-only";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
-export type NotifyChannel = "inapp" | "email" | "push" | "sms";
+export type NotifyChannel = "inapp" | "email" | "push" | "whatsapp";
 
 type NotifyInput = {
 	title: string;
@@ -48,10 +48,10 @@ export async function notify(
 
 	const wantsEmail = admin.emailEnabled && pref.emailReminders;
 	const wantsPush = admin.pushEnabled && pref.pushReminders;
-	const wantsSms = admin.smsEnabled && pref.smsReminders;
+	const wantsWhatsapp = admin.whatsappEnabled && pref.whatsappReminders;
 
 	const requested = new Set(
-		input.channels ?? ["inapp", "email", "push", "sms"],
+		input.channels ?? ["inapp", "email", "push", "whatsapp"],
 	);
 
 	// Always attempt inapp if requested (admin doesn't gate inapp)
@@ -59,13 +59,12 @@ export async function notify(
 	if (requested.has("inapp")) channels.push("inapp");
 	if (requested.has("email") && wantsEmail) channels.push("email");
 	if (requested.has("push") && wantsPush) channels.push("push");
-	if (requested.has("sms") && wantsSms) {
-		// sms also requires verified phone
+	if (requested.has("whatsapp") && wantsWhatsapp) {
 		const profile = await prisma.profile.findUnique({
 			where: { userId },
 			select: { phoneVerifiedAt: true },
 		});
-		if (profile?.phoneVerifiedAt) channels.push("sms");
+		if (profile?.phoneVerifiedAt) channels.push("whatsapp");
 	}
 
 	// Write single in-app notification (dedup to one row per logical event)
@@ -139,15 +138,13 @@ export async function notify(
 			});
 		}
 	}
-	if (channels.includes("sms")) {
+	if (channels.includes("whatsapp")) {
 		try {
-			const { sendSmsToUser } = await import("@/lib/notify/sms");
-			const smsBody = input.body
-				? `${input.title}: ${input.body}`
-				: input.title;
-			await sendSmsToUser(userId, smsBody);
+			const { sendWhatsappToUser } = await import("@/lib/notify/whatsapp");
+			const waBody = input.body ? `${input.title}: ${input.body}` : input.title;
+			await sendWhatsappToUser(userId, waBody);
 		} catch (error) {
-			log.warn("system", "notify sms failed", {
+			log.warn("system", "notify whatsapp failed", {
 				detail: error instanceof Error ? error.message : String(error),
 				meta: { userId },
 			});
