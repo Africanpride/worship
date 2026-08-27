@@ -36,6 +36,27 @@ export async function GET(req: NextRequest) {
 	}
 }
 
+// DELETE /api/user/notifications — clear tray (all or single id via ?id= or {id})
+export async function DELETE(req: NextRequest) {
+	try {
+		const session = await auth.api.getSession({ headers: await headers() });
+		if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+		const url = new URL(req.url);
+		const qid = url.searchParams.get("id");
+		const body = (await req.json().catch(() => ({}))) as { id?: string; all?: boolean };
+		const id = qid ?? body.id;
+		if (body.all || (!id && !qid)) {
+			const r = await prisma.notification.deleteMany({ where: { userId: session.user.id } });
+			return NextResponse.json({ deleted: r.count });
+		}
+		const r = await prisma.notification.deleteMany({ where: { id: String(id), userId: session.user.id } });
+		return NextResponse.json({ deleted: r.count });
+	} catch (error) {
+		console.error("[NOTIFICATIONS_DELETE]", error);
+		return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+	}
+}
+
 // POST /api/user/notifications/read  { id?: string, all?: boolean }
 export async function POST(req: NextRequest) {
 	try {

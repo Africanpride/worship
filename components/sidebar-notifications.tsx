@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, BellRing, CheckCheck } from "lucide-react";
+import { Bell, BellRing, CheckCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -48,6 +48,7 @@ export function SidebarNotifications() {
 	);
 
 	const [pendingRead, setPendingRead] = useState(false);
+	const [pendingClear, setPendingClear] = useState(false);
 	const unread = data?.unreadCount ?? 0;
 	const items = data?.notifications ?? [];
 
@@ -81,6 +82,34 @@ export function SidebarNotifications() {
 			await mutate(); // revert from server truth
 		} finally {
 			if (!id) setPendingRead(false);
+		}
+	}
+
+	async function clearTray(id?: string) {
+		if (!data) return;
+		if (!id) setPendingClear(true);
+		const prev = data;
+		mutate(
+			{
+				unreadCount: id ? prev.unreadCount - (prev.notifications.find((n) => n.id === id && !n.read) ? 1 : 0) : 0,
+				notifications: id ? prev.notifications.filter((n) => n.id !== id) : [],
+			},
+			{ revalidate: false },
+		);
+		try {
+			const res = await fetch(id ? `/api/user/notifications?id=${id}` : "/api/user/notifications", {
+				method: "DELETE",
+				headers: { "Content-Type": "application/json" },
+				body: id ? JSON.stringify({ id }) : JSON.stringify({ all: true }),
+			});
+			if (!res.ok) throw new Error("Failed");
+			toast.success(id ? "Notification cleared" : "Tray cleared");
+			await mutate();
+		} catch {
+			toast.error("Could not clear");
+			mutate(prev, { revalidate: false });
+		} finally {
+			if (!id) setPendingClear(false);
 		}
 	}
 
@@ -119,20 +148,33 @@ export function SidebarNotifications() {
 					<DropdownMenuContent side="right" align="start" className="w-80 p-0">
 						<DropdownMenuLabel className="flex items-center justify-between">
 							Notifications
-							{unread > 0 && (
-								<Button
-									variant="ghost"
-									size="sm"
-									disabled={pendingRead}
-									onClick={() => markRead()}
-									className="h-6 cursor-pointer gap-1.5 px-1.5 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
-								>
-									<CheckCheck
-										className={cn("size-3", pendingRead && "animate-pulse")}
-									/>
-									{pendingRead ? "Saving…" : "Mark all read"}
-								</Button>
-							)}
+							<div className="flex items-center gap-1">
+								{unread > 0 && (
+									<Button
+										variant="ghost"
+										size="sm"
+										disabled={pendingRead}
+										onClick={() => markRead()}
+										className="h-6 cursor-pointer gap-1.5 px-1.5 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
+									>
+										<CheckCheck className={cn("size-3", pendingRead && "animate-pulse")} />
+										{pendingRead ? "Saving…" : "Mark all read"}
+									</Button>
+								)}
+								{items.length > 0 && (
+									<Button
+										variant="ghost"
+										size="sm"
+										disabled={pendingClear}
+										onClick={() => clearTray()}
+										className="h-6 cursor-pointer gap-1.5 px-1.5 text-[10px] uppercase tracking-wider text-destructive hover:text-destructive"
+										title="Clear all notifications"
+									>
+										<Trash2 className={cn("size-3", pendingClear && "animate-pulse")} />
+										{pendingClear ? "Clearing…" : "Clear"}
+									</Button>
+								)}
+							</div>
 						</DropdownMenuLabel>
 						<div className="max-h-80 overflow-y-auto">
 							{items.length === 0 && (
@@ -146,25 +188,25 @@ export function SidebarNotifications() {
 									onSelect={(e) => e.preventDefault()}
 									onClick={() => !n.read && markRead(n.id)}
 									className={cn(
-										"flex-col cursor-pointer items-start gap-0.5 px-3 py-2.5",
+										"group flex cursor-pointer items-start justify-between gap-2 px-3 py-2.5",
 										!n.read && "bg-primary/5",
 									)}
 								>
-									<span
-										className={cn(
-											"text-xs",
-											n.read
-												? "text-muted-foreground"
-												: "font-medium text-foreground",
-										)}
+									<div className="flex flex-col items-start gap-0.5 min-w-0 flex-1">
+										<span className={cn("text-xs", n.read ? "text-muted-foreground" : "font-medium text-foreground")}>{n.title}</span>
+										{n.body && <span className="line-clamp-2 text-[11px] text-muted-foreground">{n.body}</span>}
+									</div>
+									<button
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											clearTray(n.id);
+										}}
+										className="shrink-0 rounded p-1 opacity-60 hover:opacity-100 hover:bg-destructive/10 text-muted-foreground hover:text-destructive cursor-pointer"
+										title="Clear"
 									>
-										{n.title}
-									</span>
-									{n.body && (
-										<span className="line-clamp-2 text-[11px] text-muted-foreground">
-											{n.body}
-										</span>
-									)}
+										<Trash2 className="size-3" />
+									</button>
 								</DropdownMenuItem>
 							))}
 						</div>
