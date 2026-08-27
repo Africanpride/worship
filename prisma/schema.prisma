@@ -325,10 +325,16 @@ model PushSubscription {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  endpoint  String   @unique
-  p256dh    String
-  auth      String
+  // Web Push (VAPID) — legacy
+  endpoint  String?  @unique
+  p256dh    String?
+  auth      String?
+  // FCM — for web + future mobile (Android/iOS)
+  fcmToken  String?  @unique
+  fid       String?
+  platform  String?  @default("web") // web | android | ios
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@map("push_subscriptions")
