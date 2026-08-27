@@ -36,6 +36,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProfileRecord, ProfileUser } from "../types";
 import { NotificationPreferences } from "./notification-preferences";
+import { NotificationsTray } from "./notifications-tray";
 import ReflectionForm from "./reflection-form";
 
 interface ProfileContentProps {
@@ -644,6 +645,7 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 
 			{/* Notification Settings */}
 			<TabsContent value="notifications" className="space-y-6">
+				<NotificationsTray />
 				<NotificationPreferences />
 			</TabsContent>
 		</Tabs>
