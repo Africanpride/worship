@@ -285,7 +285,7 @@ model Notification {
   body      String?
   link      String?
   read      Boolean  @default(false)
-  channel   String?  @default("inapp") // inapp | email | push | sms
+  channel   String?  @default("inapp") // inapp | email | push | whatsapp
   slotId    String?  @db.ObjectId
   eventId   String?  @db.ObjectId
   createdAt DateTime @default(now())
@@ -297,12 +297,12 @@ model Notification {
 }
 
 model NotificationPreference {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String   @unique @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  emailReminders Boolean  @default(true)
-  pushReminders  Boolean  @default(false)
-  smsReminders   Boolean  @default(false)
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String   @unique @db.ObjectId
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emailReminders    Boolean  @default(true)
+  pushReminders     Boolean  @default(false)
+  whatsappReminders Boolean  @default(false)
   updatedAt      DateTime @updatedAt
 
   @@map("notification_preferences")
@@ -343,7 +343,7 @@ model PushSubscription {
 model NotificationDedup {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   slotId    String   @db.ObjectId
-  channel   String // inapp | email | push | sms
+  channel   String // inapp | email | push | whatsapp
   triggerAt DateTime
   createdAt DateTime @default(now())
 
@@ -357,7 +357,7 @@ model AdminNotificationSettings {
   singleton       String   @unique @default("singleton")
   emailEnabled    Boolean  @default(true)
   pushEnabled     Boolean  @default(false)
-  smsEnabled      Boolean  @default(false)
+  whatsappEnabled Boolean  @default(false)
   reminderOffsets Int[]    @default([1440, 60])
   updatedAt       DateTime @updatedAt
   updatedById     String?  @db.ObjectId
