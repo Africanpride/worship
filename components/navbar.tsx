@@ -18,6 +18,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useSWR from "swr";
 import { signOut } from "@/lib/auth-client";
 import { useCurrentSession } from "@/lib/use-current-session";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
 	const { user, isAuthenticated } = useCurrentSession();
+	const { data: profile } = useSWR<{ avatarUrl?: string | null }>(isAuthenticated ? "/api/profile" : null, (url: string) => fetch(url).then((r) => (r.ok ? r.json() : null)));
 	const [scrolledPast, setScrolledPast] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
@@ -116,11 +118,8 @@ const Navbar = () => {
 								<DropdownMenuTrigger asChild>
 									<button className="rounded-full hover:opacity-80 transition-opacity">
 										<Avatar className="h-10 w-10">
-											<AvatarImage
-												src={user.image || ""}
-												alt={user.name || ""}
-											/>
-											<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+										<AvatarImage src={(profile?.avatarUrl as string) || user.image || ""} alt={user.name || ""} />
+										<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
 										</Avatar>
 									</button>
 								</DropdownMenuTrigger>
@@ -150,7 +149,7 @@ const Navbar = () => {
 										<DropdownMenuItem asChild>
 											<Link href="/profile" className="cursor-pointer">
 												<User className="mr-2 h-4 w-4" />
-												Profile
+												My Profile
 											</Link>
 										</DropdownMenuItem>
 									</DropdownMenuGroup>

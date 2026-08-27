@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Calendar, Camera, Mail, MapPin, Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { mutate } from "swr";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -82,6 +83,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
       setOpen(false);
       setFile(null);
       setPreview(null);
+      mutate("/api/profile");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : String(err));
@@ -103,6 +105,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
       setOpen(false);
       setPreview(null);
       setFile(null);
+      mutate("/api/profile");
       router.refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : String(e));
