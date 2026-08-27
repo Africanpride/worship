@@ -62,8 +62,6 @@ const VOLUNTEER_AREAS = [
 export default function ProfileContent({ user, profile }: ProfileContentProps) {
 	const router = useRouter();
 	const [isSavingPersonal, setIsSavingPersonal] = useState(false);
-	const [avatarUrl, setAvatarUrl] = useState(profile.avatarUrl ?? "");
-	const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 	const [isSavingVolunteer, setIsSavingVolunteer] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [deleteConfirmText, setDeleteConfirmText] = useState("");
@@ -250,29 +248,6 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
-						<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center rounded-xl border bg-card p-4">
-							<div className="relative size-20 shrink-0 overflow-hidden rounded-full border bg-muted">
-								{avatarUrl ? (
-									// eslint-disable-next-line @next/next/no-img-element
-									<img src={avatarUrl} alt={profile.displayName ?? user.name ?? "Avatar"} className="size-full object-cover" />
-								) : (
-									<div className="grid size-full place-items-center text-lg font-semibold text-muted-foreground">
-										{(profile.displayName ?? user.name ?? "U").slice(0, 2).toUpperCase()}
-									</div>
-								)}
-							</div>
-							<div className="space-y-2">
-								<p className="text-sm font-medium">Profile photo</p>
-								<p className="text-xs text-muted-foreground">JPG/PNG/WebP, max 5MB. Stored on Cloudinary (l38psvpt).</p>
-								<div className="flex gap-2">
-									<label className="cursor-pointer">
-										<input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" disabled={isUploadingAvatar} onChange={async (e) => { const file = (e.target as HTMLInputElement).files?.[0]; if (!file) return; setIsUploadingAvatar(true); try { const fd = new FormData(); fd.append("file", file); const res = await fetch("/api/upload/avatar", { method: "POST", body: fd }); const json = await res.json(); if (!res.ok) throw new Error(json?.error ?? "Upload failed"); const url: string = json.url; setAvatarUrl(url); const patch = await fetch("/api/profile", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ avatarUrl: url }) }); if (!patch.ok) throw new Error("Save failed"); toast.success("Profile photo updated"); router.refresh(); } catch (err) { toast.error(err instanceof Error ? err.message : String(err)); } finally { setIsUploadingAvatar(false); (e.target as HTMLInputElement).value = ""; } }} />
-									<Button type="button" variant="outline" size="sm" disabled={isUploadingAvatar} asChild className="cursor-pointer"><span>{isUploadingAvatar ? "Uploading…" : "Change photo"}</span></Button>
-								</label>
-								{avatarUrl && (<Button type="button" variant="ghost" size="sm" disabled={isUploadingAvatar} onClick={async () => { setIsUploadingAvatar(true); try { const r = await fetch("/api/profile", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ avatarUrl: "" }) }); if (!r.ok) throw new Error("Remove failed"); setAvatarUrl(""); toast.success("Photo removed"); router.refresh(); } catch (e) { toast.error(e instanceof Error ? e.message : String(e)); } finally { setIsUploadingAvatar(false); } }} className="cursor-pointer">Remove</Button>)}
-								</div>
-							</div>
-						</div>
 						<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 							<div className="space-y-2">
 								<Label htmlFor="firstName">First Name</Label>
