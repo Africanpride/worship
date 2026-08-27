@@ -62,34 +62,9 @@ export function usePush() {
 				await new Promise((r) => setTimeout(r, 300));
 			}
 
-			// Verbose diagnostic before subscribe (Phase 1 evidence) — check SW file reachable
-			try {
-				const swRes = await fetch("/sw.js", { method: "HEAD" });
-				console.log("[push] sw.js HEAD", swRes.status, swRes.headers.get("content-type"));
-			} catch (e) {
-				console.warn("[push] sw.js fetch failed", e);
-			}
-			console.log("[push] diag", {
-				isSecureContext,
-				protocol: location.protocol,
-				hostname: location.hostname,
-				href: location.href,
-				permission: Notification.permission,
-				supported,
-				vapidLen: vapidPublicKey.length,
-				vapidPrefix: vapidPublicKey.slice(0, 8),
-				regScope: reg.scope,
-				regActive: reg.active?.state ?? null,
-				regWaiting: !!reg.waiting,
-				regInstalling: !!reg.installing,
-				controller: !!navigator.serviceWorker.controller,
-			});
 			const decoded = urlBase64ToUint8Array(vapidPublicKey);
-			console.log("[push] applicationServerKey decoded len", decoded.length, decoded.length === 65 ? "OK" : "FAIL");
-			if (!isSecureContext) throw new Error(`Not a secure context — push requires HTTPS or localhost (protocol:${location.protocol} host:${location.hostname})`);
-			if (location.protocol === "http:" && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
-				console.warn("[push] http non-localhost may be treated as insecure despite isSecureContext true");
-			}
+			if (decoded.length !== 65) throw new Error(`Bad VAPID key (decoded ${decoded.length} != 65)`);
+			if (!isSecureContext) throw new Error("Not a secure context — push requires HTTPS or localhost");
 
 			let sub: PushSubscription;
 			try {
@@ -102,19 +77,13 @@ export function usePush() {
 				console.error("[push] subscribe failed", {
 					name: e?.name,
 					message: e?.message,
-					stack: (e as Error)?.stack?.slice(0, 500),
 					vapidLen: vapidPublicKey.length,
-					vapidConfigured: !!vapidPublicKey,
 					permission: Notification.permission,
 					supported,
 					isSecureContext,
 					protocol: location.protocol,
-					hostname: location.hostname,
-					decodedLen: decoded.length,
-					regScope: reg.scope,
-					regActive: reg.active?.state ?? null,
 				});
-				throw new Error(`${e?.name ?? "PushError"}: ${e?.message ?? String(err)} — ${location.protocol}//${location.hostname} isSecureContext:${isSecureContext} decodedLen:${decoded.length} reg:${reg.scope}`);
+				throw e;
 			}
 
 			const rawKey = sub.getKey("p256dh");
