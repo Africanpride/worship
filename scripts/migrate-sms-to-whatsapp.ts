@@ -30,12 +30,15 @@ export async function backfill(): Promise<{
 		"function";
 
 	if (hasRunCommandRaw) {
-		const runRaw = (prisma as unknown as { $runCommandRaw: (cmd: unknown) => Promise<unknown> })
-			.$runCommandRaw.bind(prisma);
+		const runRaw = (
+			prisma as unknown as {
+				$runCommandRaw: (cmd: unknown) => Promise<unknown>;
+			}
+		).$runCommandRaw.bind(prisma);
 
 		// Rename fields via raw Mongo $rename (idempotent – catch if already renamed or collection missing)
 		try {
-			await runRaw({
+			const res = (await runRaw({
 				update: "admin_notification_settings",
 				updates: [
 					{
@@ -44,13 +47,15 @@ export async function backfill(): Promise<{
 						multi: true,
 					},
 				],
-			});
-			admin = -1; // unknown count via runCommandRaw; sentinel for success
+			})) as { nModified?: number; n?: number } | null;
+			if (res && typeof res.nModified === "number") admin = res.nModified;
+			else if (res && typeof res.n === "number") admin = res.n;
+			else admin = 0;
 		} catch {
 			// fallback handled below
 		}
 		try {
-			await runRaw({
+			const res = (await runRaw({
 				update: "notification_preferences",
 				updates: [
 					{
@@ -59,17 +64,26 @@ export async function backfill(): Promise<{
 						multi: true,
 					},
 				],
-			});
-			prefs = -1;
+			})) as { nModified?: number; n?: number } | null;
+			if (res && typeof res.nModified === "number") prefs = res.nModified;
+			else if (res && typeof res.n === "number") prefs = res.n;
+			else prefs = 0;
 		} catch {
 			// fallback
 		}
 		try {
 			const res = (await runRaw({
 				update: "notifications",
-				updates: [{ q: { channel: "sms" }, u: { $set: { channel: "whatsapp" } }, multi: true }],
+				updates: [
+					{
+						q: { channel: "sms" },
+						u: { $set: { channel: "whatsapp" } },
+						multi: true,
+					},
+				],
 			})) as { nModified?: number; n?: number } | null;
-			if (res && typeof res.nModified === "number") notifications = res.nModified;
+			if (res && typeof res.nModified === "number")
+				notifications = res.nModified;
 			else if (res && typeof res.n === "number") notifications = res.n;
 		} catch {
 			// fallback
@@ -77,25 +91,18 @@ export async function backfill(): Promise<{
 		try {
 			const res2 = (await runRaw({
 				update: "notification_dedup",
-				updates: [{ q: { channel: "sms" }, u: { $set: { channel: "whatsapp" } }, multi: true }],
+				updates: [
+					{
+						q: { channel: "sms" },
+						u: { $set: { channel: "whatsapp" } },
+						multi: true,
+					},
+				],
 			})) as { nModified?: number; n?: number } | null;
 			if (res2 && typeof res2.nModified === "number") dedup = res2.nModified;
 			else if (res2 && typeof res2.n === "number") dedup = res2.n;
 		} catch {
 			// fallback
-		}
-	}
-
-	// Fallback: per-record findMany + update when $runCommandRaw is unavailable or failed
-	// These branches also normalize admin/prefs counts when raw sentinel was used.
-	if (!hasRunCommandRaw || admin === 0 || prefs === 0) {
-		try {
-			// Best-effort: read raw via Prisma client; if fields were already renamed, query will simply affect 0 rows.
-			// We attempt to find docs that still have the legacy field via $runCommandRaw find if available,
-			// otherwise via updateMany with filter on legacy value is not possible after rename, so we no-op.
-			// The fallback loop below handles channel renames which are still queryable via Prisma.
-		} catch {
-			// swallow
 		}
 	}
 
@@ -125,17 +132,37 @@ export async function backfill(): Promise<{
 	// so we try a direct $runCommand find + bulk update as last resort.
 	if (!hasRunCommandRaw) {
 		try {
-			const runCmd = (prisma as unknown as { $runCommand?: (cmd: unknown) => Promise<unknown> }).$runCommand;
+			const runCmd = (
+				prisma as unknown as {
+					$runCommand?: (cmd: unknown) => Promise<unknown>;
+				}
+			).$runCommand;
 			if (typeof runCmd === "function") {
 				// Attempt rename again via $runCommand
-				await runCmd.call(prisma, {
-					update: "admin_notification_settings",
-					updates: [{ q: {}, u: { $rename: { smsEnabled: "whatsappEnabled" } }, multi: true }],
-				}).catch(() => {});
-				await runCmd.call(prisma, {
-					update: "notification_preferences",
-					updates: [{ q: {}, u: { $rename: { smsReminders: "whatsappReminders" } }, multi: true }],
-				}).catch(() => {});
+				await runCmd
+					.call(prisma, {
+						update: "admin_notification_settings",
+						updates: [
+							{
+								q: {},
+								u: { $rename: { smsEnabled: "whatsappEnabled" } },
+								multi: true,
+							},
+						],
+					})
+					.catch(() => {});
+				await runCmd
+					.call(prisma, {
+						update: "notification_preferences",
+						updates: [
+							{
+								q: {},
+								u: { $rename: { smsReminders: "whatsappReminders" } },
+								multi: true,
+							},
+						],
+					})
+					.catch(() => {});
 			}
 		} catch {
 			// ignore
@@ -146,11 +173,17 @@ export async function backfill(): Promise<{
 }
 
 async function main() {
+	if (process.argv.includes("--help") || process.argv.includes("-h")) {
+		console.log(
+			"Usage: bun scripts/migrate-sms-to-whatsapp.ts\nBackfills legacy smsEnabled/smsReminders/channel='sms' to whatsapp equivalents.",
+		);
+		return;
+	}
 	const result = await backfill();
 	console.log("backfill done", result);
 }
 
-if (require.main === module) {
+if (import.meta.main) {
 	main()
 		.then(() => process.exit(0))
 		.catch((e) => {
