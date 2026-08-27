@@ -31,6 +31,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [localAvatar, setLocalAvatar] = useState<string | undefined>(profile.avatarUrl || user.image || undefined);
   const inputRef = useRef<HTMLInputElement>(null);
   const joinedDate = user.createdAt ? new Date(user.createdAt) : new Date();
   const initials = user.name
@@ -42,7 +43,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
     : "??";
   const isVolunteer =
     profile.volunteerAreas && profile.volunteerAreas.length > 0;
-  const avatarSrc = profile.avatarUrl || user.image || undefined;
+  const avatarSrc = localAvatar || profile.avatarUrl || user.image || undefined;
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -76,6 +77,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
         body: JSON.stringify({ avatarUrl: url }),
       });
       if (!patch.ok) throw new Error("Save failed");
+      setLocalAvatar(url);
       toast.success("Profile picture updated");
       setOpen(false);
       setFile(null);
@@ -96,6 +98,7 @@ export default function ProfileHeader({ user, profile }: ProfileHeaderProps) {
         body: JSON.stringify({ avatarUrl: "" }),
       });
       if (!r.ok) throw new Error("Remove failed");
+      setLocalAvatar(user.image || undefined);
       toast.success("Profile picture removed");
       setOpen(false);
       setPreview(null);
