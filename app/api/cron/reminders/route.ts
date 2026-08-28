@@ -34,14 +34,14 @@ function humanOffset(offset: number): string {
 	return `${offset} minutes`;
 }
 
-// POST /api/cron/reminders — hourly Vercel Cron
+// POST /api/cron/reminders — Vercel Hobby: daily cron only (0 0 * * *); hourly precision via GitHub Actions fallback (see .github/workflows/cron-reminders.yml)
 export async function POST(req: NextRequest) {
 	if (!isAuthorized(req)) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 	}
 
 	const now = new Date();
-	const windowEnd = new Date(now.getTime() + 65 * 60 * 1000); // 65m covers cron jitter
+	const windowEnd = new Date(now.getTime() + 65 * 60 * 1000); // 65m covers cron jitter (hourly schedule)
 	const windowStart = new Date(now.getTime() - 10 * 60 * 1000);
 	const horizon = new Date(
 		now.getTime() + 24 * 60 * 60 * 1000 + 60 * 60 * 1000,

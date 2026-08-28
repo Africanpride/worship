@@ -1,0 +1,36 @@
+name: Reminders Cron (Hobby-friendly hourly)
+
+on:
+  schedule:
+    - cron: "0 * * * *" # hourly — Vercel Hobby limits vercel.json to daily, so we trigger hourly from GitHub Actions (free)
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger /api/cron/reminders
+        env:
+          CRON_URL: ${{ secrets.CRON_URL || vars.CRON_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          # Set CRON_URL secret/var to your production URL, e.g. https://www.thenonstop.org/api/cron/reminders
+          # Fallback: skip if not configured (Vercel daily cron still runs as degraded fallback)
+          if [ -z "$CRON_URL" ]; then
+            echo "CRON_URL not set — skip external trigger (rely on Vercel daily cron)"
+            exit 0
+          fi
+          # Prefer Bearer auth if CRON_SECRET set, else rely on x-vercel-cron header (won't apply here) — server allows Bearer
+          AUTH_HEADER=""
+          if [ -n "$CRON_SECRET" ]; then
+            AUTH_HEADER="Authorization: Bearer $CRON_SECRET"
+          fi
+          echo "POST $CRON_URL"
+          HTTP_CODE=$(curl -s -o /tmp/resp.json -w "%{http_code}" -X POST "$CRON_URL" -H "$AUTH_HEADER" -H "Content-Type: application/json" || true)
+          cat /tmp/resp.json || true
+          echo "HTTP $HTTP_CODE"
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::warning::cron trigger failed with $HTTP_CODE"
+            exit 0
+          fi

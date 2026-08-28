@@ -22,7 +22,7 @@ Ship reliable reminders for booked `EventSlot` hours and a live calendar subscri
 | Q4 | Types beyond reminders | **B — slot lifecycle + event-change broadcasts** — `booked/cancelled/reassigned/blocked` (extend `app/api/admin/slots/[slotId]/assign/route.ts:119` + `app/api/events/[id]/slots/[slotId]/book/route.ts:15`) + fan-out when `Event.startDate/endDate/location/status/bookingOpen` changes on slots that are `booked`. |
 | Q5 | Opt-in | **A — explicit** — add `Profile.phone + phoneVerifiedAt` (no phone today `prisma/schema.prisma:40`) + OTP verification for SMS; browser `Notification.requestPermission()` → `POST /api/user/push/subscribe` + `PushSubscription` + `VAPID_PUBLIC/PRIVATE_KEY` env for push. Admin toggle ≠ auto-subscribe. |
 
-**Assumption to confirm at implementation start:** Vercel Cron hourly. Self-hosted deployments replace `vercel.json` cron with a GitHub Action `curl` or external `CRON_SECRET` ping — zero code delta beyond config.
+**Assumption (updated for Hobby):** Vercel Hobby limits `vercel.json` to **daily** (`0 0 * * *`). Hourly `0 * * * *` requires Pro — on Hobby, Vercel daily is the fallback and precise 60m/30m reminders are driven by GitHub Action hourly `curl` → `POST /api/cron/reminders` (see `8.2`). Self-hosted deployments use the same external ping.
 
 ## 3. What Exists Today (ground truth)
 
@@ -186,11 +186,11 @@ Title/body: `"{trackLabel} in {humanOffset} — {event.title} · {format(slot.st
 
 ```json
 {
-  "crons": [{ "path": "/api/cron/reminders", "schedule": "0 * * * *" }]
+  "crons": [{ "path": "/api/cron/reminders", "schedule": "0 0 * * *" }]
 }
 ```
 
-Self-hosted alt: `.github/workflows/cron-reminders.yml` `schedule: "0 * * * *"`, `curl -H "Authorization: Bearer $CRON_SECRET" https://host/api/cron/reminders`.
+Hobby plan (Vercel Free) allows **daily** crons only — `0 * * * *` (hourly) requires Pro and fails deploy with `Hobby accounts are limited to daily cron jobs`. Daily `0 0 * * *` is the Vercel cron (degraded fallback); **hourly precision** (60m/30m offsets) is restored via `.github/workflows/cron-reminders.yml` `schedule: "0 * * * *"` → `POST https://host/api/cron/reminders` with `Authorization: Bearer $CRON_SECRET` (set `CRON_URL` + `CRON_SECRET` secrets). Self-hosted alt: same `curl` from any scheduler.
 
 ### 8.3 Manual / Local
 
