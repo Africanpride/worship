@@ -42,7 +42,7 @@ export async function GET(_req: NextRequest) {
 const updateSchema = z.object({
 	emailEnabled: z.boolean().optional(),
 	pushEnabled: z.boolean().optional(),
-	smsEnabled: z.boolean().optional(),
+	whatsappEnabled: z.boolean().optional(),
 	reminderOffsets: z
 		.array(z.number().int().min(5).max(10080))
 		.min(1)
@@ -83,7 +83,7 @@ export async function PATCH(req: NextRequest) {
 			data: {
 				emailEnabled: parsed.data.emailEnabled ?? current.emailEnabled,
 				pushEnabled: parsed.data.pushEnabled ?? current.pushEnabled,
-				smsEnabled: parsed.data.smsEnabled ?? current.smsEnabled,
+				whatsappEnabled: parsed.data.whatsappEnabled ?? current.whatsappEnabled,
 				reminderOffsets: offsets,
 				updatedById: session.user.id,
 			},
@@ -91,7 +91,7 @@ export async function PATCH(req: NextRequest) {
 
 		log.info("settings", "notification settings updated", {
 			userId: session.user.id,
-			detail: `email:${updated.emailEnabled} push:${updated.pushEnabled} sms:${updated.smsEnabled} offsets:${offsets.join(",")}`,
+			detail: `email:${updated.emailEnabled} push:${updated.pushEnabled} whatsapp:${updated.whatsappEnabled} offsets:${offsets.join(",")}`,
 		});
 
 		return NextResponse.json(updated);

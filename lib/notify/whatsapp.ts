@@ -4,8 +4,12 @@ import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 
 function getConfig() {
-	const base = (process.env.OPENWA_BASE_URL ?? "http://localhost:2785").replace(/\/$/, "");
-	const session = process.env.OPENWA_SESSION_ID ?? "181c53f2-4092-47c3-9eb6-f8e42eff59e8";
+	const base = (process.env.OPENWA_BASE_URL ?? "http://localhost:2785").replace(
+		/\/$/,
+		"",
+	);
+	const session =
+		process.env.OPENWA_SESSION_ID ?? "181c53f2-4092-47c3-9eb6-f8e42eff59e8";
 	const apiKey = process.env.OPENWA_API_KEY;
 	if (!base) return null;
 	return { base, session, apiKey };
@@ -31,17 +35,24 @@ async function postSend(chatId: string, message: string): Promise<boolean> {
 	}
 	const text = truncateWa(message);
 	const urls = [
+		`${cfg.base}/api/sessions/${cfg.session}/messages/send-text`,
+		`${cfg.base}/api/sessions/${cfg.session}/messages`,
 		`${cfg.base}/api/${cfg.session}/sendMessage`,
 		`${cfg.base}/api/sendMessage`,
 		`${cfg.base}/sendMessage`,
 		`${cfg.base}/api/${cfg.session}/sendText`,
 	];
-	const headers: Record<string, string> = { "Content-Type": "application/json" };
-	if (cfg.apiKey) headers.Authorization = `Bearer ${cfg.apiKey}`;
-	if (cfg.apiKey) headers["x-api-key"] = cfg.apiKey;
+	const headers: Record<string, string> = {
+		"Content-Type": "application/json",
+	};
+	if (cfg.apiKey) {
+		headers.Authorization = `Bearer ${cfg.apiKey}`;
+		headers["x-api-key"] = cfg.apiKey;
+	}
 	const payloads = [
-		{ chatId, message: text, sessionId: cfg.session },
+		{ chatId, text },
 		{ chatId, message: text },
+		{ chatId, message: text, sessionId: cfg.session },
 		{ phone: chatId.replace("@c.us", ""), message: text },
 	];
 	for (const url of urls) {
@@ -52,7 +63,7 @@ async function postSend(chatId: string, message: string): Promise<boolean> {
 					headers,
 					body: JSON.stringify(body),
 				});
-				if (res.ok) {
+				if (res.ok || res.status === 200 || res.status === 201) {
 					log.info("system", "whatsapp sent", {
 						meta: { chatId: chatId.slice(-4) },
 					});
@@ -80,7 +91,10 @@ export async function sendWhatsappRaw(chatId: string, message: string) {
 	return postSend(chatId, message);
 }
 
-export async function sendWhatsappToUser(userId: string, body: string): Promise<boolean> {
+export async function sendWhatsappToUser(
+	userId: string,
+	body: string,
+): Promise<boolean> {
 	const profile = await prisma.profile.findUnique({
 		where: { userId },
 		select: { phone: true, phoneVerifiedAt: true },
@@ -94,7 +108,10 @@ export async function sendWhatsappToUser(userId: string, body: string): Promise<
 	return postSend(toChatId(profile.phone), body);
 }
 
-export async function sendWhatsappOtp(phone: string, code: string): Promise<boolean> {
+export async function sendWhatsappOtp(
+	phone: string,
+	code: string,
+): Promise<boolean> {
 	const body = `The NonStop verification code: ${code} (expires in 5 minutes).`;
 	const ok = await postSend(toChatId(phone), body);
 	if (!ok && process.env.NODE_ENV !== "production") {

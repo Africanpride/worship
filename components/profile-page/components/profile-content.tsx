@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Key, Loader2, Shield, Trash2 } from "lucide-react";
+import { BadgeCheck, CheckCircle2, Key, Loader2, Shield, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -280,6 +280,16 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 										Used only for ministry coordination about your booked hours.
 										Never shown publicly.
 									</InfoTip>
+									{profile.phoneVerifiedAt && personalForm.phone === profile.phone ? (
+										<Badge
+											variant="outline"
+											className="ml-1 gap-1 border-green-200 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
+										>
+											<BadgeCheck className="size-3" /> Verified
+										</Badge>
+									) : personalForm.phone ? (
+										<span className="text-xs text-muted-foreground">Unverified — verify in Notifications tab</span>
+									) : null}
 								</Label>
 								<PhoneInput
 									id="phone"
@@ -287,7 +297,11 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 									onChange={(e) =>
 										handlePersonalChange("phone", e.target.value)
 									}
+									defaultCountry={personalForm.country || profile.country || undefined}
 								/>
+								{profile.phoneVerifiedAt && personalForm.phone !== profile.phone && profile.phone ? (
+									<p className="text-xs text-amber-600">Changing your number will require re-verification in Notifications.</p>
+								) : null}
 							</div>
 							<div className="space-y-2">
 								<Label htmlFor="jobTitle">Job Title</Label>
@@ -646,7 +660,7 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 			{/* Notification Settings */}
 			<TabsContent value="notifications" className="space-y-6">
 				<NotificationsTray />
-				<NotificationPreferences />
+				<NotificationPreferences profile={profile} />
 			</TabsContent>
 		</Tabs>
 	);

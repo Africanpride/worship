@@ -20,10 +20,10 @@ function isAuthorized(req: NextRequest): boolean {
 
 function channelForOffset(
 	offset: number,
-): Array<"inapp" | "email" | "push" | "sms"> {
+): Array<"inapp" | "email" | "push" | "whatsapp"> {
 	if (offset >= 60 * 12) return ["inapp", "email"]; // 12h+ e.g. 1440
 	if (offset >= 30) return ["inapp", "email", "push"];
-	return ["sms"];
+	return ["whatsapp"];
 }
 
 function humanOffset(offset: number): string {
@@ -85,9 +85,9 @@ export async function POST(req: NextRequest) {
 				const channels = channelForOffset(offset).filter((ch) => {
 					if (ch === "email" && !admin?.emailEnabled) return false;
 					if (ch === "push" && !admin?.pushEnabled) return false;
-					if (ch === "sms" && !admin?.smsEnabled) return false;
+					if (ch === "whatsapp" && !admin?.whatsappEnabled) return false;
 					return true;
-				}) as Array<"inapp" | "email" | "push" | "sms">;
+				}) as Array<"inapp" | "email" | "push" | "whatsapp">;
 
 				if (channels.length === 0) continue;
 

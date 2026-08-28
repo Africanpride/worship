@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Clock, Heart, LayoutDashboard, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 import { Logo } from "@/components/logo";
 import { NavMenu } from "@/components/nav-menu";
 import { NavigationSheet } from "@/components/navigation-sheet";
@@ -18,7 +19,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useSWR from "swr";
 import { signOut } from "@/lib/auth-client";
 import { useCurrentSession } from "@/lib/use-current-session";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,10 @@ import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
 	const { user, isAuthenticated } = useCurrentSession();
-	const { data: profile } = useSWR<{ avatarUrl?: string | null }>(isAuthenticated ? "/api/profile" : null, (url: string) => fetch(url).then((r) => (r.ok ? r.json() : null)));
+	const { data: profile } = useSWR<{ avatarUrl?: string | null }>(
+		isAuthenticated ? "/api/profile" : null,
+		(url: string) => fetch(url).then((r) => (r.ok ? r.json() : null)),
+	);
 	const [scrolledPast, setScrolledPast] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
@@ -118,8 +121,11 @@ const Navbar = () => {
 								<DropdownMenuTrigger asChild>
 									<button className="rounded-full hover:opacity-80 transition-opacity">
 										<Avatar className="h-10 w-10">
-										<AvatarImage src={(profile?.avatarUrl as string) || user.image || ""} alt={user.name || ""} />
-										<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+											<AvatarImage
+												src={(profile?.avatarUrl as string) || user.image || ""}
+												alt={user.name || ""}
+											/>
+											<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
 										</Avatar>
 									</button>
 								</DropdownMenuTrigger>

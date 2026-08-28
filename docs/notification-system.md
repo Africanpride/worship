@@ -45,7 +45,7 @@ Ship reliable reminders for booked `EventSlot` hours and a live calendar subscri
 EventSlot (booked) ──cron hourly──> lib/notify/notify() ──> Notification (in-app)
        │                                   ├─> Resend (email)  lib/email-send.ts
        │                                   ├─> web-push (push) lib/notify/push.ts
-       │                                   └─> Twilio/Resend SMS  lib/notify/sms.ts
+       │                                   └─> open-wa (WhatsApp) lib/notify/whatsapp.ts
        │                          Dedup: NotificationDedup {slotId, channel, triggerAt}
        │
        └─event mutation ──> fan-out ──> same notify() path
@@ -57,8 +57,8 @@ User calendar ──> /api/calendar/[token]/ics (unauth, token lookup) ──> l
 - Single fan-out entry point `lib/notify/index.ts` `notify(userId, payload: {title, body, link, channels, slotId?, eventId?})` that:
   1. Loads `AdminNotificationSettings` + `NotificationPreference` + `PushSubscription`/`Profile.phoneVerifiedAt`
   2. Short-circuits per channel
-  3. Writes `Notification` row + conditionally fires email/push/SMS (best-effort, never throws the request)
-  4. Logs `log.info/warn("notify"|"email")` with `requestId` `lib/logger.ts:24` `AsyncLocalStorage`
+  3. Writes `Notification` row + conditionally fires email/push/WhatsApp (best-effort, never throws the request)
+  4. Logs `log.info/warn("notify"|"email"|"whatsapp")` with `requestId` `lib/logger.ts:24` `AsyncLocalStorage`
 - All mutations reuse `notify()` — cron, `assign/route.ts:119`, `book/route.ts:15`, event update routes.
 
 ## 6. Data Model Changes
@@ -211,18 +211,18 @@ Reuse `lib/email-send.ts:19` `sendEmailWithRetry` + `lib/email/resend.ts:1`. New
 - Routes: `POST /api/user/push/subscribe` (upsert), `POST /api/user/push/unsubscribe {endpoint}` (delete). Both auth-gated.
 - Toggle: `pushEnabled` admin default `false` to avoid prompting before VAPID set.
 
-### 9.3 SMS / WhatsApp
-
-- Interface `lib/notify/sms.ts` `sendSms(phone, body): Promise<void>` — impl `twilio` (preferred) or `resend` SMS if available; behind `smsEnabled`.
-- Phone: `Profile.phone` (E.164 via `react-phone-number-input` `package.json:64` already) + `phoneVerifiedAt`. Verification route `POST /api/user/phone/{request|verify}` — `request` sends OTP via SMS (6 digits, 5m expiry, hashed store in `Profile` temp fields or separate `PhoneVerification`), `verify` checks + sets `phoneVerifiedAt`.
-- Body capped 160 chars: `"The NonStop: {trackLabel} {eventTitle} {startTime} — reply STOP to opt out"` (include opt-out even though not legally required everywhere, good practice).
-- Cost control: only `30m` offset uses SMS; admin can disable globally in one click.
-- WhatsApp deferred: flag `whatsappEnabled` placeholder, separate template approval out of scope.
+### 9.3 WhatsApp (open-wa HTTP Bridge)
+ 
+- Interface `lib/notify/whatsapp.ts` `sendWhatsappToUser(userId, body): Promise<boolean>`, `sendWhatsappOtp(phone, code): Promise<boolean>`, `sendWhatsappRaw(chatId, body): Promise<boolean>` — talks to self-hosted open-wa Docker bridge (`OPENWA_BASE_URL` + `OPENWA_SESSION_ID`); behind `whatsappEnabled`.
+- Phone: `Profile.phone` (E.164 via `react-phone-number-input`) + `phoneVerifiedAt`. Verification route `POST /api/user/phone/{request|verify}` — `request` sends OTP via WhatsApp (6 digits, 5m expiry, hashed store in `PhoneVerification`), `verify` checks + sets `phoneVerifiedAt`.
+- Formatting: E.164 stripped and formatted as `${digits}@c.us`, truncated at 4096 characters.
+- Cost control: zero-cost self-hosted open-wa bridge; admin can disable globally in one click.
+- SMS retired: Twilio dependency removed.
 
 ### 9.4 `lib/notify/index.ts` Contract
 
 ```ts
-type NotifyChannel = "inapp" | "email" | "push" | "sms"
+type NotifyChannel = "inapp" | "email" | "push" | "whatsapp"
 export async function notify(
   userId: string,
   input: { title: string; body?: string; link?: string; slotId?: string; eventId?: string; channels?: NotifyChannel[] }
@@ -276,10 +276,9 @@ CRON_SECRET=openssl rand -hex 32
 VAPID_PUBLIC_KEY=
 VAPID_PRIVATE_KEY=
 VAPID_SUBJECT=mailto:no-reply@thenonstop.org
-TWILIO_ACCOUNT_SID=
-TWILIO_AUTH_TOKEN=
-TWILIO_FROM_NUMBER=
-# or RESEND_SMS_* if using Resend SMS
+OPENWA_BASE_URL=http://localhost:2785
+OPENWA_SESSION_ID=181c53f2-4092-47c3-9eb6-f8e42eff59e8
+OPENWA_API_KEY=
 ```
 
 `server-only` guard on `lib/notify/*` that reads secrets.

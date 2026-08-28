@@ -1,15 +1,55 @@
-// FCM background handler — keep empty if foreground only, but required at domain root for FCM JS SDK (https://firebase.google.com/docs/cloud-messaging/js/receive#handle_background_messages)
-importScripts(
-	"https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js",
-);
-importScripts(
-	"https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js",
-);
+// FCM background handler — served from domain root for FCM JS SDK
+// Resilient version: importScripts is wrapped so CSP/offline never causes "ServiceWorker script evaluation failed"
 
-// Firebase config injected via query param or falls back to fetch — for SW we use minimal init via global; actual config comes from client getToken registration.
-// If you serve this file, add your config here or let the SDK use the auto-initialized app via `firebase.initializeApp` in the page (FCM will still use this SW for background).
+// Try to load Firebase compat SDKs — failure is non-fatal (fallback push handler below still works)
+try {
+	importScripts(
+		"https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js",
+	);
+	importScripts(
+		"https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js",
+	);
+} catch (e) {
+	// CSP or network may block gstatic; SW still usable for our own push payloads
+	console.warn("[sw] firebase compat load skipped", e);
+}
+
+// If compat loaded, initialize Firebase for FCM background messages.
+// Config is public (NEXT_PUBLIC_*) — keep in sync with .env
+try {
+	// eslint-disable-next-line no-undef
+	if (typeof firebase !== "undefined" && firebase.initializeApp) {
+		const fbConfig = {
+			apiKey: "AIzaSyAasRP5yxXrInp_jJ-PpwA3JQpao6RGWrk",
+			authDomain: "the-non-stop-series.firebaseapp.com",
+			projectId: "the-non-stop-series",
+			storageBucket: "the-non-stop-series.firebasestorage.app",
+			messagingSenderId: "884343548336",
+			appId: "1:884343548336:web:1bcd6037f3122e4ba00e75",
+			measurementId: "G-P7JD6M1S02",
+		};
+		if (!firebase.apps.length) firebase.initializeApp(fbConfig);
+		// Background message handler for FCM `notification` messages (data messages go via `push` event below)
+		const messaging = firebase.messaging();
+		messaging.onBackgroundMessage((payload) => {
+			const title = payload.notification?.title ?? payload.data?.title ?? "The NonStop";
+			const body = payload.notification?.body ?? payload.data?.body ?? "";
+			const url = payload.data?.url ?? payload.fcmOptions?.link ?? "/profile";
+			const icon = payload.notification?.image ?? payload.data?.icon ?? "/logos/logo.png";
+			self.registration.showNotification(title, {
+				body,
+				icon,
+				badge: "/logos/logo.png",
+				data: { url },
+			});
+		});
+	}
+} catch (e) {
+	console.warn("[sw] firebase init skipped", e);
+}
+
+// Fallback / unified push handler — works for both FCM data messages and our legacy web-push payloads
 self.addEventListener("push", (event) => {
-	// FCM compat already handles data messages; this fallback ensures icon/badge consistent with public/sw.js
 	let data = {
 		title: "The NonStop",
 		body: "",
@@ -20,7 +60,7 @@ self.addEventListener("push", (event) => {
 	try {
 		if (event.data) {
 			const json = event.data.json();
-			// FCM sends { notification: {title,body,image}, data: {url}, fcmOptions: {link}, webpush: {notification:{icon,badge}} }
+			// FCM shapes: { notification: {title,body,image}, data: {url}, fcmOptions: {link}, webpush: {notification:{icon,badge}} }
 			if (json.notification)
 				data = {
 					...data,
@@ -29,10 +69,9 @@ self.addEventListener("push", (event) => {
 					icon: json.notification.image ?? data.icon,
 				};
 			if (json.data?.url) data.url = json.data.url;
-			if (json.webpush?.notification?.icon)
-				data.icon = json.webpush.notification.icon;
+			if (json.webpush?.notification?.icon) data.icon = json.webpush.notification.icon;
 			if (json.fcmOptions?.link) data.url = json.fcmOptions.link;
-			// Also support legacy flat payload from lib/notify/push.ts
+			// Legacy flat payload from lib/notify/push.ts / firebase-admin
 			if (json.title) data.title = json.title;
 			if (json.body) data.body = json.body;
 			if (json.url) data.url = json.url;

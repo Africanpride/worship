@@ -26,7 +26,7 @@ export async function GET(_req: NextRequest) {
 const updateSchema = z.object({
 	emailReminders: z.boolean().optional(),
 	pushReminders: z.boolean().optional(),
-	smsReminders: z.boolean().optional(),
+	whatsappReminders: z.boolean().optional(),
 });
 
 // PATCH /api/user/preferences
@@ -47,8 +47,8 @@ export async function PATCH(req: NextRequest) {
 		);
 	}
 
-	// Enforce sms opt-in requires verified phone
-	if (parsed.data.smsReminders === true) {
+	// Enforce WhatsApp opt-in requires verified phone
+	if (parsed.data.whatsappReminders === true) {
 		const profile = await prisma.profile.findUnique({
 			where: { userId: session.user.id },
 			select: { phoneVerifiedAt: true, phone: true },
@@ -56,8 +56,8 @@ export async function PATCH(req: NextRequest) {
 		if (!profile?.phoneVerifiedAt) {
 			return NextResponse.json(
 				{
-					error: "Phone verification required for SMS reminders",
-					fieldErrors: { smsReminders: ["Verify phone first"] },
+					error: "Phone verification required for WhatsApp reminders",
+					fieldErrors: { whatsappReminders: ["Verify phone first"] },
 				},
 				{ status: 400 },
 			);

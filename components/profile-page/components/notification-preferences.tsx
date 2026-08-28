@@ -1,8 +1,10 @@
 "use client";
 
+import { BadgeCheck, BadgeAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -17,26 +19,44 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { usePush } from "@/hooks/use-push";
+import type { ProfileRecord } from "../types";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 type Pref = {
 	emailReminders: boolean;
 	pushReminders: boolean;
-	smsReminders: boolean;
+	whatsappReminders: boolean;
 };
 
-export function NotificationPreferences() {
+export function NotificationPreferences({
+	profile: initialProfile,
+}: {
+	profile?: ProfileRecord;
+}) {
 	const { data, mutate } = useSWR<Pref>("/api/user/preferences", fetcher);
+	const { data: profileData, mutate: mutateProfile } = useSWR<ProfileRecord>(
+		"/api/profile",
+		fetcher,
+		{ fallbackData: initialProfile },
+	);
+	const profile = profileData ?? initialProfile;
+	const isVerified = !!profile?.phoneVerifiedAt;
+	const verifiedPhone = profile?.phone ?? null;
+
 	const [email, setEmail] = useState(true);
 	const [push, setPush] = useState(false);
-	const [sms, setSms] = useState(false);
+	const [whatsapp, setWhatsapp] = useState(false);
 
-	// Phone verification local state
-	const [phone, setPhone] = useState("");
+	// Phone verification local state — prefill from profile
+	const [phone, setPhone] = useState(profile?.phone ?? "");
 	const [code, setCode] = useState("");
 	const [phoneSent, setPhoneSent] = useState(false);
 	const [phoneLoading, setPhoneLoading] = useState(false);
+
+	const isPhoneDirty = phone !== verifiedPhone;
+	// Hide OTP CTA when already verified and not editing — best practice: verified is terminal state
+	const showOtpCta = !isVerified || isPhoneDirty || phoneSent;
 
 	const {
 		supported,
@@ -52,9 +72,16 @@ export function NotificationPreferences() {
 		if (data) {
 			setEmail(data.emailReminders);
 			setPush(data.pushReminders);
-			setSms(data.smsReminders);
+			setWhatsapp(data.whatsappReminders);
 		}
 	}, [data]);
+
+	// Keep phone field in sync when profile loads/changes (e.g. after verification or Personal tab save)
+	useEffect(() => {
+		if (profile?.phone && !phoneSent) {
+			setPhone(profile.phone);
+		}
+	}, [profile?.phone, phoneSent]);
 
 	const patch = async (partial: Partial<Pref>) => {
 		const res = await fetch("/api/user/preferences", {
@@ -69,7 +96,7 @@ export function NotificationPreferences() {
 			if (data) {
 				setEmail(data.emailReminders);
 				setPush(data.pushReminders);
-				setSms(data.smsReminders);
+				setWhatsapp(data.whatsappReminders);
 			}
 			return;
 		}
@@ -120,7 +147,7 @@ export function NotificationPreferences() {
 			const json = await res.json();
 			if (!res.ok) throw new Error(json?.error ?? "Request failed");
 			setPhoneSent(true);
-			toast.success("Code sent");
+			toast.success("WhatsApp code sent");
 		} catch (e) {
 			toast.error(e instanceof Error ? e.message : String(e));
 		} finally {
@@ -141,9 +168,10 @@ export function NotificationPreferences() {
 			toast.success("Phone verified");
 			setPhoneSent(false);
 			setCode("");
-			// auto enable sms
-			setSms(true);
-			await patch({ smsReminders: true });
+			await mutateProfile();
+			// auto enable whatsapp
+			setWhatsapp(true);
+			await patch({ whatsappReminders: true });
 		} catch (e) {
 			toast.error(e instanceof Error ? e.message : String(e));
 		} finally {
@@ -199,44 +227,83 @@ export function NotificationPreferences() {
 					<Separator />
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-1">
-							<Label className="text-base">SMS Reminders</Label>
+							<Label className="text-base">WhatsApp Reminders</Label>
 							<p className="text-muted-foreground text-sm">
-								30m before start (verified phone only)
+								30m before start (verified WhatsApp only)
 							</p>
 						</div>
 						<Switch
-							checked={sms}
+							checked={whatsapp}
 							onCheckedChange={(v) => {
-								setSms(v);
-								patch({ smsReminders: v });
+								setWhatsapp(v);
+								patch({ whatsappReminders: v });
 							}}
 							className="self-start sm:self-center cursor-pointer"
 						/>
 					</div>
 
-					<div className="rounded-lg border p-3 space-y-2 bg-muted/30">
-						<Label>Phone for SMS</Label>
+					<div className="rounded-lg border p-3 space-y-3 bg-muted/30">
+						<div className="flex items-center justify-between">
+							<Label>Phone for WhatsApp</Label>
+							{verifiedPhone ? (
+								isVerified ? (
+									<Badge
+										variant="outline"
+										className="gap-1 border-green-200 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
+									>
+										<BadgeCheck className="size-3.5" /> Verified · {verifiedPhone}
+									</Badge>
+								) : (
+									<Badge
+										variant="outline"
+										className="gap-1 border-amber-200 bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
+									>
+										<BadgeAlert className="size-3.5" /> Unverified · {verifiedPhone}
+									</Badge>
+								)
+							) : null}
+						</div>
+						{isVerified && !isPhoneDirty ? (
+							<p className="text-xs text-muted-foreground">
+								Your number <span className="font-medium text-foreground">{verifiedPhone}</span> is verified. WhatsApp reminders will be sent here. Edit the number to change it.
+							</p>
+						) : isPhoneDirty && isVerified ? (
+							<p className="text-xs text-amber-600 dark:text-amber-400">
+								Number changed — send a new code to re-verify.
+							</p>
+						) : null}
 						<PhoneInput
 							value={phone}
 							onChange={(e) =>
 								setPhone((e.target as HTMLInputElement).value ?? "")
 							}
-							defaultCountry="US"
+							defaultCountry={profile?.country || undefined}
 						/>
-						<div className="flex gap-2">
-							<Button
-								size="sm"
-								onClick={requestOtp}
-								disabled={phoneLoading}
-								className="cursor-pointer"
-							>
-								{phoneLoading
-									? "Sending…"
-									: phoneSent
-										? "Resend code"
-										: "Send code"}
-							</Button>
-						</div>
+						{showOtpCta ? (
+							<div className="flex gap-2">
+								<Button
+									size="sm"
+									onClick={requestOtp}
+									disabled={phoneLoading || !phone}
+									className="cursor-pointer"
+								>
+									{phoneLoading
+										? "Sending…"
+										: phoneSent
+											? "Resend WhatsApp code"
+											: "Send WhatsApp code"}
+								</Button>
+								{phoneSent && (
+									<span className="text-xs text-muted-foreground self-center">
+										Code expires in 5 min
+									</span>
+								)}
+							</div>
+						) : (
+							<p className="text-xs text-muted-foreground flex items-center gap-1">
+								<BadgeCheck className="size-3.5 text-green-600" /> Verified — no action needed. Edit above to change number.
+							</p>
+						)}
 						{phoneSent && (
 							<div className="flex gap-2 items-center">
 								<Input
@@ -266,7 +333,10 @@ export function NotificationPreferences() {
 								New features and updates
 							</p>
 						</div>
-						<Switch defaultChecked className="self-start sm:self-center" />
+						<Switch
+							defaultChecked
+							className="self-start sm:self-center cursor-pointer"
+						/>
 					</div>
 					<Separator />
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -276,7 +346,10 @@ export function NotificationPreferences() {
 								Weekly activity digest
 							</p>
 						</div>
-						<Switch defaultChecked className="self-start sm:self-center" />
+						<Switch
+							defaultChecked
+							className="self-start sm:self-center cursor-pointer"
+						/>
 					</div>
 					<Separator />
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

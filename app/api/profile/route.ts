@@ -50,7 +50,7 @@ export async function PATCH(req: NextRequest) {
 
 		const currentProfile = await prisma.profile.findUnique({
 			where: { userId: session.user.id },
-			select: { firstName: true, lastName: true, displayName: true },
+			select: { firstName: true, lastName: true, displayName: true, phone: true, phoneVerifiedAt: true },
 		});
 
 		const {
@@ -78,10 +78,17 @@ export async function PATCH(req: NextRequest) {
 			`${newFirstName} ${newLastName}`.trim() || session.user.name;
 
 		// Build update payload
-		const updateData: Record<string, string> = {};
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const updateData: Record<string, any> = {};
 		if (firstName !== undefined) updateData.firstName = firstName;
 		if (lastName !== undefined) updateData.lastName = lastName;
-		if (phone !== undefined) updateData.phone = phone;
+		if (phone !== undefined) {
+			updateData.phone = phone;
+			// Changing phone invalidates prior verification
+			if (phone !== currentProfile?.phone) {
+				(updateData as Record<string, unknown>).phoneVerifiedAt = null;
+			}
+		}
 		if (jobTitle !== undefined) updateData.jobTitle = jobTitle;
 		if (company !== undefined) updateData.company = company;
 		if (location !== undefined) updateData.location = location;
@@ -115,12 +122,15 @@ export async function PATCH(req: NextRequest) {
 		// 1. Update Profile
 		const profile = await prisma.profile.upsert({
 			where: { userId: session.user.id },
-			update: updateData,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			update: updateData as any,
 			create: {
 				userId: session.user.id,
 				username: username || session.user.email.split("@")[0],
-				displayName: updateData.displayName || computedFullName,
-				...updateData,
+				displayName:
+					(updateData.displayName as string | undefined) || computedFullName,
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				...(updateData as any),
 			},
 		});
 

@@ -38,7 +38,7 @@ interface PhoneInputProps
 	inline?: boolean;
 }
 
-export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
+	export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 	(
 		{
 			className,
@@ -56,22 +56,54 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 		const [displayFlag, setDisplayFlag] = useState<string>("");
 		const [hasInitialized, setHasInitialized] = useState(false);
 
-		useEffect(() => {
-			if (defaultCountry) {
-				const newCountryData = lookup.countries({
-					alpha2: defaultCountry.toLowerCase(),
-				})[0];
-				setCountryData(newCountryData);
-				setDisplayFlag(defaultCountry.toLowerCase());
+		const resolveCountry = (code: string) => {
+			if (!code) return undefined;
+			const lower = code.toLowerCase();
+			// alpha-2 (2 chars) uses alpha2, alpha-3 (3 chars) uses alpha3
+			const key = lower.length === 3 ? "alpha3" : "alpha2";
+			return lookup.countries({ [key]: lower } as never)[0] as CountryData | undefined;
+		};
 
-				if (
-					!hasInitialized &&
-					newCountryData?.countryCallingCodes?.[0] &&
-					!value
-				) {
+		// Sync flag from current value (E.164 number takes priority over defaultCountry)
+		useEffect(() => {
+			if (value) {
+				try {
+					const parsed = parsePhoneNumber(value);
+					if (parsed?.country) {
+						const cc = parsed.country.toLowerCase();
+						setDisplayFlag(cc);
+						const info = resolveCountry(cc);
+						if (info) setCountryData(info);
+						onCountryChange?.(info);
+						return;
+					}
+				} catch {
+					// ignore parse errors, fall through to defaultCountry
+				}
+			}
+			// No valid number -> fallback to defaultCountry if provided
+			if (defaultCountry) {
+				const info = resolveCountry(defaultCountry);
+				if (info) {
+					setDisplayFlag(info.alpha2.toLowerCase());
+					setCountryData(info);
+					onCountryChange?.(info);
+				} else {
+					setDisplayFlag(defaultCountry.toLowerCase());
+				}
+			} else if (!value) {
+				setDisplayFlag("");
+				setCountryData(undefined);
+			}
+		}, [value, defaultCountry]);
+
+		useEffect(() => {
+			if (defaultCountry && !value && !hasInitialized) {
+				const info = resolveCountry(defaultCountry);
+				if (info?.countryCallingCodes?.[0]) {
 					const syntheticEvent = {
 						target: {
-							value: newCountryData.countryCallingCodes[0],
+							value: info.countryCallingCodes[0],
 						},
 					} as React.ChangeEvent<HTMLInputElement>;
 					onChange?.(syntheticEvent);
@@ -85,47 +117,23 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 
 			// Ensure the value starts with "+"
 			if (!newValue.startsWith("+")) {
-				// Replace "00" at the start with "+" if present
 				if (newValue.startsWith("00")) {
 					newValue = `+${newValue.slice(2)}`;
 				} else {
-					// Otherwise just add "+" at the start
 					newValue = `+${newValue}`;
 				}
 			}
 
 			try {
 				const parsed = parsePhoneNumber(newValue);
-				console.log("Phone number details:", {
-					isPossible: parsed?.isPossible(),
-					isValid: parsed?.isValid(),
-					country: parsed?.country,
-					nationalNumber: parsed?.nationalNumber,
-					formatNational: parsed?.formatNational(),
-					formatInternational: parsed?.formatInternational(),
-					getType: parsed?.getType(),
-					countryCallingCode: parsed?.countryCallingCode,
-					getURI: parsed?.getURI(),
-					parsed: parsed,
-				});
 
 				if (parsed?.country) {
-					// Update flag first
 					const countryCode = parsed.country;
-					console.log("Setting flag to:", countryCode.toLowerCase());
-
-					// Force immediate update
-					setDisplayFlag(""); // Clear first
-					setTimeout(() => {
-						setDisplayFlag(countryCode.toLowerCase()); // Then set new value
-					}, 0);
-
-					// Update other state
-					const countryInfo = lookup.countries({ alpha2: countryCode })[0];
+					setDisplayFlag(countryCode.toLowerCase());
+					const countryInfo = resolveCountry(countryCode);
 					setCountryData(countryInfo);
 					onCountryChange?.(countryInfo);
 
-					// Update input value
 					const syntheticEvent = {
 						...e,
 						target: {
@@ -136,16 +144,10 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 					onChange?.(syntheticEvent);
 				} else {
 					onChange?.(e);
-					setDisplayFlag("");
-					setCountryData(undefined);
-					onCountryChange?.(undefined);
+					// keep flag from value effect; don't clear here to avoid flicker
 				}
-			} catch (error) {
-				console.error("Error parsing phone number:", error);
+			} catch {
 				onChange?.(e);
-				setDisplayFlag("");
-				setCountryData(undefined);
-				onCountryChange?.(undefined);
 			}
 		};
 
