@@ -121,7 +121,7 @@ export default function HeroSection() {
 						key={videoId}
 						ref={iframeRef}
 						src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&autohide=1&modestbranding=1&playlist=${videoId}&rel=0&enablejsapi=1&start=${startTime}&iv_load_policy=3&disablekb=1${originUrl ? `&origin=${originUrl}&widget_referrer=${originUrl}` : ""}`}
-						className="absolute top-1/2 left-1/2 w-[150vw] h-[120vh] md:w-[150vw] md:h-[150vh] -translate-x-1/2 -translate-y-1/2 object-cover min-w-full min-h-full aspect-video"
+						className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[300vw] min-h-[100dvh] md:min-w-[177.78dvh] md:min-h-[56.25vw] w-auto h-auto aspect-video"
 						allow="autoplay; encrypted-media"
 						title="Hero Video Background"
 					/>
