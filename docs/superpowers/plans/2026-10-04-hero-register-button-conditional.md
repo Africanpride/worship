@@ -26,7 +26,7 @@
 - Consumes: `useCurrentSession()` from `@/lib/use-current-session` returning `{ isAuthenticated: boolean, isPending: boolean }`.
 - Produces: Updated hero actions with dynamic auth-aware registration/schedule CTA.
 
-- [ ] **Step 1: Update `components/hero-headline.tsx` with conditional CTA**
+- [x] **Step 1: Update `components/hero-headline.tsx` with conditional CTA**
 
 Import `useCurrentSession`:
 ```tsx
@@ -65,7 +65,7 @@ Replace the static `/login` button:
 )}
 ```
 
-- [ ] **Step 2: Run Biome check and formatting**
+- [x] **Step 2: Run Biome check and formatting**
 
 Run:
 ```bash
@@ -73,7 +73,7 @@ bun run check
 ```
 Expected: All files formatted and linted cleanly with 0 errors.
 
-- [ ] **Step 3: Run build check**
+- [x] **Step 3: Run build check**
 
 Run:
 ```bash
@@ -81,7 +81,7 @@ bun run build
 ```
 Expected: Build succeeds with 0 type errors.
 
-- [ ] **Step 4: Commit changes**
+- [x] **Step 4: Commit changes**
 
 Run:
 ```bash
