@@ -122,10 +122,10 @@ export default function HeroHeadline({
 						<Link href="/schedule" className="cursor-pointer">
 							<Button
 								size="lg"
-								variant="ghost"
-								className="rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
+								variant="default"
+								className="bg-yellow-500 hover:bg-yellow-600 rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
 							>
-								Book a Watch
+								Book a Slot
 							</Button>
 						</Link>
 					)}
