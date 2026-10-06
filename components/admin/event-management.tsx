@@ -19,6 +19,7 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { FileUpload } from "@/components/file-upload";
+import { CollapsibleCard } from "@/components/shadcn-space/collapsible/collapsible-card";
 import { TypeToDeleteDialog } from "@/components/type-to-delete-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -261,9 +262,104 @@ export function EventManagement() {
 		setOpen(true);
 	};
 
+	const posterThumb = (event: Event) =>
+		event.poster ? (
+			<div className="relative h-10 w-10 shrink-0 overflow-hidden rounded">
+				<Image
+					src={event.poster}
+					alt={event.title}
+					fill
+					sizes="40px"
+					className="object-cover"
+				/>
+			</div>
+		) : (
+			<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-muted">
+				<Calendar className="h-5 w-5 text-muted-foreground" />
+			</div>
+		);
+
+	const statusPill = (event: Event) => (
+		<span
+			className={`ml-auto shrink-0 px-2 py-1 rounded-full text-xs font-medium ${
+				event.status === "published"
+					? "bg-green-500/10 text-green-500"
+					: event.status === "draft"
+						? "bg-yellow-500/10 text-yellow-500"
+						: "bg-red-500/10 text-red-500"
+			}`}
+		>
+			{event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+		</span>
+	);
+
+	const ministerStack = (
+		event: Event,
+		align: "center" | "start" = "center",
+	) => (
+		<div
+			className={`flex -space-x-2 ${
+				align === "start" ? "justify-start" : "justify-center"
+			}`}
+		>
+			{event.ministers.slice(0, 3).map((m, i) => (
+				<div
+					key={i}
+					className="h-8 w-8 rounded-full border-2 border-background overflow-hidden bg-muted"
+					title={m.name}
+				>
+					{m.image ? (
+						<div className="relative h-full w-full">
+							<Image
+								src={m.image}
+								alt={m.name}
+								fill
+								sizes="32px"
+								className="object-cover"
+							/>
+						</div>
+					) : (
+						<User className="h-4 w-4 m-1.5 text-muted-foreground" />
+					)}
+				</div>
+			))}
+			{event.ministers.length > 3 && (
+				<div className="h-8 w-8 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[10px] font-medium">
+					+{event.ministers.length - 3}
+				</div>
+			)}
+		</div>
+	);
+
+	const bookingSwitch = (event: Event) => (
+		<Switch
+			checked={event.bookingOpen ?? false}
+			onCheckedChange={(v) => toggleBookingOpen(event, v)}
+			disabled={togglingBookings === event.id}
+			className="cursor-pointer"
+			aria-label={`Toggle bookings for ${event.title}`}
+		/>
+	);
+
+	const eventActions = (event: Event) => (
+		<div className="flex flex-wrap justify-end gap-2">
+			<Button variant="ghost" size="icon" onClick={() => handleEdit(event)}>
+				<Edit className="h-4 w-4" />
+			</Button>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="text-destructive hover:text-destructive cursor-pointer"
+				onClick={() => requestDelete(event)}
+			>
+				<Trash2 className="h-4 w-4" />
+			</Button>
+		</div>
+	);
+
 	return (
 		<div className="w-full">
-			<div className="flex justify-between items-center mb-8">
+			<div className="flex flex-wrap justify-between items-center gap-3 mb-8">
 				<div>
 					<h1 className="text-3xl">Event Management</h1>
 					<p className="text-muted-foreground">
@@ -570,7 +666,7 @@ export function EventManagement() {
 				</Dialog>
 			</div>
 
-			<div className="rounded-md border bg-card/50 backdrop-blur-sm">
+			<div className="hidden md:block rounded-md border bg-card/50 backdrop-blur-sm">
 				<Table>
 					<TableHeader>
 						<TableRow>
@@ -603,37 +699,10 @@ export function EventManagement() {
 						) : (
 							events.map((event) => (
 								<TableRow key={event.id}>
-									<TableCell>
-										<span
-											className={`px-2 py-1 rounded-full text-xs font-medium ${
-												event.status === "published"
-													? "bg-green-500/10 text-green-500"
-													: event.status === "draft"
-														? "bg-yellow-500/10 text-yellow-500"
-														: "bg-red-500/10 text-red-500"
-											}`}
-										>
-											{event.status.charAt(0).toUpperCase() +
-												event.status.slice(1)}
-										</span>
-									</TableCell>
+									<TableCell>{statusPill(event)}</TableCell>
 									<TableCell className="font-medium">
 										<div className="flex items-center gap-3">
-											{event.poster ? (
-												<div className="relative h-10 w-10 rounded overflow-hidden">
-													<Image
-														src={event.poster}
-														alt={event.title}
-														fill
-														sizes="40px"
-														className="object-cover"
-													/>
-												</div>
-											) : (
-												<div className="h-10 w-10 rounded bg-muted flex items-center justify-center">
-													<Calendar className="h-5 w-5 text-muted-foreground" />
-												</div>
-											)}
+											{posterThumb(event)}
 											<div>
 												{event.title}
 												<div className="text-xs text-muted-foreground font-normal">
@@ -651,68 +720,71 @@ export function EventManagement() {
 										</div>
 									</TableCell>
 									<TableCell className="text-center">
-										<Switch
-											checked={event.bookingOpen ?? false}
-											onCheckedChange={(v) => toggleBookingOpen(event, v)}
-											disabled={togglingBookings === event.id}
-											className="cursor-pointer"
-											aria-label={`Toggle bookings for ${event.title}`}
-										/>
+										{bookingSwitch(event)}
 									</TableCell>
 									<TableCell className="hidden md:table-cell">
-										<div className="flex justify-center -space-x-2">
-											{event.ministers.slice(0, 3).map((m, i) => (
-												<div
-													key={i}
-													className="h-8 w-8 rounded-full border-2 border-background overflow-hidden bg-muted"
-													title={m.name}
-												>
-													{m.image ? (
-														<div className="relative h-full w-full">
-															<Image
-																src={m.image}
-																alt={m.name}
-																fill
-																sizes="32px"
-																className="object-cover"
-															/>
-														</div>
-													) : (
-														<User className="h-4 w-4 m-1.5 text-muted-foreground" />
-													)}
-												</div>
-											))}
-											{event.ministers.length > 3 && (
-												<div className="h-8 w-8 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[10px] font-medium">
-													+{event.ministers.length - 3}
-												</div>
-											)}
-										</div>
+										{ministerStack(event)}
 									</TableCell>
 									<TableCell className="text-right text-muted-foreground">
-										<div className="flex justify-end gap-2">
-											<Button
-												variant="ghost"
-												size="icon"
-												onClick={() => handleEdit(event)}
-											>
-												<Edit className="h-4 w-4" />
-											</Button>
-											<Button
-												variant="ghost"
-												size="icon"
-												className="text-destructive hover:text-destructive cursor-pointer"
-												onClick={() => requestDelete(event)}
-											>
-												<Trash2 className="h-4 w-4" />
-											</Button>
-										</div>
+										{eventActions(event)}
 									</TableCell>
 								</TableRow>
 							))
 						)}
 					</TableBody>
 				</Table>
+			</div>
+
+			<div className="md:hidden space-y-3">
+				{loading ? (
+					<div className="flex h-24 items-center justify-center rounded-md border bg-card/50 backdrop-blur-sm">
+						<Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+					</div>
+				) : events.length === 0 ? (
+					<div className="flex h-24 items-center justify-center rounded-md border bg-card/50 backdrop-blur-sm text-sm text-muted-foreground">
+						No events found. Create your first one!
+					</div>
+				) : (
+					events.map((event) => (
+						<CollapsibleCard
+							key={event.id}
+							trigger={
+								<>
+									<div className="flex min-w-0 items-center gap-3">
+										{posterThumb(event)}
+										<div className="min-w-0">
+											<div className="truncate text-sm font-semibold">
+												{event.title}
+											</div>
+											<div className="truncate text-xs font-normal text-muted-foreground">
+												/{event.slug}
+											</div>
+										</div>
+										{statusPill(event)}
+									</div>
+									<div className="text-xs text-muted-foreground">
+										{format(new Date(event.startDate), "MMM d, yyyy")} ·{" "}
+										{format(new Date(event.startDate), "HH:mm")}
+									</div>
+								</>
+							}
+						>
+							<div className="flex items-center justify-between gap-2">
+								<span className="text-sm text-muted-foreground">
+									Bookings open
+								</span>
+								{bookingSwitch(event)}
+							</div>
+							<div>
+								<div className="mb-1.5 text-xs text-muted-foreground">
+									Ministers
+								</div>
+								{ministerStack(event, "start")}
+							</div>
+							{eventActions(event)}
+						</CollapsibleCard>
+					))
+				)}
 			</div>
 
 			<TypeToDeleteDialog
