@@ -14,13 +14,13 @@ export default async function BookingSettingsPage({
 	const initialTrack = track === "bible-reading" ? "bible-reading" : "worship";
 
 	return (
-		<div className="flex-1 space-y-4 p-8 pt-6">
-			<div className="grid items-start gap-6 lg:grid-cols-3">
-				<div className="lg:col-span-1 space-y-6">
+		<div className="flex-1 space-y-4 p-4 md:p-6">
+			<div className="grid items-start gap-4 md:gap-6 lg:grid-cols-3">
+				<div className="order-2 lg:order-1 lg:col-span-1 space-y-6">
 					<BookingSettingsForm />
 					<NotificationSettingsForm />
 				</div>
-				<div className="lg:col-span-2">
+				<div className="order-1 lg:order-2 lg:col-span-2">
 					<BookingsAgenda initialTrack={initialTrack} />
 				</div>
 			</div>
