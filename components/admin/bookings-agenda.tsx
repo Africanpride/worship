@@ -408,7 +408,7 @@ export function BookingsAgenda({
 			{/* Top Header with title & stats */}
 			<div className="border-b px-5 py-4">
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-					<div className="max-w-xs">
+					<div className="max-w-none sm:max-w-xs">
 						<div className="flex items-center gap-2">
 							<CalendarDays className="size-4 text-primary" />
 							<h2 className="text-lg">{headerCopy.title}</h2>
@@ -456,7 +456,7 @@ export function BookingsAgenda({
 				</div>
 
 				{/* Filter & Control Bar */}
-				<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-3 border-t border-border/50">
+				<div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-2.5 pt-3 border-t border-border/50">
 					{/* Event Selector */}
 					<div className="space-y-1">
 						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
