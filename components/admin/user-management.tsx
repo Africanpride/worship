@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { CollapsibleCard } from "@/components/shadcn-space/collapsible/collapsible-card";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -154,9 +155,143 @@ export function UserManagement() {
 			.slice(0, 2);
 	};
 
+	const userIdentity = (user: User, showAreas: boolean) => (
+		<div className="flex items-center gap-3">
+			<Avatar className="h-9 w-9 border-2 border-background shadow-sm">
+				<AvatarImage
+					src={(user.profile?.avatarUrl as string) || user.image || ""}
+					alt={user.name}
+					className="object-cover"
+				/>
+				<AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+					{getInitials(user.name)}
+				</AvatarFallback>
+			</Avatar>
+			<div>
+				<div className="flex items-center gap-2">
+					<span className="truncate max-w-[150px]">{user.name}</span>
+					{user.role === "admin" && (
+						<Shield className="h-3 w-3 text-primary shrink-0" />
+					)}
+					{user.profile?.volunteerAreas &&
+						user.profile.volunteerAreas.length > 0 && (
+							<Badge
+								variant="secondary"
+								className="text-[10px] h-4 px-1.5 font-bold uppercase bg-warning/20 text-warning-foreground border-warning/30 hover:bg-warning/30 transition-colors shrink-0"
+							>
+								Volunteer
+							</Badge>
+						)}
+				</div>
+				{showAreas &&
+					user.profile?.volunteerAreas &&
+					user.profile.volunteerAreas.length > 0 && (
+						<div className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1 italic">
+							{user.profile.volunteerAreas.join(", ")}
+						</div>
+					)}
+			</div>
+		</div>
+	);
+
+	const statusRow = (user: User) => (
+		<div className="flex items-center gap-2">
+			{user.banned ? (
+				<div className="flex items-center gap-1.5 text-destructive text-sm font-medium">
+					<ShieldAlert className="h-4 w-4" />
+					Banned
+				</div>
+			) : (
+				<div className="flex items-center gap-1.5 text-green-500 text-sm font-medium">
+					<Shield className="h-4 w-4" />
+					Active
+				</div>
+			)}
+			{user.pendingDeletion && (
+				<Badge variant="destructive">Deletion Requested</Badge>
+			)}
+		</div>
+	);
+
+	const roleSelect = (user: User, selectClassName: string) => (
+		<Select
+			defaultValue={user.role}
+			onValueChange={(val: string) => onRoleChange(user.id, val)}
+		>
+			<SelectTrigger className={selectClassName}>
+				<SelectValue placeholder="Role" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="user">User</SelectItem>
+				<SelectItem value="admin">Admin</SelectItem>
+			</SelectContent>
+		</Select>
+	);
+
+	const userButtons = (user: User) => (
+		<>
+			<Button
+				variant="outline"
+				size="icon"
+				className={
+					user.banned
+						? "text-primary border-primary hover:bg-primary/10"
+						: "text-destructive border-destructive/30 hover:bg-destructive/10"
+				}
+				onClick={() => onToggleBan(user)}
+				title={user.banned ? "Unban User" : "Ban User"}
+			>
+				<Ban className="h-4 w-4" />
+			</Button>
+
+			{user.pendingDeletion && (
+				<Button
+					variant="outline"
+					size="icon"
+					className="text-orange-500 border-orange-500/30 hover:bg-orange-500/10"
+					onClick={() => onRevokeDeletion(user.id)}
+					title="Revoke Deletion Request"
+				>
+					<Undo2 className="h-4 w-4" />
+				</Button>
+			)}
+
+			<AlertDialog>
+				<AlertDialogTrigger asChild>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="text-destructive hover:bg-destructive/10"
+						title="Delete User"
+					>
+						<Trash2 className="h-4 w-4" />
+					</Button>
+				</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Delete User</AlertDialogTitle>
+						<AlertDialogDescription>
+							Are you sure you want to PERMANENTLY delete this user? This action
+							cannot be undone.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={() => onDeleteUser(user.id)}
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						>
+							Delete
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</>
+	);
+
 	return (
 		<div className="w-full">
-			<div className="flex justify-between items-center mb-8">
+			<div className="flex flex-wrap justify-between items-center gap-3 mb-8">
 				<div>
 					<h1 className="text-3xl">User Management</h1>
 					<p className="text-muted-foreground">
@@ -165,7 +300,7 @@ export function UserManagement() {
 				</div>
 			</div>
 
-			<div className="rounded-md border bg-card/50 backdrop-blur-sm">
+			<div className="hidden md:block rounded-md border bg-card/50 backdrop-blur-sm">
 				<Table>
 					<TableHeader>
 						<TableRow>
@@ -195,142 +330,14 @@ export function UserManagement() {
 							users.map((user) => (
 								<TableRow key={user.id}>
 									<TableCell className="font-medium">
-										<div className="flex items-center gap-3">
-											<Avatar className="h-9 w-9 border-2 border-background shadow-sm">
-												<AvatarImage
-													src={
-														(user.profile?.avatarUrl as string) ||
-														user.image ||
-														""
-													}
-													alt={user.name}
-													className="object-cover"
-												/>
-												<AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-													{getInitials(user.name)}
-												</AvatarFallback>
-											</Avatar>
-											<div>
-												<div className="flex items-center gap-2">
-													<span className="truncate max-w-[150px]">
-														{user.name}
-													</span>
-													{user.role === "admin" && (
-														<Shield className="h-3 w-3 text-primary shrink-0" />
-													)}
-													{user.profile?.volunteerAreas &&
-														user.profile.volunteerAreas.length > 0 && (
-															<Badge
-																variant="secondary"
-																className="text-[10px] h-4 px-1.5 font-bold uppercase bg-warning/20 text-warning-foreground border-warning/30 hover:bg-warning/30 transition-colors shrink-0"
-															>
-																Volunteer
-															</Badge>
-														)}
-												</div>
-												{user.profile?.volunteerAreas &&
-													user.profile.volunteerAreas.length > 0 && (
-														<div className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1 italic">
-															{user.profile.volunteerAreas.join(", ")}
-														</div>
-													)}
-											</div>
-										</div>
+										{userIdentity(user, true)}
 									</TableCell>
 									<TableCell>{user.email}</TableCell>
-									<TableCell>
-										<div className="flex items-center gap-2">
-											{user.banned ? (
-												<div className="flex items-center gap-1.5 text-destructive text-sm font-medium">
-													<ShieldAlert className="h-4 w-4" />
-													Banned
-												</div>
-											) : (
-												<div className="flex items-center gap-1.5 text-green-500 text-sm font-medium">
-													<Shield className="h-4 w-4" />
-													Active
-												</div>
-											)}
-											{user.pendingDeletion && (
-												<Badge variant="destructive" className="ml-2">
-													Deletion Requested
-												</Badge>
-											)}
-										</div>
-									</TableCell>
+									<TableCell>{statusRow(user)}</TableCell>
 									<TableCell className="text-right px-4">
-										<div className="flex items-center justify-end gap-2">
-											<Select
-												defaultValue={user.role}
-												onValueChange={(val: string) =>
-													onRoleChange(user.id, val)
-												}
-											>
-												<SelectTrigger className="w-[110px]">
-													<SelectValue placeholder="Role" />
-												</SelectTrigger>
-												<SelectContent>
-													<SelectItem value="user">User</SelectItem>
-													<SelectItem value="admin">Admin</SelectItem>
-												</SelectContent>
-											</Select>
-
-											<Button
-												variant="outline"
-												size="icon"
-												className={
-													user.banned
-														? "text-primary border-primary hover:bg-primary/10"
-														: "text-destructive border-destructive/30 hover:bg-destructive/10"
-												}
-												onClick={() => onToggleBan(user)}
-												title={user.banned ? "Unban User" : "Ban User"}
-											>
-												<Ban className="h-4 w-4" />
-											</Button>
-
-											{user.pendingDeletion && (
-												<Button
-													variant="outline"
-													size="icon"
-													className="text-orange-500 border-orange-500/30 hover:bg-orange-500/10"
-													onClick={() => onRevokeDeletion(user.id)}
-													title="Revoke Deletion Request"
-												>
-													<Undo2 className="h-4 w-4" />
-												</Button>
-											)}
-
-											<AlertDialog>
-												<AlertDialogTrigger asChild>
-													<Button
-														variant="ghost"
-														size="icon"
-														className="text-destructive hover:bg-destructive/10"
-														title="Delete User"
-													>
-														<Trash2 className="h-4 w-4" />
-													</Button>
-												</AlertDialogTrigger>
-												<AlertDialogContent>
-													<AlertDialogHeader>
-														<AlertDialogTitle>Delete User</AlertDialogTitle>
-														<AlertDialogDescription>
-															Are you sure you want to PERMANENTLY delete this
-															user? This action cannot be undone.
-														</AlertDialogDescription>
-													</AlertDialogHeader>
-													<AlertDialogFooter>
-														<AlertDialogCancel>Cancel</AlertDialogCancel>
-														<AlertDialogAction
-															onClick={() => onDeleteUser(user.id)}
-															className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-														>
-															Delete
-														</AlertDialogAction>
-													</AlertDialogFooter>
-												</AlertDialogContent>
-											</AlertDialog>
+										<div className="flex flex-wrap items-center justify-end gap-2">
+											{roleSelect(user, "w-[110px]")}
+											{userButtons(user)}
 										</div>
 									</TableCell>
 								</TableRow>
@@ -338,6 +345,47 @@ export function UserManagement() {
 						)}
 					</TableBody>
 				</Table>
+			</div>
+
+			<div className="md:hidden space-y-3">
+				{loading ? (
+					<div className="flex h-24 items-center justify-center rounded-md border bg-card/50 backdrop-blur-sm">
+						<Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+					</div>
+				) : users.length === 0 ? (
+					<div className="flex h-24 items-center justify-center rounded-md border bg-card/50 backdrop-blur-sm text-sm text-muted-foreground">
+						No users found.
+					</div>
+				) : (
+					users.map((user) => (
+						<CollapsibleCard
+							key={user.id}
+							trigger={
+								<>
+									{userIdentity(user, false)}
+									{statusRow(user)}
+								</>
+							}
+						>
+							<div className="flex items-start justify-between gap-3 text-sm">
+								<span className="shrink-0 text-muted-foreground">Email</span>
+								<span className="min-w-0 break-all text-right">
+									{user.email}
+								</span>
+							</div>
+							{user.profile?.volunteerAreas &&
+								user.profile.volunteerAreas.length > 0 && (
+									<div className="text-xs italic text-muted-foreground line-clamp-2">
+										{user.profile.volunteerAreas.join(", ")}
+									</div>
+								)}
+							<div className="flex flex-wrap items-center justify-end gap-2">
+								{roleSelect(user, "w-full")}
+								{userButtons(user)}
+							</div>
+						</CollapsibleCard>
+					))
+				)}
 			</div>
 		</div>
 	);
