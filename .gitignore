@@ -63,3 +63,6 @@ skills-lock.json
 
 # tooling logs
 /logs/
+
+# playwright scratch
+/.playwright-cli/
