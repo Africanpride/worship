@@ -687,7 +687,7 @@ export function BookingsAgenda({
 							{/* Day Header */}
 							<div className="mb-2.5 flex flex-wrap items-center justify-between gap-2 border-b pb-1.5">
 								<div className="flex items-center gap-2">
-									<span className="font-semibold text-xs text-foreground uppercase tracking-wide">
+									<span className="font-semibold text-xs text-foreground uppercase tracking-wide min-w-0">
 										{isToday ? "Today · " : isTomorrow ? "Tomorrow · " : ""}
 										{label}
 									</span>
@@ -722,7 +722,7 @@ export function BookingsAgenda({
 													`Blocked all ${openSlotIds.length} open slots for ${format(date, "d MMM")}`,
 												)
 											}
-											className="cursor-pointer h-6 px-2 text-[10px] text-muted-foreground hover:text-destructive"
+											className="cursor-pointer h-6 px-2 text-[10px] max-sm:h-9 max-sm:px-3 text-muted-foreground hover:text-destructive"
 										>
 											<Ban className="size-2.5 mr-1" />
 											Block day ({openSlotIds.length})
@@ -740,7 +740,7 @@ export function BookingsAgenda({
 													`Unblocked ${blockedSlotIds.length} slots for ${format(date, "d MMM")}`,
 												)
 											}
-											className="cursor-pointer h-6 px-2 text-[10px] text-emerald-600 hover:text-emerald-700"
+											className="cursor-pointer h-6 px-2 text-[10px] max-sm:h-9 max-sm:px-3 text-emerald-600 hover:text-emerald-700"
 										>
 											<Sparkles className="size-2.5 mr-1" />
 											Unblock day ({blockedSlotIds.length})
@@ -779,11 +779,11 @@ export function BookingsAgenda({
 												))
 										) : (
 											<li key={row.key}>
-												<div className="flex items-center justify-between gap-2 rounded-lg border border-dashed border-border/60 bg-muted/20 px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/40">
+												<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-dashed border-border/60 bg-muted/20 px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/40">
 													<button
 														type="button"
 														onClick={() => toggleGap(row.key)}
-														className="flex flex-1 cursor-pointer items-center gap-2 text-left text-xs hover:text-foreground"
+														className="flex min-w-0 flex-1 max-sm:basis-full cursor-pointer items-center gap-2 text-left text-xs hover:text-foreground"
 													>
 														<Hourglass className="size-3.5 text-muted-foreground/70" />
 														<span className="font-mono text-[11px] tabular-nums font-medium">
@@ -812,7 +812,7 @@ export function BookingsAgenda({
 																`Blocked ${row.count} hours (${format(row.from, "HH:mm")}–${format(row.to, "HH:mm")})`,
 															)
 														}
-														className="cursor-pointer h-6 px-2 text-[10px] text-destructive hover:bg-destructive/10"
+														className="cursor-pointer h-6 px-2 text-[10px] max-sm:h-9 max-sm:px-3 max-sm:basis-full text-destructive hover:bg-destructive/10"
 													>
 														<Ban className="size-2.5 mr-1" />
 														Block {row.count} hrs
