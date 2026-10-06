@@ -62,7 +62,7 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 					<History className="size-3" /> History
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
+			<DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden">
 				<DialogHeader className="border-b px-6 py-4 space-y-0.5">
 					<DialogTitle className="text-sm font-medium">
 						Slot audit trail

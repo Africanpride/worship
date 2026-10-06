@@ -327,7 +327,7 @@ export function VolunteerManagement() {
 				open={!!selectedVolunteer}
 				onOpenChange={(open) => !open && setSelectedVolunteer(null)}
 			>
-				<DialogContent className="max-w-2xl sm:p-0 overflow-hidden border-none shadow-2xl">
+				<DialogContent className="sm:max-w-2xl sm:p-0 overflow-hidden border-none shadow-2xl">
 					{selectedVolunteer && (
 						<div className="flex flex-col">
 							{/* Profile Header */}

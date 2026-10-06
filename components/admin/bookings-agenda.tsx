@@ -1127,7 +1127,7 @@ function ReassignDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-md p-0 gap-0 overflow-hidden flex flex-col max-h-[85dvh]">
+			<DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden flex flex-col max-h-[85dvh]">
 				<DialogHeader className="shrink-0 border-b px-6 py-4 space-y-0.5">
 					<DialogTitle className="text-sm ">
 						{slot?.assignedUser ? "Reassign this hour" : "Assign this hour"}

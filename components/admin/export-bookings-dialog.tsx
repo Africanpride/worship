@@ -94,7 +94,7 @@ export function ExportBookingsDialog({ filters }: ExportBookingsDialogProps) {
 					<Download className="size-3.5" />
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
+			<DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden">
 				<DialogHeader className="border-b px-6 py-4 space-y-0.5">
 					<DialogTitle className="text-sm font-medium">
 						Export bookings

@@ -168,7 +168,7 @@ export function EventForm({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="max-w-4xl max-h-[95vh] p-0 flex flex-col overflow-hidden">
+			<DialogContent className="sm:max-w-4xl max-h-[95vh] p-0 flex flex-col overflow-hidden">
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}

@@ -296,7 +296,7 @@ export function BlogManagement() {
 
 			{/* Create/Edit Dialog */}
 			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-				<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+				<DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
 					<DialogHeader>
 						<DialogTitle>
 							{editingPost ? "Edit Post" : "Create New Post"}
