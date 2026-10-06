@@ -406,7 +406,7 @@ export function BookingsAgenda({
 	return (
 		<div className="rounded-xl border bg-card ">
 			{/* Top Header with title & stats */}
-			<div className="border-b px-5 py-4">
+			<div className="border-b px-3.5 py-3 sm:px-5 sm:py-4">
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 					<div className="max-w-none sm:max-w-xs">
 						<div className="flex items-center gap-2">
@@ -432,8 +432,12 @@ export function BookingsAgenda({
 							<span className="font-bold">{metrics.open}</span> Open
 						</Badge>
 						{selectedEventId === "all" && (
-							<label className="ml-1 flex cursor-pointer items-center gap-1.5 text-muted-foreground select-none">
+							<label
+								htmlFor="hide-past-events"
+								className="ml-1 flex cursor-pointer items-center gap-1.5 text-muted-foreground select-none"
+							>
 								<Checkbox
+									id="hide-past-events"
 									checked={hidePastEvents}
 									onCheckedChange={(v) => setHidePastEvents(v === true)}
 									className="size-3.5 cursor-pointer"
@@ -456,7 +460,7 @@ export function BookingsAgenda({
 				</div>
 
 				{/* Filter & Control Bar */}
-				<div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-2.5 pt-3 border-t border-border/50">
+				<div className="mt-3.5 sm:mt-4 grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5 pt-3 border-t border-border/50">
 					{/* Event Selector */}
 					<div className="space-y-1">
 						<span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
@@ -615,10 +619,11 @@ export function BookingsAgenda({
 			</div>
 
 			{/* Slot Agenda Content */}
-			<div className="p-4 sm:p-5">
+			<div className="p-3 sm:p-5">
 				{isLoading && (
 					<div
 						className="space-y-2.5"
+						role="status"
 						aria-busy="true"
 						aria-label="Loading agenda"
 					>
@@ -779,7 +784,7 @@ export function BookingsAgenda({
 												))
 										) : (
 											<li key={row.key}>
-												<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-dashed border-border/60 bg-muted/20 px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/40">
+												<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-dashed border-border/60 bg-muted/20 px-2.5 py-2 sm:px-3 sm:py-2 text-muted-foreground transition-colors hover:bg-muted/40">
 													<button
 														type="button"
 														onClick={() => toggleGap(row.key)}
@@ -901,7 +906,7 @@ function AgendaRow({
 	return (
 		<li
 			className={cn(
-				"group grid grid-cols-[64px_1fr] gap-3 rounded-xl border border-border/60 bg-background/40 px-3 py-3 transition-colors hover:bg-background/80 sm:grid-cols-[80px_1fr]",
+				"group grid grid-cols-[56px_1fr] sm:grid-cols-[80px_1fr] gap-2.5 sm:gap-3 rounded-xl border border-border/60 bg-background/40 px-2.5 py-2.5 sm:px-3 sm:py-3 transition-colors hover:bg-background/80",
 				temporal === "past" && "opacity-50",
 			)}
 		>
