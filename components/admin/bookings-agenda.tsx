@@ -783,7 +783,7 @@ export function BookingsAgenda({
 													<button
 														type="button"
 														onClick={() => toggleGap(row.key)}
-														className="flex min-w-0 flex-1 max-sm:basis-full cursor-pointer items-center gap-2 text-left text-xs hover:text-foreground"
+														className="flex min-w-0 flex-1 max-sm:basis-full max-sm:h-9 cursor-pointer items-center gap-2 text-left text-xs hover:text-foreground"
 													>
 														<Hourglass className="size-3.5 text-muted-foreground/70" />
 														<span className="font-mono text-[11px] tabular-nums font-medium">
@@ -1013,7 +1013,7 @@ function AgendaRow({
 				{/* <SlotHistoryDialog slotId={slot.id} /> */}
 
 				{!eventEnded && (
-					<div className="flex shrink-0 max-sm:basis-full items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
+					<div className="flex shrink-0 max-sm:basis-full max-sm:flex-wrap items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
 						{/* Reassign / Assign Button */}
 						<Button
 							variant="ghost"

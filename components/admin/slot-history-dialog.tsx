@@ -57,7 +57,7 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 				<Button
 					variant="ghost"
 					size="sm"
-					className="h-7 cursor-pointer px-2 text-xs"
+					className="h-7 cursor-pointer px-2 text-xs max-sm:h-9 max-sm:px-3"
 				>
 					<History className="size-3" /> History
 				</Button>
