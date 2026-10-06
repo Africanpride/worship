@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { CollapsibleCard } from "@/components/shadcn-space/collapsible/collapsible-card";
 import { TypeToDeleteDialog } from "@/components/type-to-delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -163,9 +164,44 @@ export function VideoManagement() {
 		setOpen(true);
 	};
 
+	const typePill = (video: Video) => (
+		<span
+			className={`px-2 py-1 rounded-full text-xs font-medium ${
+				video.type === "LIVE"
+					? "bg-red-500/10 text-red-500"
+					: "bg-blue-500/10 text-blue-500"
+			}`}
+		>
+			{video.type}
+		</span>
+	);
+
+	const videoActions = (video: Video) => (
+		<div className="flex flex-wrap justify-end gap-2">
+			<Button
+				variant="ghost"
+				size="icon"
+				onClick={() => window.open(video.url, "_blank")}
+			>
+				<Play className="h-4 w-4" />
+			</Button>
+			<Button variant="ghost" size="icon" onClick={() => handleEdit(video)}>
+				<Edit className="h-4 w-4" />
+			</Button>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="text-destructive hover:text-destructive cursor-pointer"
+				onClick={() => requestDelete(video)}
+			>
+				<Trash2 className="h-4 w-4" />
+			</Button>
+		</div>
+	);
+
 	return (
 		<div className="w-full">
-			<div className="flex justify-between items-center mb-8">
+			<div className="flex flex-wrap justify-between items-center gap-3 mb-8">
 				<div>
 					<h1 className="text-3xl">Video Management</h1>
 					<p className="text-muted-foreground">
@@ -289,7 +325,7 @@ export function VideoManagement() {
 				</Dialog>
 			</div>
 
-			<div className="rounded-md border bg-card/50 backdrop-blur-sm">
+			<div className="hidden md:block rounded-md border bg-card/50 backdrop-blur-sm">
 				<Table>
 					<TableHeader>
 						<TableRow>
@@ -318,52 +354,53 @@ export function VideoManagement() {
 						) : (
 							videos.map((video) => (
 								<TableRow key={video.id}>
-									<TableCell>
-										<span
-											className={`px-2 py-1 rounded-full text-xs font-medium ${
-												video.type === "LIVE"
-													? "bg-red-500/10 text-red-500"
-													: "bg-blue-500/10 text-blue-500"
-											}`}
-										>
-											{video.type}
-										</span>
-									</TableCell>
+									<TableCell>{typePill(video)}</TableCell>
 									<TableCell className="font-medium">{video.title}</TableCell>
 									<TableCell className="hidden md:table-cell max-w-[300px] truncate text-muted-foreground">
 										{video.url}
 									</TableCell>
 									<TableCell className="text-right">
-										<div className="flex justify-end gap-2">
-											<Button
-												variant="ghost"
-												size="icon"
-												onClick={() => window.open(video.url, "_blank")}
-											>
-												<Play className="h-4 w-4" />
-											</Button>
-											<Button
-												variant="ghost"
-												size="icon"
-												onClick={() => handleEdit(video)}
-											>
-												<Edit className="h-4 w-4" />
-											</Button>
-											<Button
-												variant="ghost"
-												size="icon"
-												className="text-destructive hover:text-destructive cursor-pointer"
-												onClick={() => requestDelete(video)}
-											>
-												<Trash2 className="h-4 w-4" />
-											</Button>
-										</div>
+										{videoActions(video)}
 									</TableCell>
 								</TableRow>
 							))
 						)}
 					</TableBody>
 				</Table>
+			</div>
+
+			<div className="md:hidden space-y-3">
+				{loading ? (
+					<div className="flex h-24 items-center justify-center rounded-md border bg-card/50 backdrop-blur-sm">
+						<Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+					</div>
+				) : videos.length === 0 ? (
+					<div className="flex h-24 items-center justify-center rounded-md border bg-card/50 backdrop-blur-sm text-sm text-muted-foreground">
+						No videos found. Create your first one!
+					</div>
+				) : (
+					videos.map((video) => (
+						<CollapsibleCard
+							key={video.id}
+							trigger={
+								<div className="flex min-w-0 items-center gap-2">
+									{typePill(video)}
+									<span className="truncate text-sm font-semibold">
+										{video.title}
+									</span>
+								</div>
+							}
+						>
+							<div className="flex items-start justify-between gap-3 text-sm">
+								<span className="shrink-0 text-muted-foreground">URL</span>
+								<span className="min-w-0 break-all text-right text-xs text-muted-foreground">
+									{video.url}
+								</span>
+							</div>
+							{videoActions(video)}
+						</CollapsibleCard>
+					))
+				)}
 			</div>
 
 			<TypeToDeleteDialog
