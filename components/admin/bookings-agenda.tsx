@@ -913,7 +913,7 @@ function AgendaRow({
 					{format(new Date(slot.endTime), "HH:mm")}
 				</div>
 			</div>
-			<div className="flex items-center gap-3 min-w-0">
+			<div className="flex flex-wrap items-center gap-3 min-w-0">
 				{/* Temporal status dot */}
 				{temporal === "ongoing" ? (
 					<span className="relative flex size-3 shrink-0">
@@ -997,7 +997,7 @@ function AgendaRow({
 				</div>
 
 				{booker && (
-					<Avatar className="size-7 border-2 border-background shrink-0">
+					<Avatar className="size-7 border-2 border-background shrink-0 max-sm:hidden">
 						{(booker.profile?.avatarUrl || booker.image) && (
 							<AvatarImage
 								src={
@@ -1013,14 +1013,14 @@ function AgendaRow({
 				{/* <SlotHistoryDialog slotId={slot.id} /> */}
 
 				{!eventEnded && (
-					<div className="flex shrink-0 items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
+					<div className="flex shrink-0 max-sm:basis-full items-center gap-1 opacity-90 transition-opacity group-hover:opacity-100 focus-within:opacity-100 max-sm:opacity-100">
 						{/* Reassign / Assign Button */}
 						<Button
 							variant="ghost"
 							size="sm"
 							disabled={disabled}
 							onClick={onAssign}
-							className="cursor-pointer h-7 px-2 text-xs"
+							className="cursor-pointer h-7 px-2 text-xs max-sm:h-9 max-sm:px-3"
 						>
 							<PencilLine className="size-3 mr-1" />
 							{booker ? "Reassign" : "Assign"}
@@ -1036,7 +1036,7 @@ function AgendaRow({
 										size="sm"
 										disabled={disabled}
 										onClick={onUnblock}
-										className="cursor-pointer h-7 px-2 text-xs text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10"
+										className="cursor-pointer h-7 px-2 text-xs max-sm:h-9 max-sm:px-3 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10"
 									>
 										<Sparkles className="size-3 mr-1" /> Unblock
 									</Button>
@@ -1047,7 +1047,7 @@ function AgendaRow({
 										size="sm"
 										disabled={disabled}
 										onClick={onBlock}
-										className="cursor-pointer h-7 px-2 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+										className="cursor-pointer h-7 px-2 text-xs max-sm:h-9 max-sm:px-3 text-destructive hover:text-destructive hover:bg-destructive/10"
 									>
 										<Ban className="size-3 mr-1" /> Block
 									</Button>
