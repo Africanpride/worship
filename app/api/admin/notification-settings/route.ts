@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -92,6 +93,32 @@ export async function PATCH(req: NextRequest) {
 		log.info("settings", "notification settings updated", {
 			userId: session.user.id,
 			detail: `email:${updated.emailEnabled} push:${updated.pushEnabled} whatsapp:${updated.whatsappEnabled} offsets:${offsets.join(",")}`,
+		});
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "settings.notification_update",
+			entityType: "notification_settings",
+			entityId: current.id,
+			entityLabel: "System Notifications",
+			before: {
+				emailEnabled: current.emailEnabled,
+				pushEnabled: current.pushEnabled,
+				whatsappEnabled: current.whatsappEnabled,
+				reminderOffsets: current.reminderOffsets,
+			},
+			after: {
+				emailEnabled: updated.emailEnabled,
+				pushEnabled: updated.pushEnabled,
+				whatsappEnabled: updated.whatsappEnabled,
+				reminderOffsets: updated.reminderOffsets,
+			},
+			req,
 		});
 
 		return NextResponse.json(updated);

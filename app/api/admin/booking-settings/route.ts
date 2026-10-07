@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -85,6 +86,30 @@ export async function PUT(req: NextRequest) {
 						? normalizeVisibility(parsed.data.slotVisibility)
 						: current.slotVisibility,
 			},
+		});
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "settings.booking_update",
+			entityType: "booking_settings",
+			entityId: current.id,
+			entityLabel: "Booking Rules",
+			before: {
+				allowMultipleSlotsPerUser: current.allowMultipleSlotsPerUser,
+				maxSlotsPerUser: current.maxSlotsPerUser,
+				slotVisibility: current.slotVisibility,
+			},
+			after: {
+				allowMultipleSlotsPerUser: updated.allowMultipleSlotsPerUser,
+				maxSlotsPerUser: updated.maxSlotsPerUser,
+				slotVisibility: updated.slotVisibility,
+			},
+			req,
 		});
 
 		return NextResponse.json(updated);

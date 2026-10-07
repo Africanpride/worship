@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -62,6 +63,34 @@ export async function POST(req: Request) {
 				data,
 			});
 		}
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "settings.hero_update",
+			entityType: "hero_settings",
+			entityId: settings.id,
+			entityLabel: "Hero Video Banner",
+			before: currentSettings
+				? {
+						videoSource: currentSettings.videoSource,
+						videoId: currentSettings.videoId,
+						videoUrl: currentSettings.videoUrl,
+						startTime: currentSettings.startTime,
+					}
+				: null,
+			after: {
+				videoSource: settings.videoSource,
+				videoId: settings.videoId,
+				videoUrl: settings.videoUrl,
+				startTime: settings.startTime,
+			},
+			req,
+		});
 
 		return NextResponse.json(settings);
 	} catch (error) {
