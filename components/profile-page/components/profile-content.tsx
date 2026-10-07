@@ -1,6 +1,13 @@
 "use client";
 
-import { BadgeCheck, CheckCircle2, Key, Loader2, Shield, Trash2 } from "lucide-react";
+import {
+	BadgeCheck,
+	CheckCircle2,
+	Key,
+	Loader2,
+	Shield,
+	Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -280,7 +287,8 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 										Used only for ministry coordination about your booked hours.
 										Never shown publicly.
 									</InfoTip>
-									{profile.phoneVerifiedAt && personalForm.phone === profile.phone ? (
+									{profile.phoneVerifiedAt &&
+									personalForm.phone === profile.phone ? (
 										<Badge
 											variant="outline"
 											className="ml-1 gap-1 border-green-200 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
@@ -288,7 +296,9 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 											<BadgeCheck className="size-3" /> Verified
 										</Badge>
 									) : personalForm.phone ? (
-										<span className="text-xs text-muted-foreground">Unverified — verify in Notifications tab</span>
+										<span className="text-xs text-muted-foreground">
+											Unverified — verify in Notifications tab
+										</span>
 									) : null}
 								</Label>
 								<PhoneInput
@@ -297,10 +307,17 @@ export default function ProfileContent({ user, profile }: ProfileContentProps) {
 									onChange={(e) =>
 										handlePersonalChange("phone", e.target.value)
 									}
-									defaultCountry={personalForm.country || profile.country || undefined}
+									defaultCountry={
+										personalForm.country || profile.country || undefined
+									}
 								/>
-								{profile.phoneVerifiedAt && personalForm.phone !== profile.phone && profile.phone ? (
-									<p className="text-xs text-amber-600">Changing your number will require re-verification in Notifications.</p>
+								{profile.phoneVerifiedAt &&
+								personalForm.phone !== profile.phone &&
+								profile.phone ? (
+									<p className="text-xs text-amber-600">
+										Changing your number will require re-verification in
+										Notifications.
+									</p>
 								) : null}
 							</div>
 							<div className="space-y-2">

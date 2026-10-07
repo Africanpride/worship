@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, BadgeAlert } from "lucide-react";
+import { BadgeAlert, BadgeCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -251,21 +251,28 @@ export function NotificationPreferences({
 										variant="outline"
 										className="gap-1 border-green-200 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
 									>
-										<BadgeCheck className="size-3.5" /> Verified · {verifiedPhone}
+										<BadgeCheck className="size-3.5" /> Verified ·{" "}
+										{verifiedPhone}
 									</Badge>
 								) : (
 									<Badge
 										variant="outline"
 										className="gap-1 border-amber-200 bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
 									>
-										<BadgeAlert className="size-3.5" /> Unverified · {verifiedPhone}
+										<BadgeAlert className="size-3.5" /> Unverified ·{" "}
+										{verifiedPhone}
 									</Badge>
 								)
 							) : null}
 						</div>
 						{isVerified && !isPhoneDirty ? (
 							<p className="text-xs text-muted-foreground">
-								Your number <span className="font-medium text-foreground">{verifiedPhone}</span> is verified. WhatsApp reminders will be sent here. Edit the number to change it.
+								Your number{" "}
+								<span className="font-medium text-foreground">
+									{verifiedPhone}
+								</span>{" "}
+								is verified. WhatsApp reminders will be sent here. Edit the
+								number to change it.
 							</p>
 						) : isPhoneDirty && isVerified ? (
 							<p className="text-xs text-amber-600 dark:text-amber-400">
@@ -301,7 +308,8 @@ export function NotificationPreferences({
 							</div>
 						) : (
 							<p className="text-xs text-muted-foreground flex items-center gap-1">
-								<BadgeCheck className="size-3.5 text-green-600" /> Verified — no action needed. Edit above to change number.
+								<BadgeCheck className="size-3.5 text-green-600" /> Verified — no
+								action needed. Edit above to change number.
 							</p>
 						)}
 						{phoneSent && (

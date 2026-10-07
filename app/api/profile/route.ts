@@ -50,7 +50,13 @@ export async function PATCH(req: NextRequest) {
 
 		const currentProfile = await prisma.profile.findUnique({
 			where: { userId: session.user.id },
-			select: { firstName: true, lastName: true, displayName: true, phone: true, phoneVerifiedAt: true },
+			select: {
+				firstName: true,
+				lastName: true,
+				displayName: true,
+				phone: true,
+				phoneVerifiedAt: true,
+			},
 		});
 
 		const {

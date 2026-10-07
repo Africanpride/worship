@@ -32,10 +32,12 @@ try {
 		// Background message handler for FCM `notification` messages (data messages go via `push` event below)
 		const messaging = firebase.messaging();
 		messaging.onBackgroundMessage((payload) => {
-			const title = payload.notification?.title ?? payload.data?.title ?? "The NonStop";
+			const title =
+				payload.notification?.title ?? payload.data?.title ?? "The NonStop";
 			const body = payload.notification?.body ?? payload.data?.body ?? "";
 			const url = payload.data?.url ?? payload.fcmOptions?.link ?? "/profile";
-			const icon = payload.notification?.image ?? payload.data?.icon ?? "/logos/logo.png";
+			const icon =
+				payload.notification?.image ?? payload.data?.icon ?? "/logos/logo.png";
 			self.registration.showNotification(title, {
 				body,
 				icon,
@@ -69,7 +71,8 @@ self.addEventListener("push", (event) => {
 					icon: json.notification.image ?? data.icon,
 				};
 			if (json.data?.url) data.url = json.data.url;
-			if (json.webpush?.notification?.icon) data.icon = json.webpush.notification.icon;
+			if (json.webpush?.notification?.icon)
+				data.icon = json.webpush.notification.icon;
 			if (json.fcmOptions?.link) data.url = json.fcmOptions.link;
 			// Legacy flat payload from lib/notify/push.ts / firebase-admin
 			if (json.title) data.title = json.title;

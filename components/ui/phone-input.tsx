@@ -38,7 +38,7 @@ interface PhoneInputProps
 	inline?: boolean;
 }
 
-	export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
+export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 	(
 		{
 			className,
@@ -61,7 +61,9 @@ interface PhoneInputProps
 			const lower = code.toLowerCase();
 			// alpha-2 (2 chars) uses alpha2, alpha-3 (3 chars) uses alpha3
 			const key = lower.length === 3 ? "alpha3" : "alpha2";
-			return lookup.countries({ [key]: lower } as never)[0] as CountryData | undefined;
+			return lookup.countries({ [key]: lower } as never)[0] as
+				| CountryData
+				| undefined;
 		};
 
 		// Sync flag from current value (E.164 number takes priority over defaultCountry)
