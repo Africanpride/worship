@@ -114,7 +114,11 @@ export function AuditLogConsole() {
 		if (actionFilter !== "all") params.set("action", actionFilter);
 		if (actorFilter !== "all") params.set("actorId", actorFilter);
 		if (fromDate) params.set("from", new Date(fromDate).toISOString());
-		if (toDate) params.set("to", new Date(toDate).toISOString());
+		if (toDate) {
+			const end = new Date(toDate);
+			end.setHours(23, 59, 59, 999);
+			params.set("to", end.toISOString());
+		}
 		const query = params.toString();
 		return `/api/admin/audit${query ? `?${query}` : ""}`;
 	}, [search, actionFilter, actorFilter, fromDate, toDate]);
@@ -151,11 +155,12 @@ export function AuditLogConsole() {
 	);
 
 	const loadMore = async () => {
-		if (!cursor || loadingMore) return;
+		const targetCursor = cursor ?? data?.nextCursor;
+		if (!targetCursor || loadingMore) return;
 		setLoadingMore(true);
 		try {
 			const url = new URL(apiUrl, window.location.origin);
-			url.searchParams.set("cursor", cursor);
+			url.searchParams.set("cursor", targetCursor);
 			const more = await fetcher<AuditResponse>(url.toString());
 			setExtraEntries((prev) => [...prev, ...more.items]);
 			setCursor(more.nextCursor);
@@ -293,7 +298,7 @@ export function AuditLogConsole() {
 				{visible.length > 0 && (
 					<>
 						{/* Desktop table */}
-						<table className="hidden w-full border-collapse text-sm max-md:hidden">
+						<table className="hidden md:table w-full border-collapse text-sm">
 							<thead>
 								<tr className="border-b text-left text-xs text-muted-foreground">
 									<th className="px-4 py-2 font-medium">Timestamp</th>
@@ -361,7 +366,7 @@ export function AuditLogConsole() {
 						</table>
 
 						{/* Mobile cards (< 768px) */}
-						<div className="hidden max-md:block">
+						<div className="md:hidden">
 							{visible.map((entry) => (
 								<MobileAuditCard
 									key={entry.id}
@@ -372,7 +377,7 @@ export function AuditLogConsole() {
 						</div>
 					</>
 				)}
-				{cursor && (
+				{(cursor || data?.nextCursor) && (
 					<div className="p-3 text-center">
 						<Button
 							variant="ghost"
