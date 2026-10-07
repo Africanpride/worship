@@ -32,10 +32,49 @@ interface HistoryResponse {
 	history: HistoryEntry[];
 }
 
+interface AuditHistoryEntry {
+	id: string;
+	createdAt: string;
+	action: string;
+	actorName: string;
+	actorEmail: string;
+	before?: Record<string, unknown> | null;
+	after?: Record<string, unknown> | null;
+	metadata?: Record<string, unknown> | null;
+}
+
+interface AuditEntityResponse {
+	items: AuditHistoryEntry[];
+}
+
 function actionLabel(h: HistoryEntry): string {
 	if (h.previousUserId && h.newUserId) return "Reassigned";
 	if (h.newUserId) return "Assigned";
 	return "Assignment cleared";
+}
+
+function auditActionLabel(e: AuditHistoryEntry): string {
+	switch (e.action) {
+		case "slot.block":
+			return "Blocked the slot";
+		case "slot.unblock":
+			return "Unblocked the slot";
+		case "slot.assign":
+			return "Assigned the slot";
+		case "slot.reassign":
+			return "Reassigned the slot";
+		case "slot.clear":
+			return "Cleared the slot assignment";
+		case "slot.batch_action": {
+			const action =
+				typeof e.metadata?.action === "string" ? e.metadata.action : "action";
+			const count =
+				typeof e.metadata?.count === "number" ? e.metadata.count : "";
+			return `Batch ${action}${count ? ` (${count} slots)` : ""}`;
+		}
+		default:
+			return e.action;
+	}
 }
 
 async function fetcher<T>(url: string): Promise<T> {
@@ -50,6 +89,13 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 		open ? `/api/admin/slots/${slotId}/history` : null,
 		fetcher,
 	);
+	// Unified audit trail (blocks, unblocks, batch actions) alongside the
+	// legacy assignment history above.
+	const { data: auditData, isLoading: auditLoading } =
+		useSWR<AuditEntityResponse>(
+			open ? `/api/admin/audit/entity?type=slot&id=${slotId}` : null,
+			fetcher,
+		);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -131,6 +177,62 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 							</li>
 						))}
 					</ol>
+
+					{/* Unified audit trail: blocks, unblocks, batch actions */}
+					{auditLoading && open && (
+						<p className="mt-4 border-t pt-4 text-center text-muted-foreground text-sm">
+							Loading audit trail…
+						</p>
+					)}
+					{!auditLoading && (auditData?.items.length ?? 0) > 0 && (
+						<div className="mt-4 border-t pt-4">
+							<p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+								Audit trail
+							</p>
+							<ol className="space-y-3">
+								{(auditData?.items ?? []).map((e, i, arr) => (
+									<li key={e.id} className="relative pl-5">
+										{i < arr.length - 1 && (
+											<span
+												aria-hidden
+												className="absolute left-[5px] top-4 h-full w-px bg-border"
+											/>
+										)}
+										<span
+											aria-hidden
+											className="absolute left-0 top-1.5 size-2.5 rounded-full border-2 border-background bg-primary"
+										/>
+										<div className="flex items-center gap-2">
+											<span className="font-mono text-xs text-muted-foreground tabular-nums">
+												{format(new Date(e.createdAt), "d MMM · HH:mm")}
+											</span>
+											<Badge
+												variant="outline"
+												className="text-[10px] px-1.5 py-0"
+											>
+												{e.actorName}
+											</Badge>
+											<Badge
+												variant="outline"
+												className="bg-muted px-1.5 py-0 text-[10px] font-mono"
+											>
+												{e.action}
+											</Badge>
+										</div>
+										<p className="mt-0.5 text-sm">
+											{auditActionLabel(e)}
+											{e.metadata && typeof e.metadata.reason === "string" && (
+												<span className="text-muted-foreground">
+													{" "}
+													· {e.metadata.reason}
+												</span>
+											)}
+										</p>
+									</li>
+								))}
+							</ol>
+						</div>
+					)}
 				</div>
 			</DialogContent>
 		</Dialog>

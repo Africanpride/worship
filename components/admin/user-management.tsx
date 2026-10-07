@@ -1,8 +1,10 @@
 "use client";
 
 import { createFetch } from "@better-fetch/fetch";
+import { format } from "date-fns";
 import {
 	Ban,
+	History,
 	Loader2,
 	Shield,
 	ShieldAlert,
@@ -12,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import useSWR from "swr";
 import { CollapsibleCard } from "@/components/shadcn-space/collapsible/collapsible-card";
 import {
 	AlertDialog,
@@ -27,6 +30,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import {
 	Select,
 	SelectContent,
@@ -61,6 +71,102 @@ interface User {
 const $fetch = createFetch({
 	baseURL: "/api",
 });
+
+interface AuditHistoryEntry {
+	id: string;
+	createdAt: string;
+	action: string;
+	actorName: string;
+	before?: Record<string, unknown> | null;
+	after?: Record<string, unknown> | null;
+}
+
+async function auditFetcher<T>(url: string): Promise<T> {
+	const res = await fetch(url);
+	if (!res.ok) throw new Error("Failed to load audit history");
+	return res.json();
+}
+
+function AuditHistoryButton({ user }: { user: User }) {
+	const [open, setOpen] = useState(false);
+	const { data, isLoading, error } = useSWR<{ items: AuditHistoryEntry[] }>(
+		open ? `/api/admin/audit/entity?type=user&id=${user.id}` : null,
+		auditFetcher,
+	);
+
+	return (
+		<Dialog open={open} onOpenChange={setOpen}>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="cursor-pointer"
+				title="Audit History"
+				onClick={() => setOpen(true)}
+			>
+				<History className="h-4 w-4" />
+				<span className="sr-only">Audit History</span>
+			</Button>
+			<DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden">
+				<DialogHeader className="border-b px-6 py-4 space-y-0.5">
+					<DialogTitle className="text-sm font-medium">
+						Audit History
+					</DialogTitle>
+					<DialogDescription className="text-xs text-muted-foreground">
+						Admin actions performed on {user.email}, newest first.
+					</DialogDescription>
+				</DialogHeader>
+				<div className="max-h-[60vh] overflow-y-auto px-6 py-4">
+					{isLoading && (
+						<p className="py-6 text-center text-sm text-muted-foreground">
+							Loading audit history…
+						</p>
+					)}
+					{error && (
+						<p className="py-6 text-center text-sm text-destructive">
+							Failed to load audit history.
+						</p>
+					)}
+					{!isLoading && !error && (data?.items.length ?? 0) === 0 && (
+						<p className="py-6 text-center text-sm text-muted-foreground">
+							No recorded admin actions for this user yet.
+						</p>
+					)}
+					<ol className="space-y-3">
+						{(data?.items ?? []).map((entry) => (
+							<li key={entry.id}>
+								<div className="flex flex-wrap items-center gap-2">
+									<span className="font-mono text-xs tabular-nums text-muted-foreground">
+										{format(new Date(entry.createdAt), "d MMM · HH:mm")}
+									</span>
+									<Badge variant="outline" className="px-1.5 py-0 text-[10px]">
+										{entry.actorName}
+									</Badge>
+									<Badge
+										variant="outline"
+										className="bg-muted px-1.5 py-0 font-mono text-[10px]"
+									>
+										{entry.action}
+									</Badge>
+								</div>
+								<p className="mt-0.5 text-sm">
+									{Object.keys(entry.before ?? {}).length > 0 ||
+									Object.keys(entry.after ?? {}).length > 0
+										? Object.entries(entry.after ?? {})
+												.map(
+													([key, value]) =>
+														`${key}: ${JSON.stringify(entry.before?.[key] ?? null)} → ${JSON.stringify(value)}`,
+												)
+												.join(" · ")
+										: "Recorded without field changes"}
+								</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</DialogContent>
+		</Dialog>
+	);
+}
 
 export function UserManagement() {
 	const [users, setUsers] = useState<User[]>([]);
@@ -235,8 +341,8 @@ export function UserManagement() {
 				size="icon"
 				className={
 					user.banned
-						? "text-primary border-primary hover:bg-primary/10"
-						: "text-destructive border-destructive/30 hover:bg-destructive/10"
+						? "cursor-pointer text-primary border-primary hover:bg-primary/10"
+						: "cursor-pointer text-destructive border-destructive/30 hover:bg-destructive/10"
 				}
 				onClick={() => onToggleBan(user)}
 				title={user.banned ? "Unban User" : "Ban User"}
@@ -256,12 +362,14 @@ export function UserManagement() {
 				</Button>
 			)}
 
+			<AuditHistoryButton user={user} />
+
 			<AlertDialog>
 				<AlertDialogTrigger asChild>
 					<Button
 						variant="ghost"
 						size="icon"
-						className="text-destructive hover:bg-destructive/10"
+						className="cursor-pointer text-destructive hover:bg-destructive/10"
 						title="Delete User"
 					>
 						<Trash2 className="h-4 w-4" />
