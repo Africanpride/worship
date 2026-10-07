@@ -8,6 +8,7 @@ import {
 	Heart,
 	LayoutDashboard,
 	Settings,
+	ShieldCheck,
 	TerminalIcon,
 	Users,
 	Video,
@@ -68,6 +69,12 @@ const defaultData = {
 			title: "Application Logs",
 			url: "/dashboard/admin/logs",
 			icon: <TerminalIcon />,
+			adminOnly: true,
+		},
+		{
+			title: "Audit Trail",
+			url: "/dashboard/admin/audit",
+			icon: <ShieldCheck />,
 			adminOnly: true,
 		},
 		{
