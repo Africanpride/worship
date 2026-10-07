@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -52,6 +53,11 @@ export async function PATCH(req: NextRequest) {
 			return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
 		}
 
+		const previous = await prisma.user.findUnique({ where: { id } });
+		if (!previous) {
+			return NextResponse.json({ error: "User not found" }, { status: 404 });
+		}
+
 		const updateData: Record<string, string | boolean> = {};
 		if (role !== undefined) updateData.role = role;
 		if (banned !== undefined) updateData.banned = banned;
@@ -64,6 +70,59 @@ export async function PATCH(req: NextRequest) {
 			},
 			data: updateData,
 		});
+
+		const actor = {
+			id: session.user.id,
+			email: session.user.email,
+			name: session.user.name,
+			role: session.user.role,
+		};
+		const base = {
+			actor,
+			entityType: "user",
+			entityId: previous.id,
+			entityLabel: previous.email,
+			req,
+		} as const;
+
+		if (role !== undefined && role !== previous.role) {
+			await recordAuditLog({
+				...base,
+				action: "user.role_change",
+				before: { role: previous.role },
+				after: { role },
+			});
+		}
+
+		if (banned !== undefined && banned !== previous.banned) {
+			await recordAuditLog({
+				...base,
+				action: banned ? "user.ban" : "user.unban",
+				before: { banned: previous.banned },
+				after: {
+					banned,
+					banReason: previous.banReason ?? null,
+					banExpires: previous.banExpires ?? null,
+				},
+			});
+		}
+
+		if (
+			pendingDeletion !== undefined &&
+			pendingDeletion !== previous.pendingDeletion
+		) {
+			await recordAuditLog({
+				...base,
+				action: "user.delete",
+				before: {
+					name: previous.name,
+					email: previous.email,
+					pendingDeletion: previous.pendingDeletion,
+				},
+				after: { pendingDeletion },
+				metadata: { kind: "pending_deletion_flag" },
+			});
+		}
 
 		return NextResponse.json(user);
 	} catch (error) {
@@ -94,10 +153,30 @@ export async function DELETE(req: NextRequest) {
 			return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
 		}
 
+		const previous = await prisma.user.findUnique({ where: { id } });
+		if (!previous) {
+			return NextResponse.json({ error: "User not found" }, { status: 404 });
+		}
+
 		await prisma.user.delete({
 			where: {
 				id,
 			},
+		});
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "user.delete",
+			entityType: "user",
+			entityId: previous.id,
+			entityLabel: previous.email,
+			before: { name: previous.name, email: previous.email },
+			req,
 		});
 
 		return NextResponse.json({ message: "User deleted successfully" });
