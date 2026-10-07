@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
+import { TRACKS } from "@/lib/slots";
 import { withDbRetry } from "@/lib/with-db-retry";
 
 // GET /api/admin/slots/agenda?days=30&eventId=...&status=all
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest) {
 			whereClause.eventId = eventId;
 		}
 
-		if (trackParam && ["worship", "bible-reading"].includes(trackParam)) {
+		if (trackParam && TRACKS.includes(trackParam as (typeof TRACKS)[number])) {
 			whereClause.track = trackParam;
 		}
 

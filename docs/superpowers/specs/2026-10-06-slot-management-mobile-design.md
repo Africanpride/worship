@@ -2,7 +2,7 @@
 
 ## Problem Statement
 
-`/dashboard/admin/bookings` renders two views — **Worship Slot Management** (`?track=worship`, the default) and **Bible Reading Slot Management** (`?track=bible-reading`). Both are the *same* component, `components/admin/bookings-agenda.tsx`; only the header copy and the `track` value differ, so one fix covers both views.
+`/dashboard/admin/bookings` renders three views — **Worship Slot Management** (`?track=worship`, the default), **Bible Reading Slot Management** (`?track=bible-reading`), and **Prayer Slot Management** (`?track=prayer`). All are the *same* component, `components/admin/bookings-agenda.tsx`; only the header copy and the `track` value differ, so one fix covers every view.
 
 On a 360px phone the page is painful to use:
 

@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { log } from "@/lib/logger";
 import { notify } from "@/lib/notify";
 import { prisma } from "@/lib/prisma";
+import { trackLabel } from "@/lib/slots";
 
 export const dynamic = "force-dynamic";
 
@@ -112,8 +113,7 @@ export async function POST(req: NextRequest) {
 							throw e;
 						}
 
-						const trackLabel =
-							slot.track === "bible-reading" ? "Bible Reading" : "Worship";
+						const label = trackLabel(slot.track);
 						const when = slot.startTime.toLocaleString("en-GB", {
 							weekday: "short",
 							day: "numeric",
@@ -124,8 +124,8 @@ export async function POST(req: NextRequest) {
 						});
 
 						await notify(slot.assignedUserId as string, {
-							title: `${trackLabel} in ${humanOffset(offset)} — ${slot.event.title}`,
-							body: `Your ${trackLabel.toLowerCase()} hour starts at ${when}${slot.event.location ? ` · ${slot.event.location}` : ""}. Manage at /dashboard/events`,
+							title: `${label} in ${humanOffset(offset)} — ${slot.event.title}`,
+							body: `Your ${label.toLowerCase()} hour starts at ${when}${slot.event.location ? ` · ${slot.event.location}` : ""}. Manage at /dashboard/events`,
 							link: "/dashboard/events",
 							slotId: slot.id,
 							eventId: slot.eventId,

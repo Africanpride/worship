@@ -8,6 +8,7 @@ import {
 	normalizeVisibility,
 	redactSlots,
 	resolveAssigneeName,
+	TRACKS,
 } from "@/lib/slots";
 
 // GET /api/events/:eventId/slots
@@ -41,7 +42,7 @@ export async function GET(
 
 		const trackParam = new URL(req.url).searchParams.get("track");
 		const track =
-			trackParam && ["worship", "bible-reading"].includes(trackParam)
+			trackParam && TRACKS.includes(trackParam as (typeof TRACKS)[number])
 				? trackParam
 				: undefined;
 

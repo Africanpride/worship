@@ -15,6 +15,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { trackLabel } from "@/lib/slots";
 
 interface HistoryEntry {
 	id: string;
@@ -115,7 +116,7 @@ export function SlotHistoryDialog({ slotId }: { slotId: string }) {
 					</DialogTitle>
 					<DialogDescription className="text-muted-foreground text-xs">
 						{data?.slot
-							? `${data.slot.track === "bible-reading" ? "Bible Reading" : "Worship"} · ${format(
+							? `${trackLabel(data.slot.track)} · ${format(
 									new Date(data.slot.startTime),
 									"EEE d MMM · HH:mm",
 								)}–${format(new Date(data.slot.endTime), "HH:mm")} · newest first.`

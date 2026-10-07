@@ -11,6 +11,7 @@ import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { TRACKS, trackLabel } from "@/lib/slots";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
 			if (eventId && eventId !== "all") where.eventId = eventId;
 
 			const track = searchParams.get("track");
-			if (track && ["worship", "bible-reading"].includes(track)) {
+			if (track && TRACKS.includes(track as (typeof TRACKS)[number])) {
 				where.track = track;
 			}
 
@@ -145,7 +146,7 @@ export async function GET(req: NextRequest) {
 					: slot.status === "blocked"
 						? "Blocked"
 						: "Booked",
-			track: slot.track === "bible-reading" ? "Bible Reading" : "Worship",
+			track: trackLabel(slot.track),
 			singer:
 				slot.assignedUser?.profile?.displayName ??
 				slot.assignedUser?.name ??
@@ -168,7 +169,7 @@ export async function GET(req: NextRequest) {
 				{ header: "Location", key: "location", width: 28 },
 				{ header: "Status", key: "status", width: 11 },
 				{ header: "Track", key: "track", width: 14 },
-				{ header: "Singer", key: "singer", width: 24 },
+				{ header: "Assignee", key: "singer", width: 24 },
 				{ header: "Email", key: "email", width: 30 },
 			];
 			sheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
@@ -252,7 +253,7 @@ export async function GET(req: NextRequest) {
 			["colLoc", "Location"],
 			["colStatus", "Status"],
 			["colStatus", "Track"],
-			["colSinger", "Singer"],
+			["colSinger", "Assignee"],
 			["colEmail", "Email"],
 		];
 

@@ -30,7 +30,8 @@ export const SlotReassignedEmail = ({
 	reassignedToName = null,
 	scheduleLink = "https://thenonstop.org/schedule",
 }: SlotReassignedEmailProps) => {
-	const previewText = `Your worship slot for ${eventTitle} has been reassigned`;
+	const slotWord = trackLabel ? `${trackLabel} slot` : "slot";
+	const previewText = `Your ${slotWord} for ${eventTitle} has been reassigned`;
 
 	const slotLabel = `${startTime.toLocaleString("en-GB", {
 		weekday: "long",
@@ -54,13 +55,13 @@ export const SlotReassignedEmail = ({
 				<Body className="bg-white text-black font-sans">
 					<Container className="my-10 px-6 py-8 border rounded-md shadow-md max-w-xl">
 						<Heading className="text-xl mb-6 font-bold">
-							Your Worship Slot Was Reassigned
+							Your {trackLabel ? `${trackLabel} ` : ""}Slot Was Reassigned
 						</Heading>
 
 						<Text className="text-sm leading-6">Hello {name},</Text>
 
 						<Text className="text-sm leading-6">
-							A team admin has reassigned your worship slot for{" "}
+							A team admin has reassigned your {slotWord} for{" "}
 							<strong>{eventTitle}</strong>:
 						</Text>
 

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export const SLOT_DURATION_MS = 60 * 60 * 1000;
 
 /** Parallel ministry tracks sharing each event's window. */
-export const TRACKS = ["worship", "bible-reading"] as const;
+export const TRACKS = ["worship", "bible-reading", "prayer"] as const;
 export type SlotTrack = (typeof TRACKS)[number];
 
 export function normalizeTrack(value: unknown): SlotTrack {
@@ -14,7 +14,12 @@ export function normalizeTrack(value: unknown): SlotTrack {
 export const TRACK_LABELS: Record<SlotTrack, string> = {
 	worship: "Worship",
 	"bible-reading": "Bible Reading",
+	prayer: "Prayer",
 };
+
+export function trackLabel(track: string): string {
+	return TRACK_LABELS[track as SlotTrack] ?? "Worship";
+}
 
 export type SlotVisibilityMode =
 	| "full_public"

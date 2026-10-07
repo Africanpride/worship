@@ -32,7 +32,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import type { RedactedSlot, SlotTrack, SlotVisibilityMode } from "@/lib/slots";
-import { TRACK_LABELS, TRACKS } from "@/lib/slots";
+import { TRACK_LABELS, TRACKS, trackLabel } from "@/lib/slots";
 import { useCurrentSession } from "@/lib/use-current-session";
 import { cn } from "@/lib/utils";
 
@@ -257,9 +257,7 @@ export function BookingDialog({
 				</DialogTrigger>
 				<DialogContent className="sm:max-w-lg md:max-w-2xl p-0 gap-0 overflow-hidden">
 					<DialogHeader className="border-b px-5 py-3.5 pr-14 space-y-0.5">
-						<DialogTitle>
-							Book a {track === "worship" ? "Worship" : "Bible Reading"}
-						</DialogTitle>
+						<DialogTitle>Book a {TRACK_LABELS[track]}</DialogTitle>
 						<DialogDescription className="text-muted-foreground text-xs truncate">
 							{eventTitle}
 						</DialogDescription>
@@ -293,8 +291,8 @@ export function BookingDialog({
 						</div>
 					)}
 
-					{/* Track toggle — worship and Bible Reading run in parallel */}
-					<div className="grid grid-cols-2 gap-1 border-b bg-muted/20 p-2">
+					{/* Track toggle — worship, Bible Reading, and Prayer run in parallel */}
+					<div className="grid grid-cols-3 gap-1 border-b bg-muted/20 p-2">
 						{TRACKS.map((t) => (
 							<button
 								key={t}
@@ -466,7 +464,10 @@ export function BookingDialog({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Confirm your hour of worship?</AlertDialogTitle>
+						<AlertDialogTitle>
+							Confirm your {pendingSlot ? trackLabel(pendingSlot.track) : ""}{" "}
+							hour?
+						</AlertDialogTitle>
 						<AlertDialogDescription>
 							{pendingSlot &&
 								`${format(new Date(pendingSlot.startTime), "EEEE, d MMMM yyyy")} · ${format(

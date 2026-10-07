@@ -8,6 +8,7 @@ import SlotReassignedEmail from "@/lib/email/SlotReassigned";
 import { sendEmailWithRetry } from "@/lib/email-send";
 import { getRequestId, log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
+import { trackLabel } from "@/lib/slots";
 
 // POST /api/admin/slots/:slotId/assign
 // Body: { userId: string | null, reason?: string }
@@ -147,8 +148,7 @@ export async function POST(
 				where: { slots: { some: { id: slotId } } },
 				select: { title: true },
 			});
-			const trackLabel =
-				result.slot.track === "bible-reading" ? "Bible Reading" : "Worship";
+			const label = trackLabel(result.slot.track);
 			const when = `${new Date(result.slot.startTime).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}`;
 			const notifications: Array<{
 				userId: string;
@@ -159,7 +159,7 @@ export async function POST(
 			if (targetUser) {
 				notifications.push({
 					userId: targetUser.id,
-					title: `You've been assigned a ${trackLabel.toLowerCase()} hour`,
+					title: `You've been assigned a ${label.toLowerCase()} hour`,
 					body: `${when} — ${ev?.title ?? "The NonStop Series"}.`,
 					link: "/dashboard/events",
 				});
@@ -167,7 +167,7 @@ export async function POST(
 			if (result.previousUserId && result.previousUserId !== targetUser?.id) {
 				notifications.push({
 					userId: result.previousUserId,
-					title: `Your ${trackLabel.toLowerCase()} slot was reassigned`,
+					title: `Your ${label.toLowerCase()} slot was reassigned`,
 					body: `${when} — ${ev?.title ?? "The NonStop Series"}. Pick another open hour if you'd like.`,
 					link: "/schedule",
 				});
@@ -208,8 +208,7 @@ export async function POST(
 				]);
 
 				if (previousUser?.email) {
-					const trackLabel =
-						result.slot.track === "bible-reading" ? "Bible Reading" : "Worship";
+					const label = trackLabel(result.slot.track);
 					const html = await render(
 						SlotReassignedEmail({
 							name: previousUser.name,
@@ -217,13 +216,13 @@ export async function POST(
 							startTime: result.slot.startTime,
 							endTime: result.slot.endTime,
 							reassignedToName: targetUser?.name ?? null,
-							trackLabel,
+							trackLabel: label,
 						}),
 					);
 					await sendEmailWithRetry({
 						from: "no-reply@thenonstop.org",
 						to: previousUser.email,
-						subject: `Your ${trackLabel.toLowerCase()} slot was reassigned — ${event?.title ?? "The NonStop Series"}`,
+						subject: `Your ${label.toLowerCase()} slot was reassigned — ${event?.title ?? "The NonStop Series"}`,
 						html,
 					});
 				}

@@ -6,6 +6,7 @@ import {
 	BookOpenText,
 	CalendarDays,
 	Clock,
+	HeartHandshake,
 	Hourglass,
 	MapPin,
 	Music,
@@ -39,6 +40,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { type SlotTrack, TRACK_LABELS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 
 interface AgendaSlot {
@@ -47,7 +49,7 @@ interface AgendaSlot {
 	startTime: string;
 	endTime: string;
 	status: string;
-	track?: "worship" | "bible-reading";
+	track?: SlotTrack;
 	assignedUser?: {
 		id: string;
 		name: string;
@@ -223,7 +225,7 @@ export function BookingsAgenda({
 	initialTrack,
 }: {
 	/** Preset from the page URL (e.g. ?track=bible-reading). */
-	initialTrack?: "worship" | "bible-reading" | "all";
+	initialTrack?: SlotTrack | "all";
 }) {
 	const [targetSlot, setTargetSlot] = useState<AgendaSlot | null>(null);
 	const [expandedGaps, setExpandedGaps] = useState<Set<string>>(new Set());
@@ -385,23 +387,17 @@ export function BookingsAgenda({
 		return { total: all.length, booked, blocked, open };
 	}, [visibleSlots]);
 
-	// Header copy follows the active track so the Bible Reading entry never
-	// presents itself as the worship console.
-	const headerCopy =
-		trackFilter === "bible-reading"
-			? {
-					title: "Bible Reading Slot Management",
-					sub: "Manage Bible reading hours — reassign booked readers, block out hours across events.",
-				}
-			: trackFilter === "worship"
-				? {
-						title: "Worship Slot Management",
-						sub: "Manage worship hours — reassign booked singers, block out hours across events.",
-					}
-				: {
-						title: "Worship Agenda & Slot Management",
-						sub: "Manage worship and Bible reading slots — reassign booked hours and block out hours across events.",
-					};
+	// Header copy follows the active track so no entry presents itself as a
+	// different track's console.
+	const headerCopy = TRACK_LABELS[trackFilter as SlotTrack]
+		? {
+				title: `${TRACK_LABELS[trackFilter as SlotTrack]} Slot Management`,
+				sub: `Manage ${TRACK_LABELS[trackFilter as SlotTrack].toLowerCase()} hours — reassign booked assignees, block out hours across events.`,
+			}
+		: {
+				title: "Ministry Agenda & Slot Management",
+				sub: "Manage worship, Bible reading, and prayer slots — reassign booked hours and block out hours across events.",
+			};
 
 	return (
 		<div className="rounded-xl border bg-card ">
@@ -566,10 +562,12 @@ export function BookingsAgenda({
 						<div className="flex h-8 w-full items-center gap-1.5 rounded-md border bg-muted/30 px-2.5 text-xs">
 							{trackFilter === "bible-reading" ? (
 								<BookOpenText className="size-3.5 text-sky-600" />
+							) : trackFilter === "prayer" ? (
+								<HeartHandshake className="size-3.5 text-violet-600" />
 							) : (
 								<Music className="size-3.5 text-primary" />
 							)}
-							{trackFilter === "bible-reading" ? "Bible Reading" : "Worship"}
+							{TRACK_LABELS[trackFilter as SlotTrack] ?? "All Tracks"}
 						</div>
 					</div>
 
@@ -610,7 +608,7 @@ export function BookingsAgenda({
 				<div className="mt-3 relative">
 					<Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
 					<Input
-						placeholder="Filter by singer name, email, time, or event…"
+						placeholder="Filter by name, email, time, or event…"
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="h-8 pl-8 text-xs bg-background/50"
@@ -1144,7 +1142,7 @@ function ReassignDialog({
 
 				<div className="shrink-0 border-b px-6 py-3">
 					<Input
-						placeholder="Search singers by name or email…"
+						placeholder="Search assignees by name or email…"
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 						className="h-9"

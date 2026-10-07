@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { type SlotTrack, trackLabel } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 
 interface MySlot {
@@ -24,7 +25,7 @@ interface MySlot {
 	startTime: string;
 	endTime: string;
 	status: string;
-	track?: "worship" | "bible-reading";
+	track?: SlotTrack;
 	event: { id: string; title: string; slug: string; location?: string | null };
 }
 
@@ -125,7 +126,7 @@ export function MyBookingsPanel() {
 		<Card>
 			<CardHeader className="flex-row items-center justify-between">
 				<CardTitle className="flex items-center gap-2 text-base">
-					<CalendarClock className="size-4" /> My Worship Slots
+					<CalendarClock className="size-4" /> My Slots
 				</CardTitle>
 				{!isLoading && (
 					<div className="flex items-center gap-2">
@@ -162,7 +163,7 @@ export function MyBookingsPanel() {
 				)}
 				{!isLoading && upcoming.length === 0 && past.length === 0 && (
 					<p className="text-sm text-muted-foreground">
-						You haven&apos;t booked any worship slots yet. Head to the{" "}
+						You haven&apos;t booked any slots yet. Head to the{" "}
 						<a href="/schedule" className="underline cursor-pointer">
 							schedule
 						</a>{" "}
@@ -179,12 +180,12 @@ export function MyBookingsPanel() {
 								<div className="min-w-0">
 									<p className="flex items-center gap-1.5 font-medium text-sm">
 										<span className="truncate">{slot.event.title}</span>
-										{slot.track === "bible-reading" && (
+										{slot.track && slot.track !== "worship" && (
 											<Badge
 												variant="outline"
 												className="shrink-0 text-[10px] px-1.5 py-0"
 											>
-												Bible Reading
+												{trackLabel(slot.track)}
 											</Badge>
 										)}
 									</p>

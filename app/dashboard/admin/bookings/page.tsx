@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { BookingSettingsForm } from "@/components/admin/booking-settings-form";
 import { BookingsAgenda } from "@/components/admin/bookings-agenda";
 import { NotificationSettingsForm } from "@/components/admin/notification-settings-form";
+import { normalizeTrack } from "@/lib/slots";
 
 export default async function BookingSettingsPage({
 	searchParams,
@@ -11,7 +12,7 @@ export default async function BookingSettingsPage({
 }) {
 	const { track } = await searchParams;
 	// Each sidebar entry pins its own track — no mixed view.
-	const initialTrack = track === "bible-reading" ? "bible-reading" : "worship";
+	const initialTrack = normalizeTrack(track);
 
 	return (
 		<div className="flex-1 space-y-4">

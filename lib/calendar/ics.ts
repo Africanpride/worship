@@ -1,5 +1,7 @@
-// ICS calendar generation for worship slots
+// ICS calendar generation for ministry slots
 // Extracted from app/api/user/slots/ics/route.ts — shared by download + token feed
+
+import { trackLabel } from "@/lib/slots";
 
 export type IcsSlot = {
 	id: string;
@@ -22,10 +24,6 @@ export function escapeIcs(text: string): string {
 		.replace(/\n/g, "\\n");
 }
 
-function trackLabelFor(track: string): string {
-	return track === "bible-reading" ? "Bible Reading" : "Worship";
-}
-
 /**
  * Build VCALENDAR lines for a set of slots.
  * @param userName calendar owner display name
@@ -43,7 +41,7 @@ export function buildVCalendar(
 		"PRODID:-//The NonStop Series//Bookings//EN",
 		"CALSCALE:GREGORIAN",
 		"METHOD:PUBLISH",
-		`X-WR-CALNAME:${escapeIcs(`Worship Slots — ${userName}`)}`,
+		`X-WR-CALNAME:${escapeIcs(`Ministry Slots — ${userName}`)}`,
 		"X-PUBLISHED-TTL:PT1H",
 		"REFRESH-INTERVAL;VALUE=DURATION:PT1H",
 	];
@@ -51,7 +49,7 @@ export function buildVCalendar(
 	const dtstamp = icsDate(new Date());
 
 	for (const slot of slots) {
-		const trackLabel = trackLabelFor(slot.track);
+		const label = trackLabel(slot.track);
 		const seq = slot.updatedAt
 			? Math.floor(slot.updatedAt.getTime() / 1000)
 			: 0;
@@ -65,10 +63,10 @@ export function buildVCalendar(
 			`SEQUENCE:${seq}`,
 			`DTSTART:${icsDate(slot.startTime)}`,
 			`DTEND:${icsDate(slot.endTime)}`,
-			`SUMMARY:${escapeIcs(`${trackLabel} — ${slot.event.title}`)}`,
+			`SUMMARY:${escapeIcs(`${label} — ${slot.event.title}`)}`,
 			`LOCATION:${escapeIcs(slot.event.location ?? "")}`,
 			`DESCRIPTION:${escapeIcs(
-				`Your ${trackLabel.toLowerCase()} hour for ${slot.event.title}. Manage it at https://thenonstop.org/dashboard/events`,
+				`Your ${label.toLowerCase()} hour for ${slot.event.title}. Manage it at https://thenonstop.org/dashboard/events`,
 			)}`,
 		);
 
@@ -78,7 +76,7 @@ export function buildVCalendar(
 				"BEGIN:VALARM",
 				`TRIGGER:-PT${offset}M`,
 				"ACTION:DISPLAY",
-				`DESCRIPTION:${escapeIcs(`Reminder: ${trackLabel} — ${slot.event.title} in ${offset} minutes`)}`,
+				`DESCRIPTION:${escapeIcs(`Reminder: ${label} — ${slot.event.title} in ${offset} minutes`)}`,
 				"END:VALARM",
 			);
 		}

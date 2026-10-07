@@ -128,7 +128,7 @@ export function BookingSettingsForm() {
 					<h2>Bookings and Slots</h2>
 				</CardTitle>
 				<CardDescription>
-					Control how singers book worship hours on your events.
+					Control how members book ministry hours on your events.
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-8">

@@ -67,6 +67,12 @@ const defaultData = {
 			adminOnly: true,
 		},
 		{
+			title: "Prayer Slots",
+			url: "/dashboard/admin/bookings?track=prayer",
+			icon: <Heart />,
+			adminOnly: true,
+		},
+		{
 			title: "Application Logs",
 			url: "/dashboard/admin/logs",
 			icon: <TerminalIcon />,
@@ -150,7 +156,7 @@ export function AppSidebar({
 					<div className="flex min-w-0 flex-col gap-0.5 leading-none transition-all duration-300 group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:group-hover:flex">
 						<span className="truncate font-semibold">Worship Admin</span>
 						<span className="truncate text-xs text-muted-foreground">
-							v0.1.0
+							v0.1.1
 						</span>
 					</div>
 				</div>

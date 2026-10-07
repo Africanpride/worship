@@ -3,12 +3,44 @@ import type { EventSlot } from "@prisma/client";
 import {
 	buildSlotRanges,
 	checkBookingRules,
+	normalizeTrack,
 	normalizeVisibility,
 	redactSlots,
 	resolveAssigneeName,
+	TRACK_LABELS,
+	TRACKS,
+	trackLabel,
 } from "./slots";
 
 const HOUR = 60 * 60 * 1000;
+
+describe("tracks", () => {
+	it("has a label for every track (exhaustiveness)", () => {
+		for (const track of TRACKS) {
+			expect(TRACK_LABELS[track]).toBeTruthy();
+		}
+		expect(Object.keys(TRACK_LABELS).sort()).toEqual([...TRACKS].sort());
+	});
+
+	it("includes prayer as a first-class track", () => {
+		expect(TRACKS).toContain("prayer");
+		expect(TRACK_LABELS.prayer).toBe("Prayer");
+	});
+
+	it("normalizeTrack keeps known tracks and falls back to worship", () => {
+		expect(normalizeTrack("prayer")).toBe("prayer");
+		expect(normalizeTrack("bible-reading")).toBe("bible-reading");
+		expect(normalizeTrack("unknown")).toBe("worship");
+		expect(normalizeTrack(undefined)).toBe("worship");
+	});
+
+	it("trackLabel maps any track string to a human label", () => {
+		expect(trackLabel("prayer")).toBe("Prayer");
+		expect(trackLabel("bible-reading")).toBe("Bible Reading");
+		expect(trackLabel("worship")).toBe("Worship");
+		expect(trackLabel("garbage")).toBe("Worship");
+	});
+});
 
 describe("buildSlotRanges", () => {
 	it("divides an exact multiple of 1 hour into hourly chunks", () => {

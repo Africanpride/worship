@@ -241,7 +241,7 @@ model EventSlot {
   status           String   @default("open") // open, booked, blocked
   // Parallel ministry track this hour belongs to. Both tracks share the
   // event window; worship and Bible Reading happen simultaneously.
-  track            String   @default("worship") // worship | bible-reading
+  track            String   @default("worship") // worship | bible-reading | prayer
   assignedUserId   String?  @db.ObjectId
   assignedUser     User?    @relation(fields: [assignedUserId], references: [id])
   blockedByAdminId String?  @db.ObjectId
