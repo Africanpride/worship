@@ -2,17 +2,25 @@ import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isSuperAdmin } from "@/lib/super-admin";
 
 // GET /api/admin/audit
-// Admin-only global audit log query with filtering and cursor pagination.
+// Super-admin only global audit log query with filtering and cursor pagination.
 export async function GET(req: NextRequest) {
 	try {
 		const session = await auth.api.getSession({
 			headers: await headers(),
 		});
 
-		if (!session || session.user.role !== "admin" || session.user.banned) {
+		if (session?.user.role !== "admin" || session.user.banned) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+		}
+
+		if (!isSuperAdmin(session.user)) {
+			return NextResponse.json(
+				{ error: "Forbidden: Super Admin access required" },
+				{ status: 403 },
+			);
 		}
 
 		const { searchParams } = new URL(req.url);

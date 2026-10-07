@@ -1,10 +1,11 @@
 import { describe, expect, it } from "bun:test";
 
 describe("audit UI components", () => {
-	it("sidebar includes Audit Trail navigation item with cursor-pointer", async () => {
+	it("sidebar includes Audit Trail navigation item gated with superAdminOnly", async () => {
 		const src = await Bun.file("components/app-sidebar.tsx").text();
 		expect(src).toContain("/dashboard/admin/audit");
 		expect(src).toContain("Audit Trail");
+		expect(src).toContain("superAdminOnly: true");
 	});
 
 	it("audit console uses cursor-pointer on interactive elements", async () => {

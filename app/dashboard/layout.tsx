@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { auth } from "@/lib/auth";
+import { isSuperAdmin } from "@/lib/super-admin";
 
 export const metadata: Metadata = {
 	title: "Dashboard",
@@ -37,10 +38,12 @@ export default async function AdminLayout({
 		redirect("/");
 	}
 
+	const userIsSuperAdmin = isSuperAdmin(session?.user);
+
 	return (
 		<TooltipProvider delayDuration={0}>
 			<SidebarProvider defaultOpen={false}>
-				<AppSidebar />
+				<AppSidebar isSuperAdmin={userIsSuperAdmin} />
 				<SidebarInset>
 					<header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12  ">
 						<div className="flex items-center gap-2 px-3 sm:px-4">

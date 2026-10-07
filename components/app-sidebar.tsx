@@ -25,6 +25,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar";
+import { isSuperAdmin } from "@/lib/super-admin";
 import { useCurrentSession } from "@/lib/use-current-session";
 
 const defaultData = {
@@ -76,6 +77,7 @@ const defaultData = {
 			url: "/dashboard/admin/audit",
 			icon: <ShieldCheck />,
 			adminOnly: true,
+			superAdminOnly: true,
 		},
 		{
 			title: "Volunteer Management",
@@ -104,7 +106,14 @@ const defaultData = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+	isSuperAdmin?: boolean;
+}
+
+export function AppSidebar({
+	isSuperAdmin: isSuperAdminProp,
+	...props
+}: AppSidebarProps) {
 	const { user } = useCurrentSession();
 	const { data: profile } = useSWR<{ avatarUrl?: string | null }>(
 		user ? "/api/profile" : null,
@@ -117,7 +126,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			(profile?.avatarUrl as string) || user?.image || defaultData.user.avatar,
 	};
 
+	const userIsSuperAdmin =
+		isSuperAdminProp ??
+		(user?.email ? isSuperAdmin({ email: user.email }) : false);
+
 	const filteredNavMain = defaultData.navMain.filter((item) => {
+		if (item.superAdminOnly) {
+			return userIsSuperAdmin && user?.role === "admin";
+		}
 		if (item.adminOnly) {
 			return user?.role === "admin";
 		}
