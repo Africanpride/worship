@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -38,6 +39,22 @@ export async function POST(
 				status: "blocked",
 				blockedByAdminId: session.user.id,
 			},
+		});
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "slot.block",
+			entityType: "slot",
+			entityId: slotId,
+			entityLabel: `${slot.track} (${slot.startTime.toISOString()})`,
+			before: { status: slot.status },
+			after: { status: "blocked", blockedByAdminId: session.user.id },
+			req: _req,
 		});
 
 		return NextResponse.json(updated);
@@ -92,6 +109,22 @@ export async function DELETE(
 				status: slot.assignedUserId ? "booked" : "open",
 				blockedByAdminId: null,
 			},
+		});
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "slot.unblock",
+			entityType: "slot",
+			entityId: slotId,
+			entityLabel: `${slot.track} (${slot.startTime.toISOString()})`,
+			before: { status: slot.status, blockedByAdminId: slot.blockedByAdminId },
+			after: { status: updated.status, blockedByAdminId: null },
+			req: _req,
 		});
 
 		return NextResponse.json(updated);

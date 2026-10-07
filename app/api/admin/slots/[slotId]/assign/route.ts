@@ -1,6 +1,7 @@
 import { render } from "@react-email/components";
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { resend } from "@/lib/email/resend";
 import SlotReassignedEmail from "@/lib/email/SlotReassigned";
@@ -115,6 +116,30 @@ export async function POST(
 		if (!result) {
 			return NextResponse.json({ error: "Slot not found" }, { status: 404 });
 		}
+
+		// Audit the assignment change (never fails the primary transaction).
+		const auditAction =
+			targetUser === null
+				? "slot.clear"
+				: result.previousUserId
+					? "slot.reassign"
+					: "slot.assign";
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: auditAction,
+			entityType: "slot",
+			entityId: slotId,
+			entityLabel: `${result.slot.track} (${result.slot.startTime.toISOString()})`,
+			before: { assignedUserId: result.previousUserId },
+			after: { assignedUserId: targetUser?.id ?? null },
+			metadata: { reason },
+			req,
+		});
 
 		// In-app notifications for both sides of the change (best-effort).
 		try {

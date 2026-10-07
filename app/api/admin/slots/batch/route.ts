@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -55,6 +56,25 @@ export async function POST(req: NextRequest) {
 				},
 			});
 
+			await recordAuditLog({
+				actor: {
+					id: session.user.id,
+					email: session.user.email,
+					name: session.user.name,
+					role: session.user.role,
+				},
+				action: "slot.batch_action",
+				entityType: "slot",
+				entityId: null,
+				entityLabel: `Batch: ${action} on ${validSlotIds.length} slots`,
+				metadata: {
+					slotIds: validSlotIds,
+					action,
+					count: result.count,
+				},
+				req,
+			});
+
 			return NextResponse.json({
 				success: true,
 				action: "block",
@@ -88,11 +108,32 @@ export async function POST(req: NextRequest) {
 			}),
 		]);
 
+		const unblockedCount = result[0].count + result[1].count;
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "slot.batch_action",
+			entityType: "slot",
+			entityId: null,
+			entityLabel: `Batch: unblock on ${validSlotIds.length} slots`,
+			metadata: {
+				slotIds: validSlotIds,
+				action: "unblock",
+				count: unblockedCount,
+			},
+			req,
+		});
+
 		return NextResponse.json({
 			success: true,
 			action: "unblock",
 			requested: validSlotIds.length,
-			count: result[0].count + result[1].count,
+			count: unblockedCount,
 		});
 	} catch (error) {
 		log.error("slots", "Batch slot action failed", {
