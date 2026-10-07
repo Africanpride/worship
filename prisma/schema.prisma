@@ -397,3 +397,27 @@ model AppLog {
   @@index([requestId])
   @@map("app_logs")
 }
+
+model AuditLog {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  actorId     String   @db.ObjectId
+  actorEmail  String
+  actorName   String
+  actorRole   String   @default("admin")
+  action      String
+  entityType  String
+  entityId    String?
+  entityLabel String?
+  before      Json?
+  after       Json?
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([actorId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
