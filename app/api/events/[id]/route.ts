@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { notify } from "@/lib/notify";
@@ -122,6 +123,45 @@ export async function PATCH(
 			},
 		});
 
+		// Audit only the fields that actually changed (never fails the update).
+		const changedFields: Record<string, unknown> = {};
+		const beforeFields: Record<string, unknown> = {};
+		const afterFields: Record<string, unknown> = {};
+		const fieldPairs: Array<[string, unknown, unknown]> = [
+			["title", existingEvent.title, event.title],
+			["startDate", existingEvent.startDate, event.startDate],
+			["endDate", existingEvent.endDate, event.endDate],
+			["poster", existingEvent.poster, event.poster],
+			["description", existingEvent.description, event.description],
+			["location", existingEvent.location, event.location],
+			["status", existingEvent.status, event.status],
+			["bookingOpen", existingEvent.bookingOpen, event.bookingOpen],
+		];
+		for (const [key, prev, next] of fieldPairs) {
+			if (JSON.stringify(prev) !== JSON.stringify(next)) {
+				changedFields[key] = next;
+				beforeFields[key] = prev;
+				afterFields[key] = next;
+			}
+		}
+		if (Object.keys(changedFields).length > 0) {
+			await recordAuditLog({
+				actor: {
+					id: session.user.id,
+					email: session.user.email,
+					name: session.user.name,
+					role: session.user.role,
+				},
+				action: "event.update",
+				entityType: "event",
+				entityId: id,
+				entityLabel: event.title,
+				before: beforeFields,
+				after: afterFields,
+				req,
+			});
+		}
+
 		// Fan-out: if schedule-impacting fields changed, notify booked holders (best-effort)
 		const scheduleChanged =
 			Boolean(title && title !== existingEvent.title) ||
@@ -195,6 +235,21 @@ export async function DELETE(
 			where: {
 				id,
 			},
+		});
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "event.delete",
+			entityType: "event",
+			entityId: id,
+			entityLabel: event.title,
+			before: { title: event.title, startDate: event.startDate },
+			req,
 		});
 
 		return NextResponse.json(event);

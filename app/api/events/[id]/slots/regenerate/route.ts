@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -35,6 +36,26 @@ export async function POST(
 		}
 
 		const result = await syncEventSlots(id);
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "event.slots_regenerate",
+			entityType: "event",
+			entityId: id,
+			entityLabel: exists.id,
+			metadata: {
+				created: result.created,
+				pruned: result.pruned,
+				stranded: result.stranded,
+			},
+			req: _req,
+		});
+
 		return NextResponse.json(result);
 	} catch (error) {
 		if (error instanceof Error && error.message === "EVENT_NOT_FOUND") {

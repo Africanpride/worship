@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { recordAuditLog } from "@/lib/audit";
 import { auth } from "@/lib/auth";
 import { log } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
@@ -96,6 +97,26 @@ export async function POST(req: Request) {
 				detail: error instanceof Error ? error.message : String(error),
 			});
 		}
+
+		await recordAuditLog({
+			actor: {
+				id: session.user.id,
+				email: session.user.email,
+				name: session.user.name,
+				role: session.user.role,
+			},
+			action: "event.create",
+			entityType: "event",
+			entityId: event.id,
+			entityLabel: event.title,
+			after: {
+				title: event.title,
+				startDate: event.startDate,
+				endDate: event.endDate,
+				status: event.status,
+			},
+			req,
+		});
 
 		return NextResponse.json(event);
 	} catch (error) {
