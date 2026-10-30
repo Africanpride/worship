@@ -94,7 +94,7 @@ export default function HeroHeadline({
 					<Link href="/watches" className="cursor-pointer">
 						<Button
 							size="lg"
-							className="rounded-full font-bold uppercase tracking-widest text-xs cursor-pointer"
+							className="rounded-full px-4 font-bold uppercase tracking-widest text-xs cursor-pointer"
 						>
 							Take Your Watch
 						</Button>
@@ -103,7 +103,7 @@ export default function HeroHeadline({
 						<Button
 							size="lg"
 							variant="ghost"
-							className="rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
+							className="rounded-full px-4 font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
 						>
 							Watch Live
 						</Button>
@@ -113,7 +113,7 @@ export default function HeroHeadline({
 							<Button
 								size="lg"
 								variant="ghost"
-								className="rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
+								className="rounded-full px-4 font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
 							>
 								Register
 							</Button>
@@ -123,7 +123,7 @@ export default function HeroHeadline({
 							<Button
 								size="lg"
 								variant="default"
-								className="bg-yellow-500 hover:bg-yellow-600 rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
+								className="bg-yellow-500 px-4 hover:bg-yellow-600 rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
 							>
 								Book a Slot
 							</Button>
@@ -133,7 +133,7 @@ export default function HeroHeadline({
 						<Button
 							size="lg"
 							variant="ghost"
-							className="rounded-full font-bold uppercase tracking-widest text-xs border-white/30 text-white cursor-pointer"
+							className="rounded-full font-bold uppercase px-4 tracking-widest text-xs border-white/30 text-white cursor-pointer"
 						>
 							Start an Altar
 						</Button>
@@ -155,11 +155,11 @@ export default function HeroHeadline({
 				>
 					{/* Inserting logo here using <Image /> tage */}
 					<Image
-						src="/logos/logo.png"
+						src="/logos/series.jpeg"
 						alt="Highlight"
 						width={200}
 						height={200}
-						className="object-cover object-top scale-110 rounded-3xl"
+						className="object-cover object-top scale-110 rounded-xl"
 						priority
 					/>
 				</motion.div>

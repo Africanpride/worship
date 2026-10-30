@@ -106,8 +106,8 @@ const AboutCompliment = ({
 	achievements = [
 		{ label: "Faithful Years ", value: "25+" },
 		{ label: "Hours per Session", value: "144h" },
-		{ label: "Global Souls Met", value: "500k+" },
-		{ label: "Ministries United", value: "30+" },
+		{ label: "Global Souls Met", value: "50k+" },
+		{ label: "Ministries United", value: "120+" },
 	],
 	contentSections = [
 		{
@@ -263,9 +263,9 @@ const AboutCompliment = ({
 					data-usal="fade-u duration-500"
 				>
 					<div className="flex flex-col gap-4  mb-8 border-b border-border/40 pb-8">
-						<span className="text-amber-500 font-mono text-xs uppercase tracking-widest font-bold">
+						{/* <span className="text-amber-500 font-mono text-xs uppercase tracking-widest font-bold">
 							144 Hours • Multiple Nations • One Altar • One King
-						</span>
+						</span> */}
 						<h2 className="text-3xl font-medium md:text-4xl">
 							The Fire Must Not Go Out
 						</h2>
