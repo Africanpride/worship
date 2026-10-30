@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 		const mailOptions = {
 			from: `"${name}" <${process.env.SMTP_USER}>`, // From user via our SMTP
 			replyTo: email,
-			to: "correspondence@thenonstop.org",
+			to: "info@thenonstop.org",
 			subject: `New Contact Form Submission from ${name}`,
 			text: `
         Name: ${name}

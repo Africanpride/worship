@@ -33,7 +33,7 @@ const page = () => {
 				</div>
 				<h2 className=" text-4xl ">Feedback</h2>
 				<div className="my-2 text-base dark:text-white line-clamp-2">
-					Let you know how we're doing. (We read everything, butsometimes we
+					Let you know how we're doing. (We read everything, but sometimes we
 					can't answer.) <br />
 					Please choose the relevant feedback option.
 				</div>
